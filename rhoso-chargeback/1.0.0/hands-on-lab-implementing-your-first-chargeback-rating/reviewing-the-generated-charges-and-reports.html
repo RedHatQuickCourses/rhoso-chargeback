@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Reviewing the generated charges and reports :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="applying-the-defined-rating-rule-to-resources.html">
+    <link rel="next" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
+    <li><a href="reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Reviewing the generated charges and reports</h1>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">// This module is part of the 'Hands-on Lab: Implementing Your First Chargeback Rating' lesson.
+// It focuses on reviewing the outcomes of applied rating rules.
+= Reviewing Generated Charges and Reports
+
+This section provides a detailed understanding of how to access, interpret, and analyze the chargeback reports generated by RHOSO. After successfully defining and applying rating rules, the next crucial step is to verify the accuracy of the charges and gain insights into resource consumption costs.
+
+== Understanding Generated Charges and Reports
+
+Chargeback reports are essential tools for financial transparency, cost allocation, and resource optimization within a cloud environment. They translate raw resource usage data into clear, auditable financial statements, enabling organizations to accurately bill consumers (e.g., departments, projects, external clients) for the resources they consume.
+
+=== What are Chargeback Reports?
+
+RHOSO's chargeback feature generates various types of reports, including:
+
+*   *Consumption Summaries:* High-level overviews of resource usage across tenants, services, or specific time periods.
+*   *Detailed Billing Statements/Invoices:* Granular breakdown of charges per tenant, project, service, and even individual resource instances. These often mimic traditional invoices, showing line items for usage and their corresponding calculated costs.
+*   *Cost Trends and Analysis:* Reports that help visualize cost evolution over time, identify peak consumption periods, and forecast future expenses.
+
+=== Key Components of a Chargeback Report
+
+Regardless of the report type, common data points you can expect to find include:
+
+*   *Reporting Period:* The specific timeframe (e.g., month, week, day) the report covers.
+*   *Tenant/Project Information:* Identifies the consumer being charged.
+*   *Service/Resource Type:* Specifies the type of resource consumed (e.g., compute, storage, network, specific VM flavors).
+*   *Usage Metric:* The quantifiable unit of consumption (e.g., GB-hours for storage, vCPU-hours for compute, bandwidth in GB).
+*   *Applied Rate:* The cost per unit of the usage metric, derived from the rating rule.
+*   *Calculated Charge:* The total cost for that specific line item (Usage Metric * Applied Rate).
+*   *Total Charges:* The sum of all calculated charges for the specified tenant/project within the reporting period.
+
+=== The Importance of Reviewing Reports
+
+Regular review of chargeback reports is critical for several reasons:
+
+*   *Validation of Rating Rules:* Ensures that the defined rating rules are correctly applied and produce expected charge calculations. Incorrect rules can lead to under- or over-billing.
+*   *Cost Transparency:* Provides visibility into where cloud spending is occurring, helping consumers understand the financial impact of their resource choices.
+*   *Budget Management:* Facilitates accurate budgeting and forecasting for cloud resource consumption.
+*   *Resource Optimization:* Highlights inefficient resource usage or "idle" resources that are still incurring costs, prompting actions for optimization.
+*   *Dispute Resolution:* Serves as an authoritative record for resolving billing disputes.
+
+Reports are typically generated based on collected telemetry data and processed by the chargeback engine. They can often be accessed through a dedicated dashboard, exported as CSV or PDF files, or queried via APIs for integration with external financial systems.
+
+[FIXME]
+*   **Suggestion:** Implement an API endpoint for programmatic access to chargeback data, allowing for integration with existing enterprise resource planning (ERP) or financial management systems.
+*   **Suggestion:** Develop customizable report templates that allow administrators to define the layout and specific data fields included in generated invoices, catering to diverse organizational billing requirements.
+
+== Hands-on Activity: Reviewing Your First Chargeback Reports
+
+In this lab activity, you will navigate the RHOSO interface to view the charges generated by the rating rule you previously defined and applied.
+
+=== Prerequisites
+
+*   You have successfully completed the previous lab steps where you set up the lab environment, defined a basic rating rule, and applied it to specific resources or projects.
+*   There has been some resource consumption by the target resources/projects since the rating rule was applied.
+
+=== Step-by-Step Guide
+
+Follow these steps to access and review your chargeback reports:
+
+.  **Access the RHOSO Chargeback Dashboard**
+    *   Log in to your RHOSO (OpenStack) dashboard with appropriate administrative or tenant-level permissions that grant access to chargeback features.
+    *   Navigate to the *Chargeback* or *Billing* section in the dashboard menu. The exact location may vary depending on your RHOSO configuration, but it's typically found under a "System," "Administration," or "Project" tab.
+    +
+    [NOTE]
+    Access to chargeback reports might be restricted based on user roles. Ensure your user has the necessary permissions to view billing data for the relevant projects or the entire cloud.
+
+.  **Select Reporting Parameters**
+    *   Within the Chargeback dashboard, locate the options for generating or viewing reports. You will typically need to specify:
+        *   *Reporting Period:* Select a date range (e.g., "Last Month," "Current Month," "Custom Range"). Choose a period that covers the time when your test resources were consuming services after the rating rule was applied.
+        *   *Scope:* Specify whether you want to view reports for a specific *Project*, *Tenant*, or the entire *Cloud*. For this lab, select the project where you applied your rating rule.
+        *   *Service Type (Optional):* Filter by specific OpenStack services (e.g., `nova` for compute, `cinder` for block storage).
+    +
+    [FIXME]
+    *   **Suggestion:** Enhance the reporting interface with more flexible filtering options, allowing users to filter by specific resource tags, user groups, or custom metadata, providing more granular control over report generation.
+
+.  **Generate and View the Report**
+    *   After selecting your parameters, click the "Generate Report," "View Report," or similar button.
+    *   The dashboard will display a summary of charges. This might include:
+        *   Total charges for the selected period and scope.
+        *   A breakdown by project or tenant.
+        *   A breakdown by service type.
+        *   Graphical representations of cost trends.
+    +
+    [TIP]
+    Look for a section that displays a list of invoices or detailed consumption records.
+
+.  **Interpret the Report Data**
+    *   Carefully examine the generated report. Focus on:
+        *   **Identifying your test project/tenant:** Confirm that your project is listed and has associated charges.
+        *   **Verifying service charges:** Look for the specific service (e.g., compute instance, volume) that your rating rule targeted.
+        *   **Checking usage metrics:** Ensure the reported usage (e.g., vCPU-hours, GB-hours) aligns with your expected consumption.
+        *   **Confirming applied rates:** The report should implicitly (or explicitly) show that the rate you defined in your rating rule has been applied to the usage.
+        *   **Validating calculated charges:** Do the final charges make sense based on the usage and your defined rate?
+    *   If you see "0" charges or unexpected values, it could indicate an issue with your rating rule, its application, or insufficient resource consumption during the reporting period.
+
+.  **Download/Export the Report (Optional)**
+    *   Most chargeback dashboards offer options to export reports in various formats (e.g., CSV for spreadsheet analysis, PDF for official records).
+    *   Click on the "Export" or "Download" button and save the report for offline review. This is particularly useful for detailed analysis or integration with other financial tools.
+
+.  **Drill Down for Granular Details (If Available)**
+    *   Some interfaces allow you to click on specific line items or project totals to "drill down" into more granular details, showing individual resource usage and charges. Explore this functionality to see the full impact of your rating rules.
+
+[FIXME]
+*   **Suggestion for Image:** Include a screenshot of the RHOSO Chargeback dashboard showing the report generation parameters and a summarized view of generated charges. This will provide a visual anchor for users navigating the interface.
+*   **Suggestion for Image:** Add a second screenshot demonstrating a detailed chargeback report or invoice, highlighting key components like tenant, service, usage, rate, and calculated charge.
+*   **Suggestion for Video:** Create a short video walkthrough demonstrating the entire process of logging into the dashboard, selecting reporting parameters, generating a report, and interpreting its key sections. This can significantly enhance the hands-on learning experience.
+
+This hands-on exercise demonstrates how to effectively review and validate the financial impact of your chargeback configurations. Understanding these reports is fundamental to maintaining accurate billing and making informed decisions about cloud resource management.</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a></span>
+  <span class="next"><a href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

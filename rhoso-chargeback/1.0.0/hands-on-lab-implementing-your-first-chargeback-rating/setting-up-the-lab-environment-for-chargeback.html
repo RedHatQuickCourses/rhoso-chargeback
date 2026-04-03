@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setting up the lab environment for Chargeback :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="hands-on-lab-implementing-your-first-chargeback-rating.html">
+    <link rel="next" href="defining-a-basic-rating-rule-for-a-service.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></li>
+    <li><a href="setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Setting up the lab environment for Chargeback</h1>
+<h1 id="_setting_up_the_lab_environment_for_chargeback" class="sect0"><a class="anchor" href="#_setting_up_the_lab_environment_for_chargeback"></a>Setting Up the Lab Environment for Chargeback</h1>
+<div class="paragraph">
+<p>This section guides you through the process of preparing your environment to implement and test the RHOSO Chargeback feature. A properly configured lab environment is crucial for hands-on learning, allowing you to experiment with rating definitions, apply rules, and analyze generated charges without impacting production systems.</p>
+</div>
+<div class="sect1">
+<h2 id="_introduction_to_the_lab_environment_for_chargeback"><a class="anchor" href="#_introduction_to_the_lab_environment_for_chargeback"></a>Introduction to the Lab Environment for Chargeback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The RHOSO Chargeback feature relies on collecting resource usage data from your Red Hat OpenStack Platform (RHOSP) environment. Therefore, setting up the lab environment involves ensuring that RHOSP is operational, necessary RHOSO components are deployed, and you have the administrative access required to configure chargeback rules and deploy test resources.</p>
+</div>
+<div class="paragraph">
+<p>This lab environment will serve as a sandbox to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify the successful deployment and integration of RHOSO Chargeback components.</p>
+</li>
+<li>
+<p>Create and manage sample projects and users for chargeback testing.</p>
+</li>
+<li>
+<p>Deploy various OpenStack resources (e.g., virtual machines, volumes, networks) to simulate resource consumption.</p>
+</li>
+<li>
+<p>Confirm that usage data is being collected and processed by RHOSO Observability.</p>
+</li>
+<li>
+<p>Prepare for defining and applying chargeback rating rules in subsequent labs.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_prerequisites_for_chargeback_lab_deployment_in_rhosp"><a class="anchor" href="#_prerequisites_for_chargeback_lab_deployment_in_rhosp"></a>Prerequisites for Chargeback Lab Deployment in RHOSP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before you begin setting up your lab environment for RHOSO Chargeback, ensure the following prerequisites are met. These items establish the foundational operational state necessary for Chargeback to function correctly.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>An operational Red Hat OpenStack Platform (RHOSP) environment.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>The RHOSP deployment should be healthy, with all core services (Keystone, Nova, Neutron, Cinder, Glance, Heat) running.</p>
+</li>
+<li>
+<p>Ensure you have administrative access (e.g., <code>stack</code> user on the undercloud, or an OpenStack administrator account) to perform necessary configurations and resource deployments.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>RHOSO Observability components are already deployed and functional within your RHOSP environment.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>This includes components responsible for metric collection (e.g., Ceilometer, Gnocchi, or their RHOSO-specific equivalents) and data visualization.</p>
+</li>
+<li>
+<p>Verify that usage data from existing OpenStack resources (if any) is being collected and accessible through the RHOSO Observability dashboard.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Network connectivity between your client machine (from where you&#8217;ll manage OpenStack) and the RHOSP undercloud/controller nodes.</p>
+</li>
+<li>
+<p>Sufficient compute, storage, and network resources available within your RHOSP lab environment to deploy sample virtual machines, volumes, and other services for testing.</p>
+</li>
+<li>
+<p>Basic familiarity with OpenStack CLI commands and dashboard navigation.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For optimal learning, consider using a dedicated lab or development environment rather than a production OpenStack deployment. This prevents accidental service disruptions and allows for free experimentation.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_step_by_step_guide_to_setting_up_the_chargeback_lab_environment"><a class="anchor" href="#_step_by_step_guide_to_setting_up_the_chargeback_lab_environment"></a>Step-by-Step Guide to Setting Up the Chargeback Lab Environment</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Follow these steps to prepare your RHOSP environment for implementing RHOSO Chargeback.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_1_verify_rhosp_health_and_rhoso_component_status"><a class="anchor" href="#_step_1_verify_rhosp_health_and_rhoso_component_status"></a>Step 1: Verify RHOSP Health and RHOSO Component Status</h3>
+<div class="paragraph">
+<p>First, ensure your core RHOSP services are healthy and that the RHOSO Observability components, which feed data to Chargeback, are operational.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Log in to your RHOSP administrative host (e.g., undercloud).</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ssh stack@&lt;undercloud-ip&gt;</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Source the OpenStack administrative credentials.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ source ~/stackrc</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Verify the health of core OpenStack services.</strong></p>
+<div class="paragraph">
+<p>Check that critical services are running. While a full health check is beyond this topic, a quick look at Nova services can be indicative.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack compute service list</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">+----------------------------------+-----------+-------+----------+---------+-------+----------------------------+
+| ID                               | Binary    | Host  | Zone     | Status  | State | Updated At                 |
++----------------------------------+-----------+-------+----------+---------+-------+----------------------------+
+| &lt;UUID&gt;                           | nova-scheduler | controller-0 | internal | enabled | up    | 2023-10-26T10:00:00.000000 |
+| &lt;UUID&gt;                           | nova-conductor | controller-0 | internal | enabled | up    | 2023-10-26T10:00:00.000000 |
+| &lt;UUID&gt;                           | nova-compute | compute-0 | nova     | enabled | up    | 2023-10-26T10:00:00.000000 |
+| ...                              | ...       | ...   | ...      | ...     | ...   | ...                        |
++----------------------------------+-----------+-------+----------+---------+-------+----------------------------+</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+All services should show <code>Status: enabled</code> and <code>State: up</code>. If any critical services are down, troubleshoot them before proceeding.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Verify RHOSO Observability component status.</strong></p>
+<div class="paragraph">
+<p>While specific commands might vary based on your RHOSO deployment method (e.g., OpenShift Operator, direct deployment), you would typically check the status of the RHOSO Chargeback service itself and its dependencies. If deployed as pods, you might use <code>oc</code> or <code>kubectl</code>.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Example: Check if RHOSO Chargeback pods are running if deployed on OpenShift
+$ oc get pods -n rhoso-chargeback-system</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                       READY   STATUS    RESTARTS   AGE
+rhoso-chargeback-operator-xxxxxxx-xxxxx    1/1     Running   0          2d
+rhoso-chargeback-api-xxxxxxx-xxxxx         1/1     Running   0          2d
+rhoso-chargeback-worker-xxxxxxx-xxxxx      1/1     Running   0          2d</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If RHOSO Observability or Chargeback components are not running, refer to the RHOSO deployment documentation for troubleshooting and redeployment steps.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>FIXME: Add a reference to the official RHOSO Deployment Guide for installing RHOSO Observability and Chargeback components. This is typically an out-of-scope task for a user setting up a <strong>lab</strong>, assuming the lab <strong>already</strong> has RHOSO deployed.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_create_a_dedicated_project_and_user_for_chargeback_testing"><a class="anchor" href="#_step_2_create_a_dedicated_project_and_user_for_chargeback_testing"></a>Step 2: Create a Dedicated Project and User for Chargeback Testing</h3>
+<div class="paragraph">
+<p>It&#8217;s best practice to create a separate OpenStack project and user for testing chargeback, mirroring real-world multi-tenant scenarios. This allows you to isolate your lab resources and clearly track their consumption.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Source the OpenStack administrative credentials again if necessary.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ source ~/stackrc</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a new project for chargeback testing.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack project create --description "Project for RHOSO Chargeback Lab" chargeback-lab-project</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">+-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | Project for RHOSO Chargeback Lab |
+| domain_id   | default                          |
+| enabled     | True                             |
+| id          | &lt;PROJECT_ID&gt;                     |
+| is_domain   | False                            |
+| name        | chargeback-lab-project           |
+| parent_id   | default                          |
+| tags        | []                               |
++-------------+----------------------------------+</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Create a new user for this project.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack user create --project chargeback-lab-project --password &lt;YOUR_PASSWORD&gt; chargeback-lab-user</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Choose a strong password and remember it. You will use this user to deploy resources in the next step.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Assign the <code>member</code> role to the new user within the new project.</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack role add --project chargeback-lab-project --user chargeback-lab-user member</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_deploy_sample_resources_in_the_lab_project"><a class="anchor" href="#_step_3_deploy_sample_resources_in_the_lab_project"></a>Step 3: Deploy Sample Resources in the Lab Project</h3>
+<div class="paragraph">
+<p>To generate usage data that RHOSO Chargeback can process, you need to deploy some OpenStack resources within your <code>chargeback-lab-project</code>. This typically includes virtual machines, volumes, and optionally floating IPs.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Source the new project&#8217;s credentials.</strong></p>
+<div class="paragraph">
+<p>To work within the <code>chargeback-lab-project</code>, you need to switch your OpenStack client context.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack --os-project-name chargeback-lab-project --os-username chargeback-lab-user --os-auth-url http://&lt;controller-ip&gt;:5000/v3 --os-user-domain-name default --os-project-domain-name default login
+# Enter your password when prompted</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Replace <code>&lt;controller-ip&gt;</code> with the actual IP address or hostname of your OpenStack controller node.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Identify available Glance images and Nova flavors.</strong></p>
+<div class="paragraph">
+<p>You&#8217;ll need these to launch a VM.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack image list
+$ openstack flavor list</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Choose a suitable image (e.g., <code>cirros</code>, <code>centos</code>, <code>ubuntu</code>) and flavor (e.g., <code>m1.tiny</code>, <code>m1.small</code>).</p>
+</div>
+</li>
+<li>
+<p><strong>Create a new private network and subnet for the project (if not already existing or shared).</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack network create chargeback-lab-net
+$ openstack subnet create --network chargeback-lab-net --subnet-range 192.168.100.0/24 chargeback-lab-subnet</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Launch a sample virtual machine.</strong></p>
+<div class="paragraph">
+<p>This will immediately start generating compute-related usage metrics.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack server create --image &lt;IMAGE_NAME_OR_ID&gt; --flavor &lt;FLAVOR_NAME_OR_ID&gt; --network chargeback-lab-net chargeback-test-vm-01</code></pre>
+</div>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Launch a few different VMs with varying flavors to simulate diverse consumption patterns. This will be useful when testing different rating rules.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Create a sample volume.</strong></p>
+<div class="paragraph">
+<p>This will generate block storage usage metrics.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ openstack volume create --size 10 chargeback-test-volume-01</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can optionally attach this volume to <code>chargeback-test-vm-01</code> to simulate a complete attached storage scenario.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_verify_usage_data_collection_in_rhoso_observability"><a class="anchor" href="#_step_4_verify_usage_data_collection_in_rhoso_observability"></a>Step 4: Verify Usage Data Collection in RHOSO Observability</h3>
+<div class="paragraph">
+<p>After deploying resources, confirm that RHOSO Observability is actively collecting data from these new resources. This is a critical step, as Chargeback relies on this collected data.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Access the RHOSO Observability dashboard.</strong></p>
+<div class="paragraph">
+<p>Log in with an administrator account or an account with appropriate permissions to view usage metrics.</p>
+</div>
+</li>
+<li>
+<p><strong>Navigate to the metrics or resource usage section.</strong></p>
+<div class="paragraph">
+<p>Look for dashboards or views that display resource consumption for your OpenStack projects. Filter by the <code>chargeback-lab-project</code> or specific resource names (e.g., <code>chargeback-test-vm-01</code>).</p>
+</div>
+</li>
+<li>
+<p><strong>Confirm that data is being collected.</strong></p>
+<div class="paragraph">
+<p>You should see graphs or tables showing CPU usage, memory usage, disk I/O, network traffic, and volume storage for the resources you just created. There might be a slight delay (typically a few minutes) for the initial metrics to appear.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If no data is appearing for your new resources after a reasonable waiting period (e.g., 5-10 minutes), revisit Step 1 to ensure RHOSO Observability components are healthy, and consult RHOSO troubleshooting guides. Chargeback cannot function without this underlying data.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Observe the data for some time (e.g., 30 minutes to an hour). This ensures a sufficient amount of historical data for Chargeback to process and helps you understand the granularity of data collection.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This completes the setup of your lab environment. You now have a functional RHOSP deployment with RHOSO Observability and Chargeback components running, a dedicated project with a user, and sample resources actively generating usage data. You are ready to proceed with defining your first chargeback rating rules.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_suggestions_for_content_improvement_fixme"><a class="anchor" href="#_suggestions_for_content_improvement_fixme"></a>Suggestions for Content Improvement (FIXME)</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>FIXME: Add a link to a comprehensive "RHOSO Deployment Guide" or "RHOSO Installation Instructions" for administrators who might need to deploy RHOSO components from scratch for their lab. This is an assumed prerequisite for this lab.</p>
+</li>
+<li>
+<p>FIXME: Provide a high-level architecture diagram showing where the RHOSO Chargeback service fits within the RHOSP ecosystem and how it interacts with metering services (e.g., Ceilometer/Gnocchi).</p>
+</li>
+<li>
+<p>FIXME: Consider creating a simple <code>heat</code> template or Ansible playbook that automatically deploys the <code>chargeback-lab-project</code>, <code>chargeback-lab-user</code>, and sample resources. This would streamline the lab setup and reduce manual error.</p>
+</li>
+<li>
+<p>FIXME: If there&#8217;s a specific <code>rhoso-cli</code> or dashboard interface for verifying chargeback service health directly, include commands/steps for that.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_suggestions_for_imagevideo_content"><a class="anchor" href="#_suggestions_for_imagevideo_content"></a>Suggestions for Image/Video Content</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Image</strong>: A high-level architectural diagram illustrating the RHOSO Chargeback component&#8217;s integration with RHOSP (Keystone, Nova, Cinder, Neutron) and the RHOSO Observability data plane (metering services). This would visually explain the data flow.</p>
+</li>
+<li>
+<p><strong>Video</strong>: A short screen recording demonstrating the "Verify Usage Data Collection in RHOSO Observability" step, showing how to navigate the RHOSO dashboard and filter metrics for a specific project/resource. This would greatly enhance understanding for visual learners.</p>
+</li>
+<li>
+<p><strong>Image</strong>: Screenshots of the <code>openstack server create</code> and <code>openstack volume create</code> commands' output, highlighting the success messages.</p>
+</li>
+<li>
+<p><strong>Image</strong>: A screenshot of the <code>openstack project create</code> command output.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
+  <span class="next"><a href="defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

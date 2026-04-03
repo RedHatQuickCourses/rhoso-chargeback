@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Verifying successful Chargeback activation :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="configuration-parameters-and-settings.html">
+    <link rel="next" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a></li>
+    <li><a href="verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Verifying successful Chargeback activation</h1>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Verifying Successful Chargeback Activation
+:page-aliases: chargeback-activation-verification.adoc
+
+After successfully enabling the Chargeback feature in Red Hat OpenStack Platform (RHOSP) as part of RHOSO, it is crucial to verify that all components are active and functioning correctly. This verification step ensures that the system is ready to collect resource consumption data, process it according to rating definitions, and generate accurate chargeback reports. Without proper verification, you risk incomplete data collection or incorrect billing.
+
+== Understanding Chargeback Activation Verification
+
+Successful Chargeback activation means that the necessary backend services are running, integrated, and prepared to collect and process consumption metrics. In an RHOSP environment, RHOSO Chargeback leverages several core OpenStack services for metering and data storage, primarily:
+
+*   **Ceilometer**: The metering service responsible for collecting various resource usage metrics (CPU, RAM, disk I/O, network I/O) from OpenStack components.
+*   **Gnocchi**: A time-series database optimized for storing the vast amounts of metric data collected by Ceilometer.
+*   **Aodh**: The alarming service, which, while not directly responsible for data collection, is part of the telemetry ecosystem and its health indicates overall system stability.
+
+Additionally, any specific RHOSO Chargeback components (if they manifest as distinct services or modules within RHOSP) must also be operational. Verification typically involves:
+
+*   Checking the operational status of these critical OpenStack services.
+*   Confirming the visibility and accessibility of Chargeback-related features within the RHOSP Horizon dashboard.
+*   Optionally, performing a preliminary check for active data collection to ensure the foundation for chargeback is solid.
+
+== Hands-on Lab: Verifying Chargeback Activation
+
+This lab guides you through the essential steps to confirm that RHOSO Chargeback has been successfully activated in your RHOSP environment.
+
+=== Prerequisites
+
+*   You have administrative access to your RHOSP environment (e.g., SSH access to controller nodes).
+*   You have enabled Chargeback in RHOSP as per the previous section xref:enabling-chargeback.adoc[Enabling Chargeback in RHOSP].
+*   You have credentials for an administrative user in the RHOSP Horizon dashboard.
+
+=== Procedure: Verify Service Status
+
+The first critical step is to ensure that the core OpenStack services required for RHOSO Chargeback are running and healthy.
+
+.  **Log in to an RHOSP Controller Node:**
+   Open a terminal and establish an SSH connection to one of your RHOSP controller nodes. This is typically done using the `heat-admin` user.
+
+   ```bash
+   ssh heat-admin@&lt;controller-node-ip&gt;
+   ```
+   Replace `&lt;controller-node-ip&gt;` with the actual IP address of one of your controller nodes.
+
+.  **Source the `overcloudrc` file (if necessary):**
+   If you intend to use OpenStack client commands, ensure your environment is configured by sourcing the `overcloudrc` file.
+
+   ```bash
+   source ~/overcloudrc
+   ```
+
+.  **Check OpenStack Service Status using `openstack service list`:**
+   Use the `openstack service list` command to verify the status of key services that Chargeback depends on. Look for the core telemetry services.
+
+   ```bash
+   openstack service list | grep -E 'ceilometer|gnocchi|aodh'
+   ```
+
+   *Expected Output (example):*
+   ```text
+   | &lt;ID&gt; | ceilometer             | metering             | True  |
+   | &lt;ID&gt; | gnocchi                | metric               | True  |
+   | &lt;ID&gt; | aodh                   | alarming             | True  |
+   ```
+   Confirm that `ceilometer`, `gnocchi`, and `aodh` services are listed, and their `Enabled` column shows `True`.
+
+.  **Verify Container Statuses (for containerized deployments):**
+   In modern RHOSP deployments, services run within containers. Use `podman` (or `docker` in older versions) to check their health directly on the controller node.
+
+   ```bash
+   sudo podman ps -a | grep -E 'ceilometer|gnocchi|aodh|chargeback'
+   ```
+   *Expected Output (example - focus on `Up` status):*
+   ```text
+   &lt;CONTAINER_ID&gt;  &lt;IMAGE&gt;  &lt;COMMAND&gt;  &lt;CREATED&gt;  &lt;STATUS&gt;      &lt;PORTS&gt;  &lt;NAMES&gt;
+   ...             ...      ...        ...        Up ...        ...      ceilometer_api
+   ...             ...      ...        ...        Up ...        ...      gnocchi_api
+   ...             ...      ...        ...        Up ...        ...      aodh_listener
+   ...             ...      ...        ...        Up ...        ...      rhoso_chargeback_processor (if specific RHOSO service exists)
+   ```
+   Verify that containers related to `ceilometer`, `gnocchi`, `aodh`, and any specific `rhoso_chargeback` containers (if applicable to your RHOSO deployment) are in an `Up` state.
+
+=== Procedure: Verify RHOSP Dashboard Integration
+
+After confirming the backend service status, ensure that the RHOSO Chargeback features are accessible and visible within the RHOSP web interface (Horizon).
+
+.  **Log in to the RHOSP Horizon Dashboard:**
+   Open your web browser and navigate to the RHOSP dashboard URL (e.g., `https://&lt;horizon-ip&gt;/dashboard`). Log in with an administrative user account.
+
+.  **Navigate to the Chargeback Section:**
+   Within the Horizon dashboard, locate the navigation menu. Chargeback-related features are typically found under the `Admin` tab or a dedicated top-level menu item.
+
+   *   Look for a section titled `Chargeback`, `Billing`, `Metering &amp; Billing`, or similar. This might be a direct tab or a sub-menu item under `Admin` -&gt; `System` or `Project` -&gt; `Metering`.
+
+.  **Confirm Chargeback Menu Items:**
+   Verify that new menu items or dashboards related to "Rating Definitions", "Rating Rules", "Reports", or "Invoices" are present and accessible. Clicking on these items should load the respective pages without displaying errors, indicating that the UI components are correctly integrated.
+
+   FIXME: Add an actual screenshot of the RHOSP Horizon dashboard highlighting the "Chargeback" or "Metering &amp; Billing" menu item for an administrator. This visual would greatly aid user navigation.
+   FIXME: Consider adding a short video demonstrating how to log in and navigate to the Chargeback section in Horizon.
+
+=== Procedure: Verify Basic Data Collection (Optional but Recommended)
+
+While detailed data collection verification is typically covered when "Using the Chargeback Feature," a quick check here can provide early confidence that metering data is actively being sent and stored.
+
+.  **Access Metering/Telemetry Data in Horizon:**
+   Within the RHOSP Horizon dashboard, navigate to the `Project` tab, then select `Metering` (or `Telemetry`).
+
+.  **Review Resource Metrics:**
+   On the Metering page, you should see a list of resources and their associated metrics. Select a running instance or volume and review its metrics (e.g., CPU utilization, RAM usage, disk read/write bytes). The presence of recent and changing data points indicates that Ceilometer is collecting metrics and Gnocchi is storing them effectively, which is foundational for Chargeback calculations.
+
+   FIXME: Add a screenshot of the RHOSP Horizon dashboard's Metering section, showing active metrics for a sample instance or volume, to illustrate expected data presence.
+
+=== Summary of Verification
+
+By successfully completing these verification steps, you have confirmed that:
+
+*   The underlying OpenStack services required by RHOSO Chargeback (Ceilometer, Gnocchi, Aodh) are operational.
+*   Any specific RHOSO Chargeback components are running (if applicable).
+*   The Chargeback features are correctly integrated and accessible within the RHOSP Horizon dashboard.
+*   Basic metering data is actively being collected, establishing the necessary data stream for chargeback calculations.
+
+You are now ready to proceed with configuring rating definitions and rules as part of xref:using-chargeback.adoc[Using the Chargeback Feature].
+
+== Basic Chargeback Activation Troubleshooting
+
+If you encounter issues during the verification process:
+
+*   **Service Not Running:**
+    *   Re-check deployment logs for specific errors during service startup (`journalctl -u &lt;service-name&gt;` on controller nodes, or `sudo podman logs &lt;container-name&gt;`).
+    *   Ensure all prerequisites for Chargeback deployment were met.
+*   **UI Not Visible or Errors:**
+    *   Clear your web browser's cache and cookies, or try an incognito window/different browser.
+    *   Verify that your administrative user account has the necessary roles and permissions to view Chargeback features. Role-Based Access Control (RBAC) misconfigurations are a common cause.
+    *   Check Horizon logs (`/var/log/horizon/horizon.log` on the Horizon server) for UI-specific errors.
+*   **No Metering Data:**
+    *   Verify that Ceilometer agents are running on compute nodes (if applicable to your RHOSP version).
+    *   Check connectivity between Ceilometer components, the message bus (RabbitMQ), and Gnocchi.
+    *   Review Gnocchi logs for errors related to metric storage.
+
+FIXME: Provide a link to a more detailed troubleshooting section xref:chargeback-troubleshooting.adoc[Basic Chargeback Troubleshooting] that includes specific commands for log analysis, common error messages, and resolution steps for activation-related problems.</code></pre>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="configuration-parameters-and-settings.html">Configuration parameters and settings</a></span>
+  <span class="next"><a href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Configuration parameters and settings :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="step-by-step-guide-to-enable-chargeback.html">
+    <link rel="next" href="verifying-successful-chargeback-activation.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a></li>
+    <li><a href="configuration-parameters-and-settings.html">Configuration parameters and settings</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Configuration parameters and settings</h1>
+<h1 id="_configuration_parameters_and_settings_for_rhoso_chargeback" class="sect0"><a class="anchor" href="#_configuration_parameters_and_settings_for_rhoso_chargeback"></a>Configuration Parameters and Settings for RHOSO Chargeback</h1>
+<div class="paragraph">
+<p>This section delves into the critical configuration parameters and settings required to successfully enable and operate the Chargeback feature within your Red Hat OpenStack Platform (RHOSP) environment. Understanding these settings is crucial for ensuring accurate resource consumption tracking, proper cost allocation, and seamless integration with your existing infrastructure.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_core_chargeback_configuration"><a class="anchor" href="#_understanding_core_chargeback_configuration"></a>Understanding Core Chargeback Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Enabling Chargeback in RHOSP involves configuring various components that interact to collect resource usage data, apply rating rules, and generate reports. These configurations typically cover aspects such as API endpoints, authentication, data retention, resource discovery intervals, and logging.</p>
+</div>
+<div class="paragraph">
+<p>The Chargeback service, as part of RHOSO, relies on a robust set of configurations to define its operational behavior. These parameters dictate how the system connects to RHOSP, stores its data, processes information, and handles reporting.</p>
+</div>
+<div class="sect2">
+<h3 id="_key_configuration_areas_and_parameters"><a class="anchor" href="#_key_configuration_areas_and_parameters"></a>Key Configuration Areas and Parameters</h3>
+<div class="paragraph">
+<p>When configuring RHOSO Chargeback, you&#8217;ll generally interact with parameters related to the following areas:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>API Connectivity</strong>: How RHOSO connects to RHOSP and potentially other external services.</p>
+</li>
+<li>
+<p><strong>Database Settings</strong>: Where Chargeback stores its raw data, processed charges, and configuration.</p>
+</li>
+<li>
+<p><strong>Resource Discovery</strong>: How often RHOSO scans your RHOSP environment for new or updated resources.</p>
+</li>
+<li>
+<p><strong>Billing Cycle Definitions</strong>: Parameters that define the start and end of billing periods.</p>
+</li>
+<li>
+<p><strong>Data Retention</strong>: Policies for how long raw usage data and generated charges are kept.</p>
+</li>
+<li>
+<p><strong>Logging and Monitoring</strong>: Settings for logging verbosity and integration with monitoring tools.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s explore some illustrative parameters and their purpose.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Illustrative Chargeback Configuration Parameters</caption>
+<colgroup>
+<col style="width: 16.6666%;">
+<col style="width: 33.3333%;">
+<col style="width: 50.0001%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Category</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rhosp_api_endpoint</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API Connectivity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URL endpoint for the Red Hat OpenStack Platform API. This is essential for RHOSO to discover resources and retrieve usage data from RHOSP.
+FIXME: Provide specific API endpoint examples for RHOSP environments (e.g., Keystone, Nova, Cinder).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>rhosp_admin_credentials</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">API Connectivity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Authentication credentials (username and password or API key) for an administrative user in RHOSP. RHOSO uses these to access and collect data from various RHOSP services.
+FIXME: Specify the recommended privilege level and any required roles for the RHOSP user.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chargeback_db_connection_string</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Database Settings</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The connection string for the database where Chargeback data is stored. This typically includes the database type, host, port, database name, username, and password. This is critical for data persistence and retrieval.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>resource_discovery_interval_minutes</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Resource Discovery</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An integer value specifying how frequently (in minutes) RHOSO should poll RHOSP for new or updated resources. A shorter interval provides more up-to-date data but might increase load.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>data_retention_days</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Data Retention</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of days to retain raw resource usage data within the Chargeback database. Older data might be purged or archived based on this setting to manage storage.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>billing_period_start_day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Billing Cycle Definitions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">An integer (1-31) representing the day of the month when a new billing period officially starts. This is fundamental for generating monthly chargeback reports.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>default_currency_symbol</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Billing Cycle Definitions</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The currency symbol (e.g., <code>USD</code>, <code>€</code>, <code>£</code>) to be used in all generated chargeback reports and invoices.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>log_level</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Logging and Monitoring</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines the verbosity of the Chargeback service&#8217;s logs (e.g., <code>DEBUG</code>, <code>INFO</code>, <code>WARNING</code>, <code>ERROR</code>). <code>INFO</code> is usually suitable for production; <code>DEBUG</code> for troubleshooting.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>chargeback_queue_size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Performance</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The maximum number of unprocessed chargeback tasks or events that can be held in an internal queue. This helps manage load during peak usage.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>FIXME: Add a table or section detailing specific configuration file paths (e.g., <code>/etc/rhoso/chargeback.conf</code>) or CLI commands (e.g., <code>rhoso-cli config set</code>) relevant to RHOSO for setting these parameters.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_configuration_methods"><a class="anchor" href="#_configuration_methods"></a>Configuration Methods</h3>
+<div class="paragraph">
+<p>Configuration parameters can typically be set using one or more of the following methods, depending on the RHOSO deployment model:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Configuration Files</strong>: Often YAML or INI files located in <code>/etc/rhoso/</code> or a similar path. These files provide a persistent way to define settings.</p>
+</li>
+<li>
+<p><strong>Environment Variables</strong>: Useful for containerized deployments (e.g., OpenShift) or temporary overrides, where parameters are passed as environment variables to the service.</p>
+</li>
+<li>
+<p><strong>CLI Tools</strong>: RHOSO might provide command-line interface tools to manage and modify configurations dynamically, which then update the underlying configuration files or database.</p>
+</li>
+<li>
+<p><strong>API/UI</strong>: In some cases, core parameters might be exposed via a web UI or a dedicated API for easier management.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_reviewing_and_modifying_basic_chargeback_configuration"><a class="anchor" href="#_hands_on_activity_reviewing_and_modifying_basic_chargeback_configuration"></a>Hands-on Activity: Reviewing and Modifying Basic Chargeback Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab will guide you through the process of accessing and making a rudimentary change to a hypothetical Chargeback configuration file. This activity assumes you have administrative access to the server or container running the RHOSO Chargeback service.</p>
+</div>
+<div class="paragraph">
+<p><strong>NOTE</strong>: The file paths and specific commands are illustrative. In a real-world scenario, you would consult the official RHOSO documentation for exact details.</p>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_the_lab_environment_conceptual"><a class="anchor" href="#_setting_up_the_lab_environment_conceptual"></a>Setting Up the Lab Environment (Conceptual)</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Access the RHOSO Chargeback Host</strong>: SSH into the virtual machine or container host where the RHOSO Chargeback service is deployed.
+[source,bash]
+----
+ssh <a href="mailto:cloud-admin@rhoso-chargeback-host.example.com">cloud-admin@rhoso-chargeback-host.example.com</a>
+----
+FIXME: Provide actual IP address or hostname for a lab environment.</p>
+</li>
+<li>
+<p><strong>Identify Configuration Directory</strong>: Navigate to the assumed configuration directory for RHOSO Chargeback.
+[source,bash]
+----
+cd /etc/rhoso/
+----
+FIXME: Confirm the actual configuration directory for RHOSO Chargeback.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_1_reviewing_current_configuration"><a class="anchor" href="#_task_1_reviewing_current_configuration"></a>Task 1: Reviewing Current Configuration</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>List Configuration Files</strong>: Use <code>ls</code> to see the configuration files in the directory. You&#8217;re looking for a file like <code>chargeback.conf</code> or <code>chargeback.yaml</code>.
+[source,bash]
+----
+ls
+----
+Expected output might include:
+<code>`
+chargeback.conf  observability.conf  rhoso.yaml
+</code>`</p>
+</li>
+<li>
+<p><strong>View <code>chargeback.conf</code></strong>: Use a text editor like <code>cat</code> or <code>less</code> to view the contents of the Chargeback configuration file.
+[source,bash]
+----
+sudo cat chargeback.conf
+----
+You might see content similar to this (illustrative YAML format):
+<code><code>yaml
+# RHOSO Chargeback Configuration
+api:
+  rhosp_endpoint: "https://keystone.rhosp.example.com:5000/v3"
+  rhosp_admin_user: "chargeback_user"
+  # rhosp_admin_password: "SUPER_SECRET_PASSWORD" # Not recommended to store plaintext
+database:
+  type: "postgresql"
+  host: "db.rhoso.example.com"
+  port: 5432
+  name: "rhoso_chargeback"
+  user: "rhoso_db_user"
+  # password: "DB_SUPER_SECRET_PASSWORD"
+settings:
+  resource_discovery_interval_minutes: 60
+  data_retention_days: 90
+  billing_period_start_day: 1
+  default_currency_symbol: "USD"
+logging:
+  level: "INFO"
+  log_file: "/var/log/rhoso/chargeback.log"
+</code></code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_2_modifying_a_configuration_parameter"><a class="anchor" href="#_task_2_modifying_a_configuration_parameter"></a>Task 2: Modifying a Configuration Parameter</h3>
+<div class="paragraph">
+<p>We will modify the <code>data_retention_days</code> parameter to an arbitrary value (e.g., 120 days) for demonstration purposes.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Open <code>chargeback.conf</code> for Editing</strong>: Use a text editor like <code>vi</code> or <code>nano</code>.
+[source,bash]
+----
+sudo vi chargeback.conf
+----</p>
+</li>
+<li>
+<p><strong>Locate and Modify <code>data_retention_days</code></strong>:
+Navigate to the <code>settings</code> section and change the value:
+<code><code>yaml
+# &#8230;&#8203; (previous content)
+settings:
+  resource_discovery_interval_minutes: 60
+  data_retention_days: 120 # Changed from 90 to 120
+  billing_period_start_day: 1
+  default_currency_symbol: "USD"
+# &#8230;&#8203; (rest of content)
+</code></code></p>
+</li>
+<li>
+<p><strong>Save and Exit the Editor</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For <code>vi</code>: Press <code>Esc</code>, then type <code>:wq</code> and press <code>Enter</code>.</p>
+</li>
+<li>
+<p>For <code>nano</code>: Press <code>Ctrl+X</code>, then <code>Y</code> to confirm save, then <code>Enter</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_3_applying_configuration_changes"><a class="anchor" href="#_task_3_applying_configuration_changes"></a>Task 3: Applying Configuration Changes</h3>
+<div class="paragraph">
+<p>For most services, a configuration change requires a service restart to take effect.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Restart the RHOSO Chargeback Service</strong>: The exact command depends on the system&#8217;s init system (e.g., <code>systemd</code>).
+[source,bash]
+----
+sudo systemctl restart rhoso-chargeback.service
+----
+FIXME: Provide the actual service name for RHOSO Chargeback. If deployed via OpenShift, provide <code>oc</code> commands to restart pods.</p>
+</li>
+<li>
+<p><strong>Verify Service Status</strong>: Ensure the service restarted successfully.
+[source,bash]
+----
+sudo systemctl status rhoso-chargeback.service
+----
+Look for "active (running)" in the output.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_task_4_verifying_the_change_conceptual"><a class="anchor" href="#_task_4_verifying_the_change_conceptual"></a>Task 4: Verifying the Change (Conceptual)</h3>
+<div class="paragraph">
+<p>Verifying the change would typically involve looking at logs, checking an administrative UI, or potentially running a command to query the active configuration.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Logs for Confirmation</strong>: Look for log messages indicating that the new configuration value was loaded.
+[source,bash]
+----
+sudo journalctl -u rhoso-chargeback.service -n 50 --since "5 minutes ago" | grep "data_retention_days"
+----
+You might see a line similar to:
+<code>`
+INFO: Chargeback service loaded configuration: data_retention_days = 120
+</code>`
+FIXME: Suggest how to verify the change through the RHOSO UI if such a feature exists.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>This completes the hands-on activity for modifying basic Chargeback configuration.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_configuration"><a class="anchor" href="#_best_practices_for_configuration"></a>Best Practices for Configuration</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Version Control</strong>: Keep configuration files under version control (e.g., Git) to track changes, enable rollbacks, and facilitate collaboration.</p>
+</li>
+<li>
+<p><strong>Secrets Management</strong>: Avoid hardcoding sensitive information like passwords in configuration files. Utilize secret management solutions (e.g., HashiCorp Vault, Kubernetes Secrets, OpenStack Barbican) and environment variables or secure credential stores.</p>
+</li>
+<li>
+<p><strong>Documentation</strong>: Document all configuration changes, including the rationale, date, and who made the change.</p>
+</li>
+<li>
+<p><strong>Testing</strong>: Always test configuration changes in a non-production environment before deploying to production.</p>
+</li>
+<li>
+<p><strong>Regular Review</strong>: Periodically review your Chargeback configuration to ensure it aligns with your organizational policies and performance requirements.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_suggestions_for_improvement"><a class="anchor" href="#_suggestions_for_improvement"></a>Suggestions for Improvement</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>FIXME: Add specific screenshots of the configuration file before and after modification.</p>
+</li>
+<li>
+<p>FIXME: Include a short video demonstrating the entire hands-on activity, including SSH, editing, saving, and restarting the service.</p>
+</li>
+<li>
+<p>FIXME: Provide a link to the official RHOSO documentation section on "Chargeback Configuration" for comprehensive parameter details.</p>
+</li>
+<li>
+<p>FIXME: Integrate specific command-line tools or API calls for configuring RHOSO Chargeback if they exist, beyond just editing files.</p>
+</li>
+<li>
+<p>FIXME: Discuss how configuration can differ in containerized deployments (e.g., OpenShift) versus traditional VM deployments, specifically regarding environment variables and ConfigMaps.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a></span>
+  <span class="next"><a href="verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

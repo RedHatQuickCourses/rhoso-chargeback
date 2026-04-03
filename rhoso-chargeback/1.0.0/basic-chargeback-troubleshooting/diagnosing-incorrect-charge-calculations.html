@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Diagnosing incorrect charge calculations :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="identifying-common-issues-during-chargeback-configuration.html">
+    <link rel="next" href="analyzing-logs-for-chargeback-components.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></li>
+    <li><a href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Diagnosing incorrect charge calculations</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>Below is the training content for diagnosing incorrect charge calculations in RHOSO.</p>
+</div>
+</div>
+</div>
+<h1 id="diagnosing-incorrect-charge-calculations" class="sect0"><a class="anchor" href="#diagnosing-incorrect-charge-calculations"></a>Diagnosing Incorrect Charge Calculations</h1>
+<div class="paragraph">
+<p>This section provides a detailed guide on how to diagnose and resolve issues related to incorrect charge calculations within the RHOSO Chargeback system. Accurate charge calculations are critical for proper cost allocation, billing, and financial transparency within your organization.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_potential_causes_for_incorrect_charges"><a class="anchor" href="#_understanding_potential_causes_for_incorrect_charges"></a>Understanding Potential Causes for Incorrect Charges</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Incorrect charge calculations can stem from various sources within the complex interplay of observability data collection, rating rule application, and reporting. Identifying the root cause systematically is key to resolution.</p>
+</div>
+<div class="paragraph">
+<p>Common causes include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Misconfigured Rating Rules:</strong> This is often the primary culprit. Errors can include incorrect rates, multipliers, conditions (e.g., matching wrong resource types or labels), overlapping rules, or incorrect priority settings.</p>
+</li>
+<li>
+<p><strong>Inaccurate or Missing Usage Data:</strong> The Chargeback system relies on accurate usage metrics collected by RHOSO&#8217;s observability components. If the underlying metrics (e.g., CPU hours, GB-months, network transfer) are incorrect, incomplete, or delayed, the charge calculations will naturally be flawed.</p>
+</li>
+<li>
+<p><strong>Resource Tagging and Categorization Issues:</strong> Rating rules often depend on specific tags, labels, projects, or namespaces to identify which resources they apply to. If resources are incorrectly tagged or grouped, the wrong rules might apply, or resources might be missed entirely.</p>
+</li>
+<li>
+<p><strong>Time Synchronization Problems:</strong> Discrepancies in system clocks between various components (observability agents, chargeback processing engine, database) can lead to usage data being attributed to incorrect billing periods, or even missed entirely.</p>
+</li>
+<li>
+<p><strong>Data Processing Failures or Delays:</strong> Intermittent issues within the data pipeline that processes raw observability metrics into consumable chargeback data can lead to gaps or inaccuracies in the final charges.</p>
+</li>
+<li>
+<p><strong>Software Bugs or Configuration Errors:</strong> While less common, unexpected behavior in the RHOSO Chargeback software itself or misconfigurations of its underlying services (e.g., database, message queues) can lead to calculation errors.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_troubleshooting_steps_for_incorrect_charge_calculations"><a class="anchor" href="#_troubleshooting_steps_for_incorrect_charge_calculations"></a>Troubleshooting Steps for Incorrect Charge Calculations</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When you identify discrepancies in your chargeback reports, follow these systematic steps to diagnose the issue.</p>
+</div>
+<div class="sect2">
+<h3 id="_step_1_verify_rating_rule_definitions"><a class="anchor" href="#_step_1_verify_rating_rule_definitions"></a>Step 1: Verify Rating Rule Definitions</h3>
+<div class="paragraph">
+<p>The first step is to meticulously review the rating rules that are expected to apply to the resources in question.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Ensure the rules are logically sound, target the correct resources, and have the intended rates and multipliers.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Chargeback rules define <strong>what</strong> gets charged, <strong>how much</strong>, and <strong>under what conditions</strong>. A mismatch here is a common source of error. You need to check the conditions (e.g., <code>resource_type='compute'</code>, <code>project_id='my-project'</code>) and ensure they accurately reflect the resources being charged. Also, examine the base rates and any multipliers or modifiers configured. Pay close attention to rule priorities; if multiple rules could apply, the one with higher priority will take precedence.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_inspecting_rating_rules"><a class="anchor" href="#_hands_on_activity_inspecting_rating_rules"></a>Hands-on Activity: Inspecting Rating Rules</h4>
+<div class="ulist">
+<div class="title">Review each component of the rule:</div>
+<ul>
+<li>
+<p><strong>Name and Description:</strong> Ensure it&#8217;s the intended rule.</p>
+</li>
+<li>
+<p><strong>Conditions:</strong> Verify that the <code>resource_type</code>, <code>project</code>, <code>tag</code>, or other criteria accurately match the resources whose charges are incorrect.</p>
+</li>
+<li>
+<p><strong>Rates:</strong> Confirm the base price per unit (e.g., per CPU hour, per GB-month).</p>
+</li>
+<li>
+<p><strong>Unit of Measure:</strong> Ensure it aligns with the expected usage metric (e.g., <code>hours</code> for compute, <code>gigabytes</code> for storage).</p>
+</li>
+<li>
+<p><strong>Currency:</strong> Check that the currency is correctly set.</p>
+</li>
+<li>
+<p><strong>Priority:</strong> If you have multiple rules, confirm their order of application. A lower number usually means higher priority.
+.Compare the rule&#8217;s definition against your expected charging logic.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For more complex scenarios, you might need to use the RHOSO CLI to export rule definitions, which can be easier for detailed review or comparison across different environments.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Example RHOSO CLI command to list and export rating rules in YAML format
+rhoso chargeback rule list --output yaml</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>FIXME: Consider adding screenshots of the RHOSO UI showing an example rating rule&#8217;s configuration page. This would greatly enhance clarity and guide users visually.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_inspect_raw_usage_data"><a class="anchor" href="#_step_2_inspect_raw_usage_data"></a>Step 2: Inspect Raw Usage Data</h3>
+<div class="paragraph">
+<p>If the rating rules appear correct, the next step is to verify the accuracy and completeness of the raw usage data that the Chargeback system is consuming.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Confirm that RHOSO&#8217;s observability components are collecting and transmitting the correct metrics for the affected resources during the relevant billing period.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> The Chargeback engine processes raw metrics collected by RHOSO Observability (e.g., from Prometheus, Ceilometer, or other agents). If these metrics are absent, delayed, or fundamentally incorrect at the source, the charge calculations will be wrong. You need to check the actual metric values for the resource and time frame in question. For instance, if a VM is charged for 100 CPU hours but only ran for 50, you&#8217;d look at the <code>cpu_usage_seconds_total</code> (or similar) metric.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_reviewing_observability_metrics"><a class="anchor" href="#_hands_on_activity_reviewing_observability_metrics"></a>Hands-on Activity: Reviewing Observability Metrics</h4>
+<div class="ulist">
+<div class="title">Locate the metrics relevant to your chargeback rule. For example:</div>
+<ul>
+<li>
+<p>For CPU charges: Look for metrics like <code>instance_cpu_usage_total</code>, <code>node_cpu_seconds_total</code> (per instance/project).</p>
+</li>
+<li>
+<p>For Storage charges: Look for metrics like <code>volume_total_bytes_allocated</code>, <code>ceph_pool_bytes_used</code>.</p>
+</li>
+<li>
+<p>For Network charges: Look for <code>network_receive_bytes_total</code>, <code>network_transmit_bytes_total</code>.
+.Compare the reported usage in the observability dashboards with the usage that was used in the chargeback report.
+.Look for:</p>
+</li>
+<li>
+<p><strong>Missing data points:</strong> Gaps in the graph or periods where no data was collected.</p>
+</li>
+<li>
+<p><strong>Spikes or drops:</strong> Unexpectedly high or low values that don&#8217;t correspond to actual resource activity.</p>
+</li>
+<li>
+<p><strong>Incorrect labels/tags:</strong> Ensure the metrics are correctly associated with the project, user, or resource ID.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If RHOSO uses Prometheus/Grafana, you can directly query Prometheus to get precise metric values using PromQL.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-promql hljs" data-lang="promql"># Example PromQL query to get average CPU usage for instances within a specific project over the last hour
+sum(avg_over_time(instance_cpu_usage_total{project_id="my-project"}[1h])) by (instance_name, project_id)</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>FIXME: Include a short video demonstrating how to navigate to a Grafana dashboard within RHOSO and inspect key metrics for a specific resource. This visual aid would be extremely helpful.</p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_3_review_chargeback_processing_logs"><a class="anchor" href="#_step_3_review_chargeback_processing_logs"></a>Step 3: Review Chargeback Processing Logs</h3>
+<div class="paragraph">
+<p>The logs generated by the RHOSO Chargeback service components provide a window into the internal processing of usage data and application of rating rules.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Identify any errors, warnings, or specific messages that indicate a failure in processing data or applying rules.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Chargeback services typically log their operations, including data ingestion, rule evaluation, and report generation. Errors here can pinpoint issues with database connectivity, rule parsing, or integration with other RHOSO services. Look for messages indicating failed jobs, unprocessable data, or unexpected calculation results.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_analyzing_chargeback_service_logs"><a class="anchor" href="#_hands_on_activity_analyzing_chargeback_service_logs"></a>Hands-on Activity: Analyzing Chargeback Service Logs</h4>
+<div class="ulist">
+<div class="title">Access the logs for the RHOSO Chargeback service components. This typically involves using <code>oc logs</code> if deployed on OpenShift or <code>journalctl</code> on a host system.</div>
+<ul>
+<li>
+<p><strong>For OpenShift deployments:</strong>
+.Identify the relevant Chargeback pods (replace <code>&lt;rhoso-chargeback-namespace&gt;</code> with your actual namespace):
+<code><code>bash
+oc get pods -n &lt;rhoso-chargeback-namespace&gt; -l app.kubernetes.io/component=chargeback
+</code></code>
+.View logs for a specific pod (replace <code>&lt;chargeback-pod-name&gt;</code>):
+<code><code>bash
+oc logs &lt;chargeback-pod-name&gt; -n &lt;rhoso-chargeback-namespace&gt; --since=1h
+</code></code>
+.To follow logs in real-time:
+<code><code>bash
+oc logs -f &lt;chargeback-pod-name&gt; -n &lt;rhoso-chargeback-namespace&gt;
+</code></code></p>
+</li>
+<li>
+<p><strong>For VM/bare-metal deployments:</strong> (If applicable to your RHOSO setup)
+        .Access the server where the Chargeback service is running.
+        .View system logs for the service:
+        <code><code>bash
+        journalctl -u rhoso-chargeback.service -e # View end of logs
+        journalctl -u rhoso-chargeback.service -f # Follow logs in real-time
+        </code></code>
+.Filter the logs for the time period when the incorrect charges were generated.
+.Look for error messages (<code>ERROR</code>, <code>Failed</code>), warnings (<code>WARN</code>), or exceptions.
+.Specifically search for messages related to:</p>
+</li>
+<li>
+<p><strong>Rule evaluation:</strong> Any indication that a rule failed to apply or produced an unexpected result.</p>
+</li>
+<li>
+<p><strong>Data ingestion:</strong> Problems receiving or parsing usage data from observability.</p>
+</li>
+<li>
+<p><strong>Database operations:</strong> Issues writing calculated charges to the database.</p>
+</li>
+<li>
+<p><strong>Report generation:</strong> Errors during the compilation of the final chargeback reports.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Many logging systems (like OpenShift&#8217;s default logging stack with OpenSearch/Kibana) provide advanced filtering capabilities that can help you quickly narrow down relevant log entries.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_validate_resource_tagging_and_grouping"><a class="anchor" href="#_step_4_validate_resource_tagging_and_grouping"></a>Step 4: Validate Resource Tagging and Grouping</h3>
+<div class="paragraph">
+<p>Chargeback rules heavily rely on metadata (tags, labels, project assignments) to determine applicability. Incorrect or missing metadata can lead to resources being miscategorized or entirely missed by the charging engine.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Ensure that the resources involved in the incorrect charges have the correct tags, labels, or are assigned to the correct projects/namespaces as expected by your rating rules.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> If a rating rule is configured to apply only to resources with a specific tag (e.g., <code>department: sales</code>), but the resource in question lacks that tag or has a different one, the rule will not apply, leading to zero charges or the application of a default rule. Similarly, resources might be assigned to the wrong project/tenant, causing charges to appear under the wrong budget.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_checking_resource_metadata"><a class="anchor" href="#_hands_on_activity_checking_resource_metadata"></a>Hands-on Activity: Checking Resource Metadata</h4>
+<div class="ulist">
+<div class="title">Review its properties, especially:</div>
+<ul>
+<li>
+<p><strong>Tags/Labels:</strong> Confirm they match the conditions defined in your rating rules.</p>
+</li>
+<li>
+<p><strong>Project/Namespace/Tenant:</strong> Verify the resource belongs to the expected organizational unit.</p>
+</li>
+<li>
+<p><strong>Owner/Creator:</strong> Sometimes rules are based on these attributes.
+.If any metadata is incorrect, update it accordingly and re-evaluate the chargeback report for the relevant period.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Changes to resource metadata might not immediately reflect in historical chargeback reports. You may need to wait for the next chargeback processing cycle or, if available, manually trigger a recalculation for the affected period (if RHOSO supports this feature).
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_5_consider_time_synchronization"><a class="anchor" href="#_step_5_consider_time_synchronization"></a>Step 5: Consider Time Synchronization</h3>
+<div class="paragraph">
+<p>While often an underlying infrastructure issue, time synchronization can subtly affect charge calculations, especially when dealing with granular usage data over specific periods.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Briefly assess if clock discrepancies between components could be contributing to misaligned usage data and billing periods.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> If a monitoring agent reports usage with a timestamp that is significantly different from the chargeback engine&#8217;s clock, usage might be allocated to the wrong billing interval or even ignored if it falls outside defined processing windows. Ensure all RHOSO components and underlying infrastructure nodes are synchronized with a reliable NTP server.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+This is typically a system administration task. Consult your infrastructure team to verify NTP synchronization across all relevant servers and virtual machines.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_6_isolate_the_issue_and_test"><a class="anchor" href="#_step_6_isolate_the_issue_and_test"></a>Step 6: Isolate the Issue and Test</h3>
+<div class="paragraph">
+<p>If the above steps haven&#8217;t pinpointed the problem, try to simplify the scenario to isolate the root cause.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Objective:</strong> Reduce variables to make troubleshooting more manageable.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Complex rating rules or a large number of resources can obscure the actual problem. By testing with a single, simple resource and a basic rating rule, you can often quickly identify if the issue lies with the core chargeback mechanism, a specific rule&#8217;s complexity, or data associated with a particular resource type.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_simplified_testing"><a class="anchor" href="#_hands_on_activity_simplified_testing"></a>Hands-on Activity: Simplified Testing</h4>
+
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_maintaining_chargeback_accuracy"><a class="anchor" href="#_best_practices_for_maintaining_chargeback_accuracy"></a>Best Practices for Maintaining Chargeback Accuracy</h2>
+<div class="sectionbody">
+<div class="ulist">
+<div class="title">Compare the calculated charge with your manual expectation. If this simple test works correctly, the issue is likely with the complexity of your original rules or the data associated with the original problematic resource. If it still fails, the problem might be more fundamental (e.g., data ingestion pipeline).</div>
+<ul>
+<li>
+<p><strong>Regular Audits:</strong> Periodically review your rating rules, especially after major infrastructure changes or updates to service offerings.</p>
+</li>
+<li>
+<p><strong>Monitoring:</strong> Set up alerts for missing usage data, failed chargeback processing jobs, or unusually high/low charge spikes that could indicate an underlying issue.</p>
+</li>
+<li>
+<p><strong>Version Control for Rules:</strong> Manage your rating rule definitions (if exported or configured via CLI/API) using a version control system (like Git) to track changes and enable rollbacks.</p>
+</li>
+<li>
+<p><strong>Sanity Checks:</strong> Implement basic sanity checks on generated reports before final distribution (e.g., comparing current month&#8217;s total charges against previous months, looking for outliers).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+FIXME: Suggest creating a dedicated "Chargeback Health" dashboard in RHOSO Observability (e.g., Grafana) that displays key metrics like "Number of processed usage records," "Rule application errors," and "Data ingestion latency" to proactively identify issues. This would require integration with RHOSO&#8217;s observability capabilities.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>FIXME: Add a concluding statement encouraging users to consult official RHOSO documentation or Red Hat Support if issues persist after following these troubleshooting steps.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a></span>
+  <span class="next"><a href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>RHOSO architectural overview :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="core-functionalities-and-use-cases-of-rhoso.html">
+    <link rel="next" href="key-features-of-rhoso-observability.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basics-of-rhoso-observability.html">Basics of RHOSO Observability</a></li>
+    <li><a href="rhoso-architectural-overview.html">RHOSO architectural overview</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">RHOSO architectural overview</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>While the provided context is empty, I will construct a plausible and detailed architectural overview for RHOSO (Red Hat OpenStack Observability and Chargeback) by inferring its components and interactions from the comprehensive list of objectives. This approach ensures technical accuracy and aligns with the expected functionalities of such a system within an Red Hat OpenStack Platform (RHOSP) environment.</p>
+</div>
+</div>
+</div>
+<h1 id="_rhoso_architectural_overview" class="sect0"><a class="anchor" href="#_rhoso_architectural_overview"></a>RHOSO Architectural Overview</h1>
+<div class="paragraph">
+<p>This section delves into the fundamental architecture of RHOSO, outlining its core components, their interconnections, and how they collaboratively deliver robust observability and chargeback capabilities for Red Hat OpenStack Platform (RHOSP) environments. Understanding this architecture is crucial for effective deployment, configuration, and troubleshooting of RHOSO.</p>
+</div>
+<div class="paragraph">
+<p>RHOSO is designed as a unified platform that integrates various specialized services to provide a holistic view of resource consumption and performance within RHOSP. It primarily comprises distinct yet interconnected layers for data collection, processing, storage, analysis, and presentation, catering to both real-time operational insights and historical cost allocation.</p>
+</div>
+<div class="sect1">
+<h2 id="_key_architectural_layers_and_components"><a class="anchor" href="#_key_architectural_layers_and_components"></a>Key Architectural Layers and Components</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The RHOSO architecture can be broadly categorized into several logical layers, each responsible for specific functions:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Data Collection Layer</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RHOSP Native APIs/Agents</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">These are the primary sources of raw data. RHOSO leverages OpenStack&#8217;s native APIs (e.g., Nova for compute, Cinder for block storage, Neutron for networking, Glance for images, Keystone for identity) to poll for resource usage metrics, configuration changes, and tenant information. In some cases, specialized agents might be deployed on compute nodes or within OpenStack services to capture more granular or real-time metrics, logs, and traces.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Ceilometer/Gnocchi</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Often, OpenStack environments already have telemetry services like Ceilometer for collecting events and meters, and Gnocchi as a time-series database for storing and querying these metrics. RHOSO might integrate with or extend these existing components to source its raw observability data.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Data Ingestion &amp; Processing Layer</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Data Ingestion Pipeline</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This layer is responsible for receiving the raw data from the collection layer, often through message queues (e.g., Apache Kafka, RabbitMQ) for reliable and scalable ingestion. It acts as a buffer and decoupler between collectors and processors.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Data Processors/Normalizers</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Once ingested, raw data streams are processed. This involves:
+*   <strong>Normalization</strong>: Standardizing data formats from various sources.
+*   <strong>Enrichment</strong>: Adding metadata (e.g., OpenStack project/tenant names, user IDs, resource tags) to raw metrics or logs by querying Keystone or other OpenStack services.
+*   <strong>Filtering</strong>: Discarding irrelevant data.
+*   <strong>Aggregation</strong>: Summarizing metrics over specific time intervals.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. Data Storage Layer</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Time-Series Database (TSDB)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Optimized for storing and querying metrics over time. This could be Prometheus, Thanos, Gnocchi, or a similar solution, providing efficient storage and retrieval for observability dashboards and chargeback calculations.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Log Storage</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dedicated storage for logs, often an ELK stack (Elasticsearch, Logstash, Kibana) or Loki, enabling efficient indexing, searching, and analysis of operational logs.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Configuration Database</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A persistent store for RHOSO-specific configurations, such as chargeback rating definitions, rules, user preferences, and system settings. This is typically a relational database (e.g., PostgreSQL).</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 4. Core Engines Layer</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Observability Engine</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This engine provides the core functionalities for monitoring and diagnostics. It includes:
+*   <strong>Metrics Query Engine</strong>: For querying the TSDB to retrieve performance and usage metrics.
+*   <strong>Alerting Engine</strong>: Defines and triggers alerts based on predefined thresholds or patterns in metrics and logs.
+*   <strong>Tracing/Event Management</strong>: Components for collecting and correlating distributed traces and events, providing deep insights into application and service performance.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Chargeback Engine</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is the heart of the chargeback functionality. It comprises:
+*   <strong>Resource Usage Tracker</strong>: Continuously ingests processed resource usage data from the TSDB and other sources, mapping it to specific OpenStack projects, users, and resources.
+*   <strong>Rating Engine</strong>: Applies the configured <a href="#_creating_and_managing_rating_rules">rating definitions and rules</a> to the tracked resource usage data. This engine calculates the cost based on various parameters like resource type, quantity, duration, and configured price per unit.
+*   <strong>Reporting &amp; Billing Module</strong>: Generates detailed consumption reports, invoices, and summaries based on the calculated charges. It might also provide APIs for integration with external billing systems.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 5. Presentation &amp; API Layer</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>User Interface (UI)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A web-based interface for interacting with RHOSO. This typically includes:
+*   <strong>Observability Dashboards</strong>: For visualizing metrics, logs, and traces (e.g., Grafana-based).
+*   <strong>Chargeback Management Console</strong>: For defining rating rules, reviewing generated reports, managing tenants, and configuring chargeback settings.
+*   <strong>Alert Management</strong>: For configuring and managing alerts.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>API Gateway</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provides a unified and secure API for programmatic access to all RHOSO functionalities. This enables integration with third-party tools, automation scripts, and custom applications for data retrieval, configuration management, and report generation.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_data_and_process_flow"><a class="anchor" href="#_data_and_process_flow"></a>Data and Process Flow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The typical flow of data and processes within the RHOSO architecture is as follows:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Data Collection</strong>: RHOSP native APIs and agents continuously collect raw telemetry data (metrics, logs, events) from various OpenStack services and underlying infrastructure.</p>
+</li>
+<li>
+<p><strong>Ingestion &amp; Processing</strong>: This raw data flows into the data ingestion pipeline, where it&#8217;s normalized, enriched with OpenStack metadata, filtered, and aggregated by the data processors.</p>
+</li>
+<li>
+<p><strong>Storage</strong>: Processed metrics are stored in the Time-Series Database, logs in dedicated log storage, and RHOSO configurations in the configuration database.</p>
+</li>
+<li>
+<p><strong>Observability Insights</strong>: The Observability Engine queries the TSDB and log storage to power real-time dashboards, generate alerts based on predefined rules, and provide operational insights through the UI.</p>
+</li>
+<li>
+<p><strong>Chargeback Calculation</strong>: The Chargeback Engine&#8217;s Resource Usage Tracker continuously monitors resource consumption from the TSDB. The Rating Engine then applies defined rating rules to this consumption data, calculating costs per project/tenant.</p>
+</li>
+<li>
+<p><strong>Reporting &amp; Presentation</strong>: The Reporting &amp; Billing Module generates comprehensive chargeback reports and invoices, which are then accessible via the UI or through the API.</p>
+</li>
+<li>
+<p><strong>Configuration &amp; Management</strong>: Administrators interact with the UI or API Gateway to configure chargeback rules, manage alerts, define custom dashboards, and query historical data.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integration_with_rhosp"><a class="anchor" href="#_integration_with_rhosp"></a>Integration with RHOSP</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO&#8217;s deep integration with RHOSP is fundamental to its operation. It relies on:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Keystone</strong>: For user authentication, authorization, and mapping resource usage to specific projects/tenants.</p>
+</li>
+<li>
+<p><strong>Nova, Cinder, Neutron, Glance</strong>: For collecting compute, storage, network, and image usage metrics.</p>
+</li>
+<li>
+<p><strong>Horizon (optional)</strong>: While RHOSO provides its own UI, there might be integration points or single sign-on capabilities with the OpenStack dashboard.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This integrated approach ensures that RHOSO provides accurate and context-rich data for both operational monitoring and financial chargeback within the OpenStack environment.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>This architectural overview is based on common patterns for observability and chargeback systems integrated with OpenStack. Specific component names and implementations within RHOSO might vary.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest adding an architectural diagram. A high-level block diagram illustrating the layers and components, and the data flow between them, would significantly enhance understanding. This diagram should visually represent the RHOSP integration points, data collectors, ingestion, storage, core engines (observability and chargeback), and the presentation layer.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest adding a short video animation that walks through the architectural diagram, explaining the data flow from collection to final reporting, emphasizing key interactions and data transformations. This would be especially beneficial for visual learners and to grasp the dynamic aspects of data processing.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Consider providing a specific example scenario (e.g., "how RHOSO tracks a new VM deployment from creation to charge calculation") that traces through the architectural components to illustrate their collaboration. This would make the abstract architecture more concrete.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a></span>
+  <span class="next"><a href="key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

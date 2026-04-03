@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Analyzing chargeback data and consumption :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="generating-chargeback-reports-and-invoices.html">
+    <link rel="next" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basic-chargeback-troubleshooting/best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="using-the-chargeback-feature.html">Using the Chargeback Feature</a></li>
+    <li><a href="analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Analyzing chargeback data and consumption</h1>
+<h1 id="_analyzing_chargeback_data_and_consumption" class="sect0"><a class="anchor" href="#_analyzing_chargeback_data_and_consumption"></a>Analyzing Chargeback Data and Consumption</h1>
+<div class="paragraph">
+<p>This topic delves into the critical process of interpreting and acting upon the financial data generated by the RHOSO Chargeback system. Effective analysis of chargeback data is paramount for optimizing resource utilization, ensuring cost transparency, and making informed business decisions.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_chargeback_data_for_analysis"><a class="anchor" href="#_understanding_chargeback_data_for_analysis"></a>Understanding Chargeback Data for Analysis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>After chargeback reports and invoices are generated, the next crucial step is to analyze the data to understand consumption patterns, identify cost drivers, and ensure billing accuracy. This analysis provides valuable insights for both IT departments and business units.</p>
+</div>
+<div class="sect2">
+<h3 id="_key_data_points_for_analysis"><a class="anchor" href="#_key_data_points_for_analysis"></a>Key Data Points for Analysis</h3>
+<div class="paragraph">
+<p>RHOSO Chargeback reports typically contain a wealth of information. To effectively analyze consumption and costs, focus on these key data points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Resource Consumption Metrics:</strong> Detailed breakdown of resource usage (e.g., vCPU hours, GB-hours of RAM, storage TB-hours, network egress). This helps in understanding which resources are being consumed the most.</p>
+</li>
+<li>
+<p><strong>Cost Per Resource:</strong> The calculated cost for each resource type based on the defined rating rules. This highlights where the expenses are accumulating.</p>
+</li>
+<li>
+<p><strong>Project/Tenant Allocation:</strong> Charges attributed to specific projects, tenants, or departments. This is essential for cross-charging and budget reconciliation.</p>
+</li>
+<li>
+<p><strong>Time-based Trends:</strong> How consumption and costs evolve over daily, weekly, or monthly periods. Identifying trends can help in capacity planning and anomaly detection.</p>
+</li>
+<li>
+<p><strong>Service Breakdown:</strong> Costs associated with different services (e.g., compute, storage, network, database). This helps in assessing the cost-effectiveness of various cloud services.</p>
+</li>
+<li>
+<p><strong>Unbilled Usage/Errors:</strong> Any resources consumed but not charged, or discrepancies in calculations, which might indicate misconfigurations or issues in the rating definitions.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_the_importance_of_data_analysis"><a class="anchor" href="#_the_importance_of_data_analysis"></a>The Importance of Data Analysis</h3>
+<div class="paragraph">
+<p>Analyzing chargeback data offers several significant benefits:</p>
+</div>
+<div class="ulist">
+<div class="title">Data Analysis Benefits</div>
+<ul>
+<li>
+<p><strong>Cost Transparency:</strong> Provides a clear view of who is consuming what and at what cost, fostering accountability among cloud users.</p>
+</li>
+<li>
+<p><strong>Budget Management:</strong> Helps project managers and department heads monitor their cloud spending against allocated budgets.</p>
+</li>
+<li>
+<p><strong>Resource Optimization:</strong> Identifies underutilized or overutilized resources, enabling IT teams to optimize infrastructure provisioning and reclaim idle resources.</p>
+</li>
+<li>
+<p><strong>Forecasting and Planning:</strong> Historical consumption data can inform future capacity planning and budget forecasting.</p>
+</li>
+<li>
+<p><strong>Policy Enforcement:</strong> Verifies that resource consumption aligns with organizational policies and quotas.</p>
+</li>
+<li>
+<p><strong>Service Performance Review:</strong> Helps in evaluating the true cost of delivering specific services and potentially renegotiating service agreements or optimizing service delivery models.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_accessing_and_interpreting_chargeback_reports"><a class="anchor" href="#_accessing_and_interpreting_chargeback_reports"></a>Accessing and Interpreting Chargeback Reports</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO provides mechanisms to generate various chargeback reports, as covered in <a href="./using-the-chargeback-feature.adoc#_generating_chargeback_reports_and_invoices">Generating Chargeback Reports and Invoices</a>. These reports are the primary source for your analysis.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Accessing Reports:</strong> Typically, chargeback reports are accessible through the RHOSO dashboard or via API calls. They can often be downloaded in formats like CSV or PDF for further offline analysis.</p>
+</li>
+<li>
+<p><strong>Filtering and Aggregation:</strong> Leverage the reporting interface to filter data by project, service, date range, or other parameters. Aggregate data to get high-level overviews or drill down into granular details as needed.</p>
+</li>
+<li>
+<p><strong>Visualizations:</strong> Many reporting tools offer built-in visualizations (charts, graphs) to make trends and anomalies more apparent. Pay attention to sudden spikes or drops in consumption or cost.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+<div class="title">Integrate with External Tools</div>
+For advanced analysis, consider integrating RHOSO chargeback data with external Business Intelligence (BI) tools. These tools offer more powerful visualization, custom dashboard creation, and predictive analytics capabilities.
+FIXME: Suggest creating official connectors or detailed guides for integrating RHOSO chargeback data with popular BI platforms like Grafana, Power BI, or Tableau to enable deeper analytics and custom dashboards.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_lab_analyzing_your_chargeback_data"><a class="anchor" href="#_hands_on_lab_analyzing_your_chargeback_data"></a>Hands-on Lab: Analyzing Your Chargeback Data</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will simulate the analysis of chargeback data by reviewing a generated report and identifying key consumption patterns.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>A RHOSO environment with Chargeback enabled and configured.</p>
+</li>
+<li>
+<p>At least one chargeback report generated for a specific project/tenant, as completed in the <a href="./hands-on-lab-implementing-your-first-chargeback-rating.adoc">Implementing Your First Chargeback Rating</a> lab.</p>
+</li>
+<li>
+<p>Access to the RHOSO UI or API endpoints to retrieve chargeback reports.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_1_retrieve_and_review_a_chargeback_report"><a class="anchor" href="#_activity_1_retrieve_and_review_a_chargeback_report"></a>Activity 1: Retrieve and Review a Chargeback Report</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to the RHOSO dashboard as a user with chargeback reporting permissions.</p>
+</li>
+<li>
+<p>Navigate to the Chargeback section (or the relevant reporting area).</p>
+</li>
+<li>
+<p>Locate the reports generated in the previous lab (e.g., for <code>project-dev</code> for the last month).
+FIXME: Suggest adding a screenshot of the RHOSO UI showing the navigation path to the Chargeback reporting section and a list of available reports.</p>
+</li>
+<li>
+<p>Download the report, preferably in a CSV format, for easier data manipulation.</p>
+</li>
+<li>
+<p>Open the downloaded CSV file using a spreadsheet application (e.g., LibreOffice Calc, Microsoft Excel, Google Sheets).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_2_identify_top_consumers_and_cost_drivers"><a class="anchor" href="#_activity_2_identify_top_consumers_and_cost_drivers"></a>Activity 2: Identify Top Consumers and Cost Drivers</h3>
+<div class="paragraph">
+<p>Once the report is open in your spreadsheet application, perform the following analysis:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Identify Total Costs:</strong> Look for a row or column indicating the total cost for the reporting period for the selected project.</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Question:</strong> What is the total charge for <code>project-dev</code> for the reporting period?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Sort by Resource Type Cost:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Find the column that lists the "Cost per Resource Type" (e.g., <code>compute_cost</code>, <code>storage_cost</code>, <code>network_cost</code>).</p>
+</li>
+<li>
+<p>Sort the data to see which resource type contributes the most to the total cost.</p>
+</li>
+<li>
+<p><strong>Question:</strong> Which resource type incurred the highest cost for <code>project-dev</code>?</p>
+</li>
+<li>
+<p><strong>Example observation:</strong> You might notice that "Compute" (vCPU-hours, RAM-hours) is the primary cost driver, followed by "Storage".</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Analyze Instance-Specific Costs (if applicable):</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>If your report breaks down costs by individual virtual machine instances or storage volumes, sort by "Instance ID" or "Resource ID" to identify the most expensive individual resources.</p>
+</li>
+<li>
+<p><strong>Question:</strong> Are there any specific instances or volumes that stand out due to unusually high costs? Why might this be the case?</p>
+</li>
+<li>
+<p><strong>Troubleshooting thought:</strong> High costs for a single instance could indicate it&#8217;s over-provisioned, running inefficiently, or configured with premium options.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Examine Consumption Trends (if multiple reports are available):</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>If you have generated multiple reports over different periods (e.g., weekly or monthly reports), compare them.</p>
+</li>
+<li>
+<p>Create a simple line chart showing the total cost or a specific resource cost over time.</p>
+</li>
+<li>
+<p><strong>Question:</strong> Is the consumption for <code>project-dev</code> increasing, decreasing, or stable over time? What might explain any significant changes?</p>
+</li>
+<li>
+<p>FIXME: Suggest adding a short video demonstrating how to create a simple line chart in a spreadsheet application using chargeback data to visualize trends.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_3_interpret_and_act_on_insights"><a class="anchor" href="#_activity_3_interpret_and_act_on_insights"></a>Activity 3: Interpret and Act on Insights</h3>
+<div class="paragraph">
+<p>Based on your analysis, consider the following:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Resource Optimization:</strong> If a particular resource type or individual instance is contributing significantly to costs, investigate its utilization.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Is the VM correctly sized for its workload?</p>
+</li>
+<li>
+<p>Are there any unused or idle resources that can be de-provisioned?</p>
+</li>
+<li>
+<p>Could a different storage tier be more cost-effective?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Budget Alignment:</strong> Compare the observed costs with the allocated budget for <code>project-dev</code>.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Is the project on track, over budget, or under budget?</p>
+</li>
+<li>
+<p>What adjustments might be needed for future budgeting cycles?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Reporting to Stakeholders:</strong> Summarize your findings in a concise manner, highlighting key cost drivers and potential areas for optimization. This information is valuable for project managers, finance departments, and cloud architects.</p>
+</li>
+</ol>
+</div>
+<div class="ulist TIP">
+<div class="title">Best Practices for Continuous Analysis</div>
+<ul class="TIP">
+<li>
+<p><strong>Regular Reviews:</strong> Schedule regular reviews of chargeback reports (e.g., monthly, quarterly) to catch anomalies early.</p>
+</li>
+<li>
+<p><strong>Establish Baselines:</strong> Understand typical consumption and cost patterns to easily identify deviations.</p>
+</li>
+<li>
+<p><strong>Collaborate:</strong> Work with project owners and development teams to understand their workloads and help them optimize resource usage.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest implementing an automated alert system for significant deviations from consumption baselines or budget thresholds, integrated directly into the RHOSO dashboard or via external notification services.</p>
+</div>
+<div class="paragraph">
+<p>By diligently analyzing chargeback data, organizations can transform raw cost figures into actionable insights that drive efficiency, accountability, and strategic decision-making within their cloud environments.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a></span>
+  <span class="next"><a href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

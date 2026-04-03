@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Identifying common issues during Chargeback configuration :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="basic-chargeback-troubleshooting.html">
+    <link rel="next" href="diagnosing-incorrect-charge-calculations.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></li>
+    <li><a href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Identifying common issues during Chargeback configuration</h1>
+<h1 id="_identifying_common_issues_during_chargeback_configuration" class="sect0"><a class="anchor" href="#_identifying_common_issues_during_chargeback_configuration"></a>Identifying Common Issues During Chargeback Configuration</h1>
+<div class="paragraph">
+<p>Effectively configuring Chargeback in RHOSP requires precision. Even minor misconfigurations can lead to deployment failures, incorrect data collection, or service malfunctions. This section details common pitfalls encountered during the initial Chargeback setup and provides methods for identifying their root causes.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_common_configuration_challenges"><a class="anchor" href="#_understanding_common_configuration_challenges"></a>Understanding Common Configuration Challenges</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Chargeback&#8217;s successful operation relies on a stack of integrated components, including RHOSO Observability, OpenShift, and various operators. Issues often arise from incorrect prerequisites, YAML configuration errors, or permission problems. Being able to quickly pinpoint these issues is crucial for a smooth deployment and accurate cost allocation.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites_not_met"><a class="anchor" href="#_prerequisites_not_met"></a>Prerequisites Not Met</h3>
+<div class="paragraph">
+<p>One of the most frequent causes of configuration failure is overlooking or incorrectly setting up the prerequisites. Chargeback, as part of RHOSO, depends on a healthy OpenShift environment and often specific versions of RHOSP and other supporting services.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Symptoms:</strong></p>
+</li>
+<li>
+<p>Operator failing to install or reconcile.</p>
+</li>
+<li>
+<p>Pods stuck in <code>Pending</code> or <code>CrashLoopBackOff</code> states.</p>
+</li>
+<li>
+<p>Error messages in operator logs indicating missing dependencies or incompatible versions.</p>
+</li>
+<li>
+<p>Custom Resources (CRs) failing to reach a <code>Ready</code> state.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> RHOSO Chargeback typically requires a specific version of OpenShift Container Platform (OCP), a properly configured OpenShift GitOps Operator, and potentially other operators like OpenShift Pipelines or OpenShift Logging, depending on the specific deployment architecture and integrations. If the underlying OCP cluster is not healthy, or if required operators are not installed or are in a degraded state, the Chargeback operator will fail to initialize correctly. This also extends to RHOSP itself; ensuring RHOSP is stable and accessible is foundational.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_incorrect_yaml_configuration"><a class="anchor" href="#_incorrect_yaml_configuration"></a>Incorrect YAML Configuration</h3>
+<div class="paragraph">
+<p>Configuration files, often defined as Custom Resources (CRs) in YAML format, are central to deploying and configuring Chargeback. Syntax errors, incorrect field values, or missing required fields are common sources of problems.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Symptoms:</strong></p>
+</li>
+<li>
+<p><code>oc apply -f &lt;file.yaml&gt;</code> commands returning syntax errors or validation failures.</p>
+</li>
+<li>
+<p>Custom Resources remaining in a <code>Progressing</code> or <code>Failed</code> state without clear activity.</p>
+</li>
+<li>
+<p>Pods failing to start with <code>Init:CrashLoopBackOff</code> or <code>Error</code> statuses, with logs indicating configuration parsing failures.</p>
+</li>
+<li>
+<p>Unexpected behavior or missing functionality after "successful" deployment.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Kubernetes and OpenShift leverage YAML for declarative configuration. A single incorrect indentation, a misspelled field name, or an invalid value for a parameter (e.g., incorrect API version, non-existent storage class name) can prevent the operator from processing the CR correctly. Operators often include validation logic, but subtle errors can sometimes bypass initial validation only to cause runtime failures.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_insufficient_permissions"><a class="anchor" href="#_insufficient_permissions"></a>Insufficient Permissions</h3>
+<div class="paragraph">
+<p>The service accounts or users deploying and managing Chargeback components require specific Kubernetes RBAC (Role-Based Access Control) permissions to create, update, and delete resources across various namespaces.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Symptoms:</strong></p>
+</li>
+<li>
+<p><code>oc apply</code> or <code>oc create</code> commands failing with <code>Error from server (Forbidden)</code> messages.</p>
+</li>
+<li>
+<p>Operator pods failing to create required resources (e.g., Deployments, Services, ConfigMaps, Secrets) with <code>PermissionDenied</code> errors in their logs.</p>
+</li>
+<li>
+<p>Custom Resources failing to reconcile due to the operator&#8217;s service account lacking permissions for certain actions or resources.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> OpenShift&#8217;s security model is robust. Operators run under specific service accounts, and these service accounts must be bound to roles that grant them the necessary permissions to manage the resources they are responsible for. If the cluster roles or role bindings are missing, incorrectly configured, or too restrictive, the operator will be unable to perform its duties, leading to deployment failures.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_network_and_connectivity_issues"><a class="anchor" href="#_network_and_connectivity_issues"></a>Network and Connectivity Issues</h3>
+<div class="paragraph">
+<p>Chargeback components need to communicate with each other, with the RHOSP environment, and potentially with external services (e.g., identity providers, metrics sources). Network misconfigurations or firewall rules can disrupt this communication.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Symptoms:</strong></p>
+</li>
+<li>
+<p>Pods reporting <code>connection refused</code>, <code>timeout</code>, or <code>unreachable host</code> errors in their logs.</p>
+</li>
+<li>
+<p>Metrics not being collected from RHOSP.</p>
+</li>
+<li>
+<p>Web UIs (like Grafana for reports) failing to load data or displaying <code>No Data</code> errors.</p>
+</li>
+<li>
+<p>Long delays in data processing or report generation.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Within an OpenShift cluster, service-to-service communication is typically handled via Kubernetes Services and network policies. However, communication with external RHOSP APIs or databases requires proper routing, DNS resolution, and firewall rules to be in place. If DNS is misconfigured, firewalls block necessary ports, or network policies prevent communication, components will fail to establish connections, leading to data collection and processing issues.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_resource_contention"><a class="anchor" href="#_resource_contention"></a>Resource Contention</h3>
+<div class="paragraph">
+<p>While less common during initial configuration <strong>failure</strong>, resource contention can cause pods to get stuck in <code>Pending</code> or <code>CrashLoopBackOff</code> states, making it seem like a configuration error.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Symptoms:</strong></p>
+</li>
+<li>
+<p>Pods stuck in <code>Pending</code> state for extended periods.</p>
+</li>
+<li>
+<p><code>oc describe pod &lt;pod-name&gt;</code> showing <code>Insufficient CPU</code> or <code>Insufficient Memory</code> events.</p>
+</li>
+<li>
+<p>Existing pods crashing frequently, sometimes due to OOMKilled events.</p>
+</li>
+<li>
+<p><strong>Technical Explanation:</strong> Each pod typically requests and may limit CPU and memory resources. If the OpenShift nodes do not have enough available resources to satisfy these requests, new pods will remain unscheduled. While this is more of an operational issue, it can manifest during initial deployment if the cluster is already heavily loaded or configured with tight resource quotas.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_lab_initial_configuration_validation"><a class="anchor" href="#_hands_on_lab_initial_configuration_validation"></a>Hands-on Lab: Initial Configuration Validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<div class="title">FIXME: Create short video tutorials demonstrating how to diagnose each common issue using <code>oc</code> commands.</div>
+<p>This lab activity focuses on verifying the fundamental setup steps after attempting to configure Chargeback components, helping you identify if any of the common issues discussed above are present.</p>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_your_lab_environment_for_validation"><a class="anchor" href="#_setting_up_your_lab_environment_for_validation"></a>Setting Up Your Lab Environment for Validation</h3>
+<div class="paragraph">
+<p>Before proceeding, ensure you have <code>oc</code> (OpenShift CLI) configured and authenticated to your OpenShift cluster with sufficient permissions to inspect cluster resources (e.g., cluster-admin or namespace-admin for the project where Chargeback is deployed).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Ensure <code>oc</code> is installed and logged in to your target OpenShift cluster.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login --token=&lt;your_token&gt; --server=&lt;your_api_server&gt;
+oc whoami</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Set the project (namespace) where you are deploying or have attempted to deploy Chargeback components.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project rhoso-chargeback <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Replace <code>rhoso-chargeback</code> with your actual project name.</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_1_verify_operator_status"><a class="anchor" href="#_step_1_verify_operator_status"></a>Step 1: Verify Operator Status</h3>
+<div class="paragraph">
+<p>The Chargeback functionality is typically deployed via an OpenShift Operator. Checking its status is the first step in diagnosing configuration issues.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Operator Subscription and InstallPlan:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get subscription -n openshift-operators | grep chargeback
+oc get installplan -n openshift-operators</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Look for the <code>rhoso-chargeback-operator</code> (or similar) subscription. Ensure its <code>STATUS</code> is <code>AtLatestKnown</code> or <code>UpgradeAvailable</code>.</p>
+</li>
+<li>
+<p>Check the <code>installplan</code> for any pending or failed plans related to the operator.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Check Operator Pods:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-operators | grep chargeback-operator</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Verify that the operator pod is in a <code>Running</code> state and has <code>1/1</code> <code>READY</code> containers. If it&#8217;s in <code>Pending</code>, <code>CrashLoopBackOff</code>, or <code>Error</code> state, proceed to check its logs.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Inspect Operator Logs for Errors:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">OPERATOR_POD=$(oc get pods -n openshift-operators -o name | grep chargeback-operator | head -1)
+oc logs $OPERATOR_POD -n openshift-operators</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Look for keywords like <code>error</code>, <code>failed</code>, <code>permission denied</code>, <code>forbidden</code>, <code>timeout</code>, or <code>connection refused</code>. These are strong indicators of issues like insufficient permissions, network problems, or internal operator errors.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_2_validate_custom_resource_cr_status"><a class="anchor" href="#_step_2_validate_custom_resource_cr_status"></a>Step 2: Validate Custom Resource (CR) Status</h3>
+<div class="paragraph">
+<div class="title">FIXME: Provide examples of common error messages found in operator logs and suggest specific remedies.</div>
+<p>After the operator is running, it will attempt to reconcile Custom Resources that define the Chargeback configuration.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>List Relevant Custom Resources:</strong></p>
+<div class="paragraph">
+<p>Identify the primary Custom Resources that define your Chargeback deployment (e.g., <code>Chargeback</code>, <code>RatingDefinition</code>, <code>BillingPipeline</code>). The exact names depend on the RHOSO Chargeback API.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get chargeback -n rhoso-chargeback # Example CRD
+oc get ratingdefinition -n rhoso-chargeback # Example CRD</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Observe the <code>STATUS</code> column for your CRs. They should ideally be <code>Ready</code> or <code>Deployed</code>. If they are <code>Pending</code>, <code>Progressing</code>, or show an <code>Error</code> status, inspect them further.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Describe a Problematic Custom Resource:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe chargeback/&lt;your-chargeback-instance-name&gt; -n rhoso-chargeback</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review the <code>Status</code> and <code>Events</code> sections. The <code>Status</code> often contains conditions and messages indicating why the CR is not ready. The <code>Events</code> section can provide historical context or specific errors encountered during reconciliation.</p>
+<div class="paragraph">
+<div class="title">Image Suggestion: Screenshot of <code>oc describe</code> output highlighting <code>Status</code> and <code>Events</code> sections.</div>
+<p>=== Step 3: Check Dependent Application Pods</p>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If the operator and CRs seem okay, but Chargeback isn&#8217;t fully functional, check the pods created by the operator that comprise the Chargeback service.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>List All Pods in Your Chargeback Project:</strong></p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n rhoso-chargeback</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Look for pods that are not in a <code>Running</code> or <code>Completed</code> state (e.g., <code>Pending</code>, <code>Init:0/1</code>, <code>CrashLoopBackOff</code>, <code>Error</code>). These are critical indicators of issues.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Inspect Logs of Problematic Pods:</strong></p>
+<div class="paragraph">
+<p>For any pod that is not <code>Running</code> and <code>Ready</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">PROBLEM_POD=$(oc get pods -n rhoso-chargeback -o name | grep &lt;problematic-pod-name-pattern&gt; | head -1)
+oc logs $PROBLEM_POD -n rhoso-chargeback --tail=50</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Search for common error messages as described in Step 1. Logs from application pods might reveal issues specific to the application&#8217;s configuration, database connectivity, or external API communication.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Describe Problematic Pods for Resource or Scheduling Issues:</strong></p>
+<div class="paragraph">
+<p>If a pod is in <code>Pending</code> state:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc describe pod $PROBLEM_POD -n rhoso-chargeback</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Check the <code>Events</code> section. It will often indicate why a pod couldn&#8217;t be scheduled (e.g., <code>FailedScheduling</code>, <code>Insufficient CPU/Memory</code>).</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_step_4_validate_yaml_configuration_self_correction"><a class="anchor" href="#_step_4_validate_yaml_configuration_self_correction"></a>Step 4: Validate YAML Configuration (Self-Correction)</h3>
+<div class="paragraph">
+<p>If you suspect a YAML configuration error, a manual review and validation are necessary.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Review Your Configuration YAML:</strong></p>
+<div class="paragraph">
+<p>Open the <code>.yaml</code> file you used to apply your Custom Resource (e.g., <code>chargeback-instance.yaml</code>).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml"># Example chargeback-instance.yaml
+apiVersion: chargeback.rhoso.redhat.com/v1alpha1
+kind: Chargeback
+metadata:
+  name: default-chargeback-instance
+spec:
+  rhospApiEndpoint: "https://your-rhosp-api.example.com" <i class="conum" data-value="1"></i><b>(1)</b>
+  billingInterval: "24h"
+  storageClassName: "ocs-storagecluster-cephfs" <i class="conum" data-value="2"></i><b>(2)</b>
+  # ... other configuration parameters</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Double-check the URL for typos, missing <code>https://</code>, or incorrect port.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Ensure this <code>storageClassName</code> actually exists in your OpenShift cluster. You can check with <code>oc get storageclass</code>.</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p><strong>Use a YAML Linter/Validator:</strong></p>
+<div class="paragraph">
+<p>While <code>oc apply</code> provides some validation, external tools can help catch syntax issues beforehand.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Example using `yamllint` or `kubeval` (if installed locally)
+yamllint chargeback-instance.yaml
+kubeval chargeback-instance.yaml --schema-location https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>These tools can help catch basic syntax errors and structural problems.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<div class="title">Image Suggestion: Screenshot of a YAML file with a subtle error, and then a screenshot of <code>yamllint</code> detecting it.</div>
+<p>By systematically going through these validation steps, you can effectively narrow down the potential causes of your Chargeback configuration issues, moving you closer to a successful deployment.</p>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></span>
+  <span class="next"><a href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

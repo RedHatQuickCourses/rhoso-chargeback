@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Analyzing logs for Chargeback components :: RHOSO Chargeback and Observability Fundamentals</title>
+    <link rel="prev" href="diagnosing-incorrect-charge-calculations.html">
+    <link rel="next" href="best-practices-for-maintaining-chargeback-accuracy.html">
+    <meta name="generator" content="Antora 3.1.3">
+    <link rel="stylesheet" href="../../../_/css/site.css">
+    <script>var uiRootPath = '../../../_'</script>
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com" target="_blank"><img src="../../../_/img/redhat-logo.png" height="40px" alt="Red Hat"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="../../..">RHOSO Chargeback and Observability Fundamentals</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rhoso-chargeback" data-version="1.0.0">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../LABENV/index.html">Lab Environment</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../basics-of-rhoso-observability/basics-of-rhoso-observability.html">Basics of RHOSO Observability</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/introduction-to-rhoso-and-its-purpose.html">Introduction to RHOSO and its purpose</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/core-functionalities-and-use-cases-of-rhoso.html">Core functionalities and use cases of RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/rhoso-architectural-overview.html">RHOSO architectural overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../basics-of-rhoso-observability/key-features-of-rhoso-observability.html">Key features of RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/introduction-to-rhoso-chargeback.html">Introduction to RHOSO Chargeback</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/understanding-the-chargeback-feature-in-rhoso.html">Understanding the Chargeback feature in RHOSO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/business-value-and-benefits-of-chargeback.html">Business value and benefits of Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/overview-of-the-chargeback-process-flow.html">Overview of the chargeback process flow</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../introduction-to-rhoso-chargeback/integration-of-chargeback-with-rhoso-observability.html">Integration of Chargeback with RHOSO Observability</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/enabling-chargeback-in-rhosp.html">Enabling Chargeback in RHOSP</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/prerequisites-for-chargeback-deployment-in-rhosp.html">Prerequisites for Chargeback deployment in RHOSP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/step-by-step-guide-to-enable-chargeback.html">Step-by-step guide to enable Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/configuration-parameters-and-settings.html">Configuration parameters and settings</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../enabling-chargeback-in-rhosp/verifying-successful-chargeback-activation.html">Verifying successful Chargeback activation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../using-the-chargeback-feature/using-the-chargeback-feature.html">Using the Chargeback Feature</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/understanding-rating-definitions-and-components.html">Understanding rating definitions and components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/creating-and-managing-rating-rules.html">Creating and managing rating rules</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/generating-chargeback-reports-and-invoices.html">Generating chargeback reports and invoices</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../using-the-chargeback-feature/analyzing-chargeback-data-and-consumption.html">Analyzing chargeback data and consumption</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/hands-on-lab-implementing-your-first-chargeback-rating.html">Hands-on Lab: Implementing Your First Chargeback Rating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/setting-up-the-lab-environment-for-chargeback.html">Setting up the lab environment for Chargeback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/defining-a-basic-rating-rule-for-a-service.html">Defining a basic rating rule for a service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/applying-the-defined-rating-rule-to-resources.html">Applying the defined rating rule to resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="../hands-on-lab-implementing-your-first-chargeback-rating/reviewing-the-generated-charges-and-reports.html">Reviewing the generated charges and reports</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="identifying-common-issues-during-chargeback-configuration.html">Identifying common issues during Chargeback configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="2">
+    <a class="nav-link" href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="../appendix/appendix.html">Appendix</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+<div class="nav-panel-explore" data-panel="explore">
+  <div class="context">
+    <span class="title">RHOSO Chargeback and Observability Fundamentals</span>
+    <span class="version">1.0.0</span>
+  </div>
+  <ul class="components">
+    <li class="component is-current">
+      <a class="title" href="../index.html">RHOSO Chargeback and Observability Fundamentals</a>
+      <ul class="versions">
+        <li class="version is-current is-latest">
+          <a href="../index.html">1.0.0</a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="../index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="../index.html">RHOSO Chargeback and Observability Fundamentals</a></li>
+    <li><a href="basic-chargeback-troubleshooting.html">Basic Chargeback Troubleshooting</a></li>
+    <li><a href="analyzing-logs-for-chargeback-components.html">Analyzing logs for Chargeback components</a></li>
+  </ul>
+</nav>
+</div>
+  <div class="content">
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+<article class="doc">
+<h1 class="page">Analyzing logs for Chargeback components</h1>
+<h1 id="_analyzing_logs_for_chargeback_components" class="sect0"><a class="anchor" href="#_analyzing_logs_for_chargeback_components"></a>Analyzing Logs for Chargeback Components</h1>
+<div class="paragraph">
+<p>Logs are the cornerstone of any effective troubleshooting strategy within a complex system like Red Hat OpenStack Platform (RHOSP) and its integrated services, including RHOSO Chargeback. When charge calculations are incorrect, usage data is missing, or reports aren&#8217;t generating as expected, analyzing logs provides critical insights into the underlying issues. This section will guide you through identifying relevant log sources, utilizing essential tools, and interpreting log data to diagnose and resolve problems related to RHOSO Chargeback.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_key_chargeback_components_and_their_logging"><a class="anchor" href="#_understanding_key_chargeback_components_and_their_logging"></a>Understanding Key Chargeback Components and Their Logging</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Chargeback relies on a chain of services to collect, process, and present resource usage data. Each link in this chain generates logs that can be crucial for troubleshooting.</p>
+</div>
+<div class="paragraph">
+<div class="title">Underlying OpenStack Services</div>
+<p>These services generate the raw usage events that are eventually metered.
+*   <strong>Nova (Compute):</strong> Logs related to VM lifecycle (creation, deletion, resizing) and resource consumption.
+*   <strong>Cinder (Block Storage):</strong> Logs related to volume creation, deletion, and snapshots.
+*   <strong>Neutron (Networking):</strong> Logs related to network resource allocation (ports, routers, floating IPs).
+*   <strong>Glance (Image Service):</strong> Logs related to image operations.</p>
+</div>
+<div class="paragraph">
+<div class="title">Telemetry and Metering Services</div>
+<p>These services collect and store the usage data.
+*   <strong>Ceilometer:</strong> The primary telemetry service responsible for collecting data points (meters) from various OpenStack services. Its logs are critical for understanding if data is being collected correctly.
+*   <strong>Gnocchi:</strong> The time-series database where Ceilometer stores its collected metrics. Gnocchi logs can reveal issues with metric storage and retrieval.</p>
+</div>
+<div class="paragraph">
+<div class="title">RHOSO Observability Stack (for Chargeback Data Processing)</div>
+<p>While the specifics depend on your RHOSO deployment, the observability stack often processes and stores logs centrally, as well as metrics.
+*   <strong>Prometheus/Grafana:</strong> While primarily for metrics, issues with these components (e.g., scrape failures, dashboard errors) might point back to underlying data collection problems, which can sometimes be observed in their respective logs.
+*   <strong>Loki/Fluentd (or similar centralized logging solution):</strong> In a full RHOSO observability setup, logs from all OpenStack services might be aggregated here. This significantly simplifies log analysis by providing a single pane of glass for all logs.</p>
+</div>
+<div class="sect2">
+<h3 id="_common_log_locations_in_rhosp"><a class="anchor" href="#_common_log_locations_in_rhosp"></a>Common Log Locations in RHOSP</h3>
+<div class="paragraph">
+<p>In a typical Red Hat OpenStack Platform deployment, especially with containerized services (introduced in OSP 13 and later), logs are found in specific locations.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Containerized Services (<code>/var/log/containers/</code>):</strong>
+Each OpenStack service running in a container will have its logs under <code>/var/log/containers/&lt;service_name&gt;/</code>. For example:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><code>/var/log/containers/nova/</code></p>
+</li>
+<li>
+<p><code>/var/log/containers/cinder/</code></p>
+</li>
+<li>
+<p><code>/var/log/containers/neutron/</code></p>
+</li>
+<li>
+<p><code>/var/log/containers/ceilometer/</code></p>
+</li>
+<li>
+<p><code>/var/log/containers/gnocchi/</code>
+Within these directories, you&#8217;ll find log files like <code>nova-api.log</code>, <code>cinder-volume.log</code>, <code>ceilometer-notification.log</code>, etc.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Systemd Journal (<code>journalctl</code>):</strong>
+Systemd services often direct their output to the journal. You can access these logs using the <code>journalctl</code> command, which provides a unified view across all services.</p>
+</li>
+<li>
+<p><strong>Other System Logs (<code>/var/log/</code>):</strong>
+General system logs, kernel messages, and logs from non-OpenStack components might still reside directly under <code>/var/log/</code>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="log-analysis-tools"><a class="anchor" href="#log-analysis-tools"></a>Essential Log Analysis Tools and Techniques</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When dealing with a large volume of logs, knowing how to efficiently search and filter is key.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong><code>grep</code>:</strong> A powerful command-line utility for searching plain-text data sets for lines that match a regular expression.
+[source,bash]
+----
+grep "ERROR" /var/log/containers/ceilometer/ceilometer-notification.log
+grep -i "metric collection failed" /var/log/containers/gnocchi/gnocchi-api.log
+----</p>
+</li>
+<li>
+<p><strong><code>tail</code>:</strong> Used to output the last part of files. The <code>-f</code> option is invaluable for monitoring logs in real-time.
+[source,bash]
+----
+tail -f /var/log/containers/ceilometer/ceilometer-notification.log
+----</p>
+</li>
+<li>
+<p><strong><code>less</code>:</strong> A pager program used to view the content of a file one screen at a time, allowing forward and backward navigation. It&#8217;s great for reviewing large log files.
+[source,bash]
+----
+less /var/log/containers/nova/nova-compute.log
+----
+Inside <code>less</code>, you can search using <code>/</code> (forward) or <code>?</code> (backward) followed by your search term.</p>
+</li>
+<li>
+<p><strong><code>journalctl</code>:</strong> The primary tool for querying and displaying messages from the systemd journal.
+[source,bash]
+----
+# View all logs for a specific service (e.g., ceilometer-notification)
+journalctl -u tripleo_ceilometer_notification -f</p>
+<div class="literalblock">
+<div class="content">
+<pre># Filter by time
+journalctl -u tripleo_ceilometer_notification --since "1 hour ago"</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Filter by priority (e.g., error)
+journalctl -u tripleo_ceilometer_notification -p err
+----
+FIXME: Add a screenshot illustrating `journalctl -f` output for a Ceilometer service during active event processing. This would visually reinforce the real-time monitoring aspect.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Centralized Logging Solutions (e.g., Loki, Elasticsearch/Kibana):</strong>
+If your RHOSO deployment includes a centralized logging stack, this becomes your primary interface for log analysis. These tools offer powerful querying, filtering, and visualization capabilities across all collected logs.
+FIXME: Provide a link to the RHOSO documentation or a relevant guide on accessing and using its centralized logging solution (e.g., Loki with Grafana, or Elasticsearch with Kibana) for comprehensive log analysis. This would bridge to the broader observability context.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_lab_diagnosing_chargeback_issues_with_log_analysis"><a class="anchor" href="#_hands_on_lab_diagnosing_chargeback_issues_with_log_analysis"></a>Hands-on Lab: Diagnosing Chargeback Issues with Log Analysis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this lab, you will simulate a common chargeback issue – missing usage data for a virtual machine – and use log analysis to identify the potential root cause.</p>
+</div>
+<div class="sect2">
+<h3 id="_setting_up_the_lab_environment_assumed"><a class="anchor" href="#_setting_up_the_lab_environment_assumed"></a>Setting Up the Lab Environment (Assumed)</h3>
+<div class="paragraph">
+<p>This lab assumes you have access to an RHOSP undercloud or controller node where OpenStack service logs are accessible, and a basic RHOSO Chargeback setup is operational, even if not fully generating complex reports. You will also need OpenStack CLI configured on your workstation or access to Horizon.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_1_verifying_ceilometer_data_collection"><a class="anchor" href="#_activity_1_verifying_ceilometer_data_collection"></a>Activity 1: Verifying Ceilometer Data Collection</h3>
+<div class="paragraph">
+<p>Ceilometer is crucial for collecting usage metrics. If chargeback data is missing, the first place to check is often Ceilometer&#8217;s logs.</p>
+</div>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Verify that Ceilometer is actively collecting and publishing notifications from Nova.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Log in to an RHOSP Controller Node:</strong>
+Access your RHOSP controller node via SSH.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+ssh heat-admin@&lt;controller-node-ip&gt;
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Monitor Ceilometer Notification Logs:</strong>
+Ceilometer&#8217;s notification agent processes events from other OpenStack services. Use <code>tail -f</code> to watch its log in real-time.
+(The service name <code>ceilometer-notification</code> refers to the specific container log. If using <code>journalctl</code>, the unit name might be <code>tripleo_ceilometer_notification</code>).</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+tail -f /var/log/containers/ceilometer/ceilometer-notification.log
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Trigger a Nova Event:</strong>
+From an OpenStack client (e.g., your <code>openstack</code> CLI environment or Horizon), create a new virtual machine. Replace <code>&lt;network-id&gt;</code> with an actual network ID from your environment.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+# Example: Create a new VM
+openstack server create --image cirros --flavor m1.tiny --network &lt;network-id&gt; test-vm-for-logs
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Observe Ceilometer Logs:</strong>
+Immediately after creating the VM, switch back to the terminal monitoring the <code>ceilometer-notification.log</code>. You should see entries indicating that Ceilometer is processing events related to Nova, such as <code>compute.instance.create.start</code> or <code>compute.instance.create.end</code>. Look for lines containing <code>INFO</code> or <code>DEBUG</code> related to processing messages.</p>
+</li>
+<li>
+<p><strong>Clean Up (Optional):</strong>
+Delete the test VM.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+openstack server delete test-vm-for-logs
+----
+Observe the Ceilometer logs again; you should see `compute.instance.delete.start`/`end` events. This confirms that events are flowing from Nova to Ceilometer.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_2_searching_for_errors_in_gnocchi_logs"><a class="anchor" href="#_activity_2_searching_for_errors_in_gnocchi_logs"></a>Activity 2: Searching for Errors in Gnocchi Logs</h3>
+<div class="paragraph">
+<p>Gnocchi is responsible for storing the metrics collected by Ceilometer. Errors here can mean data isn&#8217;t being persisted, leading to missing or incorrect chargeback information.</p>
+</div>
+<div class="paragraph">
+<div class="title">Objective</div>
+<p>Search for common errors in Gnocchi logs that might indicate issues with metric storage or processing.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Steps</div>
+<ol class="arabic">
+<li>
+<p><strong>Log in to an RHOSP Controller Node:</strong>
+Ensure you are logged into a controller node via SSH.</p>
+</li>
+<li>
+<p><strong>Search Gnocchi API Logs for Errors:</strong>
+Gnocchi&#8217;s API handles incoming requests for metric storage. Let&#8217;s search its logs for general errors.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+grep -i "error" /var/log/containers/gnocchi/gnocchi-api.log
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Search Gnocchi Metricd Logs for Storage Issues:</strong>
+The <code>gnocchi-metricd</code> service processes and writes metrics to the backend. Look for messages indicating storage problems or issues with processing incoming data.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+grep -i "failed to process" /var/log/containers/gnocchi/gnocchi-metricd.log
+grep -i "connection error" /var/log/containers/gnocchi/gnocchi-metricd.log
+----</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Analyze <code>journalctl</code> for Gnocchi Service Status:</strong>
+If Gnocchi isn&#8217;t functioning at all, <code>journalctl</code> can quickly show service failures or critical errors from the systemd unit controlling the container.</p>
+<div class="literalblock">
+<div class="content">
+<pre>[source,bash]
+----
+journalctl -u tripleo_gnocchi_api -p err --since "1 day ago"
+journalctl -u tripleo_gnocchi_metricd -p err --since "1 day ago"
+----
+Look for `Active: failed` status or critical errors in the output, which would indicate a service outage preventing metric storage.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="troubleshooting-log-analysis"><a class="anchor" href="#troubleshooting-log-analysis"></a>Troubleshooting Scenarios Using Log Analysis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Here are common Chargeback-related problems and how log analysis can help in diagnosis.</p>
+</div>
+<div class="sect2">
+<h3 id="_scenario_1_missing_resource_usage_data_in_reports"><a class="anchor" href="#_scenario_1_missing_resource_usage_data_in_reports"></a>Scenario 1: Missing Resource Usage Data in Reports</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Problem:</strong> After provisioning resources (VMs, volumes, networks), their usage isn&#8217;t appearing in chargeback reports or appears incomplete.</p>
+</li>
+<li>
+<p><strong>Log Analysis Approach:</strong></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Ceilometer Notifications:</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Monitor <code>ceilometer-notification.log</code> (or <code>journalctl -u tripleo_ceilometer_notification</code>) while creating the resource.</p>
+</li>
+<li>
+<p>Look for <code>compute.instance.create</code>, <code>volume.create</code>, <code>network.port.create</code> events. If these events are not logged, the OpenStack service might not be sending notifications, or Ceilometer isn&#8217;t receiving/processing them.</p>
+</li>
+<li>
+<p>Search for <code>ERROR</code> or <code>WARNING</code> messages within Ceilometer logs that indicate issues with processing events or publishing to Gnocchi.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Gnocchi Logs:</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Review <code>gnocchi-api.log</code> and <code>gnocchi-metricd.log</code> (or <code>journalctl -u tripleo_gnocchi_api</code>, <code>tripleo_gnocchi_metricd</code>).</p>
+</li>
+<li>
+<p>Look for errors related to "failed to process measures," "database connection issues," or any <code>ERROR</code> messages indicating Gnocchi is unable to store the metrics.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check OpenStack Service Logs (Source of Truth):</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If Ceilometer isn&#8217;t even seeing the events, verify the source service (e.g., <code>nova-api.log</code>, <code>cinder-api.log</code>, <code>neutron-server.log</code>).</p>
+</li>
+<li>
+<p>Look for errors when sending notifications (e.g., <code>Failed to send notification</code>).
+FIXME: Suggest adding a diagram illustrating the simplified flow of events from Nova &#8594; Ceilometer &#8594; Gnocchi, highlighting the log files relevant at each stage for better visual understanding of the data pipeline.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scenario_2_incorrect_charge_calculations"><a class="anchor" href="#_scenario_2_incorrect_charge_calculations"></a>Scenario 2: Incorrect Charge Calculations</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Problem:</strong> Charges are appearing in reports, but the amounts seem incorrect or inconsistent with expected usage.</p>
+</li>
+<li>
+<p><strong>Log Analysis Approach:</strong></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Verify Metering Data (Ceilometer/Gnocchi):</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>While charge calculation logic is typically within the chargeback application itself, incorrect calculations often stem from incorrect input data.</p>
+</li>
+<li>
+<p>Use the OpenStack CLI to query Gnocchi directly for the specific metric associated with the charge. For example, to check the duration a VM has been running:
+[source,bash]
+----
+openstack metric measure show compute.instance.duration --resource-id &lt;VM-UUID&gt;
+----</p>
+</li>
+<li>
+<p>Compare the raw metric data (<code>value</code> and <code>timestamp</code>) with what you expect. If Gnocchi data is already wrong, investigate Ceilometer logs for collection errors or OpenStack service logs for incorrect event reporting.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Chargeback Application Logs (if applicable):</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>If RHOSO Chargeback has its own dedicated services for rating and reporting, examine their logs for errors related to rating rule application, data retrieval from Gnocchi, or calculation discrepancies. These logs would be the next step once you confirm the underlying metering data is correct.
+FIXME: Provide a concrete example of how to retrieve the UUID of a VM (<code>openstack server show &lt;VM-name&gt; -f json -c id</code>) and then use that UUID to query a Gnocchi metric (<code>openstack metric measure show compute.instance.cpu --resource-id &lt;VM-UUID&gt;</code>). Then explain how to interpret this output in the context of charge calculation.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_scenario_3_connectivity_issues_between_components"><a class="anchor" href="#_scenario_3_connectivity_issues_between_components"></a>Scenario 3: Connectivity Issues Between Components</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Problem:</strong> Services seem to be running, but data flow between them (e.g., Ceilometer to Gnocchi, or OpenStack service to Message Queue) is interrupted.</p>
+</li>
+<li>
+<p><strong>Log Analysis Approach:</strong></p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Service Logs for Connection Errors:</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Search logs of dependent services for "connection refused," "timeout," "cannot connect," "host unreachable," or similar network-related errors.</p>
+</li>
+<li>
+<p>Example: Ceilometer logs might show errors connecting to RabbitMQ (for notifications) or Gnocchi (for publishing metrics). Gnocchi logs might show errors connecting to its backend database or RabbitMQ.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Verify Network Configuration (External to Logs):</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>While not directly log analysis, logs can <strong>point</strong> to network issues. If you see persistent connection errors, verify firewall rules (e.g., <code>firewalld</code>, security groups), network policies, and IP addresses between the communicating services.</p>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Check Message Queue Logs (RabbitMQ/Kafka):</strong></p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>OpenStack services communicate heavily via a message queue (typically RabbitMQ). If messages aren&#8217;t being processed or services can&#8217;t connect, check RabbitMQ logs (<code>/var/log/containers/rabbitmq/</code>) for queue overflows, connection issues, or permission errors.
+FIXME: Add a video demonstrating how to use <code>tail -f</code> on <strong>multiple</strong> log files simultaneously (e.g., <code>ceilometer-notification.log</code> and <code>gnocchi-metricd.log</code> in different terminal windows) to observe the real-time flow of events and quickly spot where errors might be occurring between components.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_maintaining_chargeback_log_accuracy"><a class="anchor" href="#_best_practices_for_maintaining_chargeback_log_accuracy"></a>Best Practices for Maintaining Chargeback Log Accuracy</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Centralized Logging:</strong> Implement a robust centralized logging solution (like Loki, Elasticsearch/Kibana, or Splunk) as part of your RHOSO Observability stack. This aggregates logs from all services onto a single platform, making searching, filtering, and analysis significantly easier and faster.</p>
+</li>
+<li>
+<p><strong>Log Retention Policies:</strong> Define and enforce appropriate log retention policies to ensure you have sufficient historical data for troubleshooting without overwhelming storage resources.</p>
+</li>
+<li>
+<p><strong>Structured Logging:</strong> Where possible, configure services to output logs in a structured format (e.g., JSON). This makes automated parsing, indexing, and advanced analysis (especially with centralized logging solutions) much more efficient.</p>
+</li>
+<li>
+<p><strong>Alerting on Key Log Events:</strong> Configure alerts in your monitoring system (e.g., Grafana, Alertmanager) to proactively notify you of critical errors, warnings, or unusual patterns detected within Chargeback-related service logs. This can help identify problems before they impact reporting.</p>
+</li>
+<li>
+<p><strong>Regular Log Review:</strong> Periodically review logs for warning messages or recurring informational events that might not yet be critical but could indicate brewing problems or misconfigurations that could affect future Chargeback accuracy.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_summary"><a class="anchor" href="#_summary"></a>Summary</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Log analysis is an indispensable skill for anyone managing and troubleshooting RHOSO Chargeback. By understanding where to find relevant logs, how to use basic and advanced tools like <code>grep</code>, <code>tail</code>, <code>less</code>, and <code>journalctl</code>, and what to look for in various troubleshooting scenarios, you can efficiently diagnose and resolve issues ranging from missing usage data to incorrect charge calculations. Integrating log analysis with the broader RHOSO Observability platform enhances your ability to maintain a reliable and accurate chargeback system, ensuring fair and accurate resource billing.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="diagnosing-incorrect-charge-calculations.html">Diagnosing incorrect charge calculations</a></span>
+  <span class="next"><a href="best-practices-for-maintaining-chargeback-accuracy.html">Best practices for maintaining Chargeback accuracy</a></span>
+</nav>
+</article>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <img src="../../../_/img/rhl-logo-red.png" height="40px" alt="Red Hat"  href="https://redhat.com" >
+</footer><script id="site-script" src="../../../_/js/site.js" data-ui-root-path="../../../_"></script>
+<script async src="../../../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
