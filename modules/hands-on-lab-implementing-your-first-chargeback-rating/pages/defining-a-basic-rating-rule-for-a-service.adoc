@@ -1,0 +1,91 @@
+#  Defining a basic rating rule for a service
+
+= Defining a basic rating rule for a service
+:navtitle: Define Basic Rating Rule
+:page-aliases: chargeback-rating-rules.adoc
+
+In the realm of cloud financial management and cost transparency, a *rating rule* serves as the core mechanism to translate raw resource consumption into calculable costs. It's the blueprint that determines how much an organization charges back for the usage of specific cloud services and their underlying resources. RHOSO Chargeback leverages these rules to enable granular cost attribution, foster accountability for resource usage, and provide a clear financial overview for various departments, projects, or individual tenants within an OpenStack environment.
+
+Without properly defined rating rules, it would be challenging to objectively measure and allocate the financial impact of cloud resource consumption, hindering budget planning and optimization efforts.
+
+== Understanding the Components of a Basic Rating Rule
+
+A basic rating rule in RHOSO Chargeback is designed to be straightforward yet effective, comprising several essential elements that work together to establish a clear pricing model:
+
+*   **Service Type**: This defines the broad category of cloud service to which the rule applies. Common examples include `Compute` (for virtual machines), `Storage` (for block or object storage), and `Network` (for data transfer or specific network services). Choosing the correct service type ensures the rule targets the relevant resources.
+*   **Metric**: The specific measurable unit of consumption within the chosen service type. For compute services, metrics might include `vCPU-hours` (virtual CPU hours), `GB-hours` (Gigabyte-hours for RAM), or `instance-hours`. For storage, it could be `GB-hours` (storage capacity over time) or `IOPS` (Input/Output Operations Per Second). The metric is what RHOSO actively monitors and collects data on.
+*   **Unit Cost**: This is the monetary value assigned to a single unit of the specified metric. For example, if the metric is `vCPU-hours`, the unit cost defines the price per single vCPU-hour (e.g., $0.05 per vCPU-hour). This is the primary driver of the chargeback calculation.
+*   **Currency**: Specifies the currency in which the unit cost is defined and charges will be reported (e.g., USD, EUR).
+*   **Aggregation Method (for basic rules, often implied as 'Sum')**: While more advanced rules might use complex aggregation, for a basic rule, the system typically sums up the total metric consumption over a defined billing period (e.g., total vCPU-hours in a month).
+
+[TIP]
+When designing your first rating rules, start with the most impactful and commonly consumed services. This allows you to quickly establish a baseline for chargeback and demonstrate value, which can then be refined and expanded upon.
+
+== Hands-on Lab: Implementing Your First Basic Compute Rating Rule
+
+This lab activity will guide you through the process of creating a foundational chargeback rating rule within the RHOSO user interface. We will define a simple rule to charge for the consumption of virtual CPU (vCPU) hours by compute instances provisioned in your OpenStack environment.
+
+.Prerequisites
+*   You have administrative credentials and access to the RHOSO console.
+*   Your RHOSO environment is successfully integrated with RHOSP, and observability data is being collected (as covered in previous sections).
+
+.Objective
+To define a basic rating rule that applies a fixed unit cost to vCPU-hours consumed by virtual machines.
+
+.Steps
+
+.  **Access the RHOSO Console**
+    Open your web browser and navigate to the RHOSO console URL. Log in using your designated administrative username and password.
+
+.  **Navigate to the Chargeback Module**
+    Once logged in, locate the primary navigation menu, typically on the left-hand side. Click on the entry labeled *Chargeback*, *Financial Operations*, or similar. Within the Chargeback section, find and select *Rating Rules* or *Pricing Definitions*.
+
+    FIXME: Provide the exact navigation path or URL structure for the RHOSO console. For instance: `https://rhoso.example.com/console#/chargeback/rating-rules`.
+    FIXME: Consider adding a screenshot here, illustrating the navigation from the main dashboard to the 'Rating Rules' section within the Chargeback module.
+    image::images/rhoso-chargeback-nav.png[RHOSO Chargeback Navigation Example, 700, 400]
+
+.  **Initiate Creation of a New Rule**
+    On the Rating Rules overview page, you should find a button such as `Create New Rule`, `Add Rating Rule`, or `+ Rule`. Click this button to open the rule definition form or wizard.
+
+    FIXME: Add a screenshot highlighting the "Create New Rule" button and the initial empty form/wizard.
+    image::images/rhoso-create-rule-button.png[Create New Rule Button, 700, 400]
+
+.  **Define the Basic Compute Rule Parameters**
+    Complete the fields in the rule creation form with the following details:
+
+    *   **Rule Name**: Enter `Basic Compute vCPU Hours`
+        *   _Explanation_: This name should be descriptive enough to immediately convey the rule's purpose.
+    *   **Description**: Enter `Charges for vCPU consumption of all compute instances at a fixed rate.`
+        *   _Explanation_: Provide additional context for administrators and financial teams.
+    *   **Service Type**: From the dropdown, select `Compute`.
+        *   _Explanation_: This specifies that the rule applies to virtual machine instances managed by OpenStack.
+    *   **Metric**: From the dropdown, select `vCPU-hours`.
+        *   _Explanation_: This is the key metric RHOSO will monitor and charge for. It represents the total amount of virtual CPU time consumed.
+    *   **Unit Cost**: Enter `0.05`
+        *   _Explanation_: This sets the cost to 0.05 units of currency per vCPU-hour. You can adjust this value to reflect your actual operational costs or desired chargeback rate.
+    *   **Currency**: Select `USD` (or the appropriate currency for your organization).
+    *   **Aggregation Method**: For this basic rule, select `Sum`.
+        *   _Explanation_: This ensures that all vCPU-hours consumed within a billing cycle are totaled up for billing.
+
+    [NOTE]
+    The list of available *Service Types* and *Metrics* is dynamically populated by RHOSO based on the integrated OpenStack services and the telemetry data it collects. If a specific metric like `vCPU-hours` is not available, ensure your RHOSO Observability and data collection agents are correctly configured and operational within your RHOSP environment.
+
+    FIXME: Include a screenshot showing the completed form with all the specified parameters for the basic rule.
+    image::images/rhoso-define-basic-rule-form.png[Completed Basic Rating Rule Form, 700, 400]
+
+.  **Save and Activate the Rating Rule**
+    Review all the entered information to ensure its accuracy. Once you are satisfied, click the `Save`, `Create Rule`, or `Apply` button to finalize and activate your new rating rule.
+
+.  **Verify Rule Activation**
+    After saving, you should be redirected back to the main Rating Rules list. Confirm that your newly created rule, `Basic Compute vCPU Hours`, is listed and shows an `Active` status (or similar indication of readiness).
+
+    [TIP]
+    If your rule doesn't appear or if you encounter an error message, check the browser's developer console for client-side errors and consult RHOSO's server logs for any backend processing issues. This can provide valuable clues for troubleshooting.
+
+    FIXME: Add a screenshot showing the `Basic Compute vCPU Hours` rule now visible and active in the list of rating rules.
+    image::images/rhoso-rating-rule-list-view.png[Rating Rules List with New Rule, 700, 400]
+
+Congratulations! You have successfully defined your very first basic chargeback rating rule in RHOSO. This rule is now active and will begin calculating costs based on vCPU consumption. In the subsequent sections, we will explore how to apply this rule to specific resources and generate your initial chargeback reports.
+
+[video::https://example.com/videos/rhoso-create-basic-rating-rule.mp4[Create Basic Rating Rule Demonstration, 16:9]]
+FIXME: A short, focused video (e.g., 2-3 minutes) demonstrating the exact steps of navigating the RHOSO UI and defining this basic rating rule would significantly enhance the learning experience, especially for visual learners.

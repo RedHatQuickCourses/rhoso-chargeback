@@ -1,0 +1,253 @@
+#  Setting up the lab environment for Chargeback
+
+= Setting Up the Lab Environment for Chargeback
+
+This section guides you through the process of preparing your environment to implement and test the RHOSO Chargeback feature. A properly configured lab environment is crucial for hands-on learning, allowing you to experiment with rating definitions, apply rules, and analyze generated charges without impacting production systems.
+
+== Introduction to the Lab Environment for Chargeback
+
+The RHOSO Chargeback feature relies on collecting resource usage data from your Red Hat OpenStack Platform (RHOSP) environment. Therefore, setting up the lab environment involves ensuring that RHOSP is operational, necessary RHOSO components are deployed, and you have the administrative access required to configure chargeback rules and deploy test resources.
+
+This lab environment will serve as a sandbox to:
+
+*   Verify the successful deployment and integration of RHOSO Chargeback components.
+*   Create and manage sample projects and users for chargeback testing.
+*   Deploy various OpenStack resources (e.g., virtual machines, volumes, networks) to simulate resource consumption.
+*   Confirm that usage data is being collected and processed by RHOSO Observability.
+*   Prepare for defining and applying chargeback rating rules in subsequent labs.
+
+== Prerequisites for Chargeback Lab Deployment in RHOSP
+
+Before you begin setting up your lab environment for RHOSO Chargeback, ensure the following prerequisites are met. These items establish the foundational operational state necessary for Chargeback to function correctly.
+
+. An operational Red Hat OpenStack Platform (RHOSP) environment.
+.. The RHOSP deployment should be healthy, with all core services (Keystone, Nova, Neutron, Cinder, Glance, Heat) running.
+.. Ensure you have administrative access (e.g., `stack` user on the undercloud, or an OpenStack administrator account) to perform necessary configurations and resource deployments.
+. RHOSO Observability components are already deployed and functional within your RHOSP environment.
+.. This includes components responsible for metric collection (e.g., Ceilometer, Gnocchi, or their RHOSO-specific equivalents) and data visualization.
+.. Verify that usage data from existing OpenStack resources (if any) is being collected and accessible through the RHOSO Observability dashboard.
+. Network connectivity between your client machine (from where you'll manage OpenStack) and the RHOSP undercloud/controller nodes.
+. Sufficient compute, storage, and network resources available within your RHOSP lab environment to deploy sample virtual machines, volumes, and other services for testing.
+. Basic familiarity with OpenStack CLI commands and dashboard navigation.
+
+[TIP]
+For optimal learning, consider using a dedicated lab or development environment rather than a production OpenStack deployment. This prevents accidental service disruptions and allows for free experimentation.
+
+== Step-by-Step Guide to Setting Up the Chargeback Lab Environment
+
+Follow these steps to prepare your RHOSP environment for implementing RHOSO Chargeback.
+
+=== Step 1: Verify RHOSP Health and RHOSO Component Status
+
+First, ensure your core RHOSP services are healthy and that the RHOSO Observability components, which feed data to Chargeback, are operational.
+
+.  **Log in to your RHOSP administrative host (e.g., undercloud).**
++
+[source,bash]
+----
+$ ssh stack@<undercloud-ip>
+----
+
+.  **Source the OpenStack administrative credentials.**
++
+[source,bash]
+----
+$ source ~/stackrc
+----
+
+.  **Verify the health of core OpenStack services.**
++
+Check that critical services are running. While a full health check is beyond this topic, a quick look at Nova services can be indicative.
++
+[source,bash]
+----
+$ openstack compute service list
+----
++
+[source,console]
+----
++----------------------------------+-----------+-------+----------+---------+-------+----------------------------+
+| ID                               | Binary    | Host  | Zone     | Status  | State | Updated At                 |
++----------------------------------+-----------+-------+----------+---------+-------+----------------------------+
+| <UUID>                           | nova-scheduler | controller-0 | internal | enabled | up    | 2023-10-26T10:00:00.000000 |
+| <UUID>                           | nova-conductor | controller-0 | internal | enabled | up    | 2023-10-26T10:00:00.000000 |
+| <UUID>                           | nova-compute | compute-0 | nova     | enabled | up    | 2023-10-26T10:00:00.000000 |
+| ...                              | ...       | ...   | ...      | ...     | ...   | ...                        |
++----------------------------------+-----------+-------+----------+---------+-------+----------------------------+
+----
++
+[NOTE]
+All services should show `Status: enabled` and `State: up`. If any critical services are down, troubleshoot them before proceeding.
+
+.  **Verify RHOSO Observability component status.**
++
+While specific commands might vary based on your RHOSO deployment method (e.g., OpenShift Operator, direct deployment), you would typically check the status of the RHOSO Chargeback service itself and its dependencies. If deployed as pods, you might use `oc` or `kubectl`.
++
+[source,bash]
+----
+# Example: Check if RHOSO Chargeback pods are running if deployed on OpenShift
+$ oc get pods -n rhoso-chargeback-system
+----
++
+[source,console]
+----
+NAME                                       READY   STATUS    RESTARTS   AGE
+rhoso-chargeback-operator-xxxxxxx-xxxxx    1/1     Running   0          2d
+rhoso-chargeback-api-xxxxxxx-xxxxx         1/1     Running   0          2d
+rhoso-chargeback-worker-xxxxxxx-xxxxx      1/1     Running   0          2d
+----
++
+[TIP]
+If RHOSO Observability or Chargeback components are not running, refer to the RHOSO deployment documentation for troubleshooting and redeployment steps.
++
+FIXME: Add a reference to the official RHOSO Deployment Guide for installing RHOSO Observability and Chargeback components. This is typically an out-of-scope task for a user setting up a *lab*, assuming the lab *already* has RHOSO deployed.
+
+=== Step 2: Create a Dedicated Project and User for Chargeback Testing
+
+It's best practice to create a separate OpenStack project and user for testing chargeback, mirroring real-world multi-tenant scenarios. This allows you to isolate your lab resources and clearly track their consumption.
+
+.  **Source the OpenStack administrative credentials again if necessary.**
++
+[source,bash]
+----
+$ source ~/stackrc
+----
+
+.  **Create a new project for chargeback testing.**
++
+[source,bash]
+----
+$ openstack project create --description "Project for RHOSO Chargeback Lab" chargeback-lab-project
+----
++
+[source,console]
+----
++-------------+----------------------------------+
+| Field       | Value                            |
++-------------+----------------------------------+
+| description | Project for RHOSO Chargeback Lab |
+| domain_id   | default                          |
+| enabled     | True                             |
+| id          | <PROJECT_ID>                     |
+| is_domain   | False                            |
+| name        | chargeback-lab-project           |
+| parent_id   | default                          |
+| tags        | []                               |
++-------------+----------------------------------+
+----
+
+.  **Create a new user for this project.**
++
+[source,bash]
+----
+$ openstack user create --project chargeback-lab-project --password <YOUR_PASSWORD> chargeback-lab-user
+----
++
+[TIP]
+Choose a strong password and remember it. You will use this user to deploy resources in the next step.
+
+.  **Assign the `member` role to the new user within the new project.**
++
+[source,bash]
+----
+$ openstack role add --project chargeback-lab-project --user chargeback-lab-user member
+----
+
+=== Step 3: Deploy Sample Resources in the Lab Project
+
+To generate usage data that RHOSO Chargeback can process, you need to deploy some OpenStack resources within your `chargeback-lab-project`. This typically includes virtual machines, volumes, and optionally floating IPs.
+
+.  **Source the new project's credentials.**
++
+To work within the `chargeback-lab-project`, you need to switch your OpenStack client context.
++
+[source,bash]
+----
+$ openstack --os-project-name chargeback-lab-project --os-username chargeback-lab-user --os-auth-url http://<controller-ip>:5000/v3 --os-user-domain-name default --os-project-domain-name default login
+# Enter your password when prompted
+----
++
+[NOTE]
+Replace `<controller-ip>` with the actual IP address or hostname of your OpenStack controller node.
+
+.  **Identify available Glance images and Nova flavors.**
++
+You'll need these to launch a VM.
++
+[source,bash]
+----
+$ openstack image list
+$ openstack flavor list
+----
++
+Choose a suitable image (e.g., `cirros`, `centos`, `ubuntu`) and flavor (e.g., `m1.tiny`, `m1.small`).
+
+.  **Create a new private network and subnet for the project (if not already existing or shared).**
++
+[source,bash]
+----
+$ openstack network create chargeback-lab-net
+$ openstack subnet create --network chargeback-lab-net --subnet-range 192.168.100.0/24 chargeback-lab-subnet
+----
+
+.  **Launch a sample virtual machine.**
++
+This will immediately start generating compute-related usage metrics.
++
+[source,bash]
+----
+$ openstack server create --image <IMAGE_NAME_OR_ID> --flavor <FLAVOR_NAME_OR_ID> --network chargeback-lab-net chargeback-test-vm-01
+----
++
+[TIP]
+Launch a few different VMs with varying flavors to simulate diverse consumption patterns. This will be useful when testing different rating rules.
+
+.  **Create a sample volume.**
++
+This will generate block storage usage metrics.
++
+[source,bash]
+----
+$ openstack volume create --size 10 chargeback-test-volume-01
+----
++
+[NOTE]
+You can optionally attach this volume to `chargeback-test-vm-01` to simulate a complete attached storage scenario.
+
+=== Step 4: Verify Usage Data Collection in RHOSO Observability
+
+After deploying resources, confirm that RHOSO Observability is actively collecting data from these new resources. This is a critical step, as Chargeback relies on this collected data.
+
+.  **Access the RHOSO Observability dashboard.**
++
+Log in with an administrator account or an account with appropriate permissions to view usage metrics.
+
+.  **Navigate to the metrics or resource usage section.**
++
+Look for dashboards or views that display resource consumption for your OpenStack projects. Filter by the `chargeback-lab-project` or specific resource names (e.g., `chargeback-test-vm-01`).
+
+.  **Confirm that data is being collected.**
++
+You should see graphs or tables showing CPU usage, memory usage, disk I/O, network traffic, and volume storage for the resources you just created. There might be a slight delay (typically a few minutes) for the initial metrics to appear.
+
+[WARNING]
+If no data is appearing for your new resources after a reasonable waiting period (e.g., 5-10 minutes), revisit Step 1 to ensure RHOSO Observability components are healthy, and consult RHOSO troubleshooting guides. Chargeback cannot function without this underlying data.
+
+[TIP]
+Observe the data for some time (e.g., 30 minutes to an hour). This ensures a sufficient amount of historical data for Chargeback to process and helps you understand the granularity of data collection.
+
+This completes the setup of your lab environment. You now have a functional RHOSP deployment with RHOSO Observability and Chargeback components running, a dedicated project with a user, and sample resources actively generating usage data. You are ready to proceed with defining your first chargeback rating rules.
+
+== Suggestions for Content Improvement (FIXME)
+
+*   FIXME: Add a link to a comprehensive "RHOSO Deployment Guide" or "RHOSO Installation Instructions" for administrators who might need to deploy RHOSO components from scratch for their lab. This is an assumed prerequisite for this lab.
+*   FIXME: Provide a high-level architecture diagram showing where the RHOSO Chargeback service fits within the RHOSP ecosystem and how it interacts with metering services (e.g., Ceilometer/Gnocchi).
+*   FIXME: Consider creating a simple `heat` template or Ansible playbook that automatically deploys the `chargeback-lab-project`, `chargeback-lab-user`, and sample resources. This would streamline the lab setup and reduce manual error.
+*   FIXME: If there's a specific `rhoso-cli` or dashboard interface for verifying chargeback service health directly, include commands/steps for that.
+
+== Suggestions for Image/Video Content
+
+*   **Image**: A high-level architectural diagram illustrating the RHOSO Chargeback component's integration with RHOSP (Keystone, Nova, Cinder, Neutron) and the RHOSO Observability data plane (metering services). This would visually explain the data flow.
+*   **Video**: A short screen recording demonstrating the "Verify Usage Data Collection in RHOSO Observability" step, showing how to navigate the RHOSO dashboard and filter metrics for a specific project/resource. This would greatly enhance understanding for visual learners.
+*   **Image**: Screenshots of the `openstack server create` and `openstack volume create` commands' output, highlighting the success messages.
+*   **Image**: A screenshot of the `openstack project create` command output.

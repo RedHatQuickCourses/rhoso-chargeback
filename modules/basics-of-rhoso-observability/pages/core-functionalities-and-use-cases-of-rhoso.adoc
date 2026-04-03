@@ -1,0 +1,129 @@
+#  Core functionalities and use cases of RHOSO
+
+= Core Functionalities and Use Cases of RHOSO
+
+RHOSO, or Red Hat OpenStack Platform Observability and Chargeback, provides a comprehensive suite of tools and features designed to give administrators and tenants deep insights into their OpenStack environments. At its core, RHOSO empowers organizations to effectively monitor, manage, and account for the resources consumed within their cloud infrastructure.
+
+== Core Functionalities of RHOSO Observability
+
+RHOSO's observability capabilities are built around several key functions that coalesce to provide a holistic view of the OpenStack environment's health, performance, and resource utilization.
+
+### 1. Unified Metric Collection and Monitoring
+RHOSO centralizes the collection of performance metrics from various components of the OpenStack platform, including compute instances (VMs), volumes, networks, and core OpenStack services (Nova, Neutron, Cinder, Glance, etc.).
+This functionality typically leverages existing OpenStack monitoring agents (e.g., Ceilometer, Gnocchi) and integrates them with modern time-series databases and visualization tools.
+
+*   **Resource Metrics:** Captures CPU usage, memory utilization, disk I/O, network bandwidth, storage consumption, and other relevant performance indicators at a granular level.
+*   **Service Health Metrics:** Monitors the operational status and performance of OpenStack control plane services, ensuring their availability and responsiveness.
+*   **Tenant-Specific Metrics:** Provides isolated views of resource consumption for individual projects or tenants, crucial for understanding multi-tenant environments.
+
+### 2. Centralized Log Aggregation and Analysis
+Effective troubleshooting and security auditing require a consolidated view of logs generated across the entire OpenStack deployment. RHOSO facilitates this by aggregating logs from all services and instances into a central repository.
+
+*   **Log Ingestion:** Collects logs from diverse sources, including operating systems, OpenStack services, and tenant applications.
+*   **Structured Logging:** Often processes raw logs into a structured format, making them easier to query and analyze.
+*   **Search and Filtering:** Provides powerful search capabilities to quickly locate specific events, errors, or security incidents within vast log data.
+*   **Pattern Recognition:** Identifies recurring patterns or anomalies in log streams, which can indicate underlying issues or potential threats.
+
+### 3. Event Management and Correlation
+Beyond metrics and logs, RHOSO tracks significant events occurring within the OpenStack environment. These events provide a timeline of changes and activities, which can be correlated with metrics and logs for deeper analysis.
+
+*   **Lifecycle Events:** Monitors events related to resource provisioning, scaling, state changes (e.g., VM creation, deletion, migration).
+*   **System Alerts:** Captures security events, configuration changes, and other critical system-level notifications.
+*   **Event Correlation:** Links related events, logs, and metrics to provide a comprehensive understanding of an incident or system behavior.
+
+### 4. Advanced Alerting and Notification System
+Proactive management of a cloud environment relies heavily on an intelligent alerting system. RHOSO allows administrators to define thresholds and conditions that trigger alerts when met.
+
+*   **Configurable Alert Rules:** Users can set up rules based on metric values, log patterns, or specific events.
+*   **Multi-Channel Notifications:** Alerts can be sent via various channels such as email, SMS, webhooks, or integration with incident management systems (e.g., PagerDuty).
+*   **Severity Levels:** Assigns severity to alerts, enabling operators to prioritize responses based on the potential impact.
+
+### 5. Customizable Dashboards and Visualization
+Presenting complex data in an easily digestible format is critical for effective observability. RHOSO offers flexible dashboarding capabilities to visualize collected data.
+
+*   **Pre-built Dashboards:** Provides out-of-the-box dashboards for common OpenStack components and use cases.
+*   **Custom Dashboard Creation:** Allows users to create personalized dashboards tailored to their specific monitoring needs, often using tools like Grafana.
+*   **Data Exploration:** Enables drill-down capabilities to explore underlying metrics, logs, and events for detailed analysis.
+
+[FIXME]
+Consider adding an image here: A diagram illustrating the RHOSO observability components (metric collectors, log aggregators, event bus, alerting engine, dashboarding tool) and their interaction with OpenStack services.
+A video demonstrating navigating a typical RHOSO dashboard to view resource usage would also be highly beneficial.
+
+== Key Use Cases of RHOSO Observability
+
+The core functionalities of RHOSO Observability translate into several critical use cases that enhance operational efficiency, performance, and financial accountability within an OpenStack environment.
+
+### 1. Performance Monitoring and Optimization
+*   **Problem Identification:** Quickly pinpoint performance bottlenecks in VMs, networks, or storage. For example, identify a noisy neighbor VM consuming excessive CPU or I/O.
+*   **Capacity Planning:** Analyze historical resource consumption trends to predict future demands and proactively scale infrastructure or optimize resource allocation.
+*   **Workload Tuning:** Understand how different applications consume resources, enabling optimization of application configurations or underlying infrastructure.
+
+### 2. Proactive Troubleshooting and Root Cause Analysis
+*   **Early Warning:** Receive alerts before issues escalate, allowing for proactive intervention. For example, an alert for high disk I/O on a storage node might prevent a full outage.
+*   **Accelerated Diagnosis:** Correlate metrics, logs, and events to rapidly identify the root cause of service degradations or outages. If an application becomes unresponsive, RHOSO can show if it's due to high CPU, network saturation, or an error in its logs.
+*   **Incident Response:** Streamline incident response by providing all necessary diagnostic data in one place, reducing Mean Time To Resolution (MTTR).
+
+### 3. Resource Utilization Analysis and Efficiency
+*   **Identify Under/Over-provisioned Resources:** Pinpoint VMs or services that are either idle (underutilized) or constantly maxed out (over-provisioned), leading to wasted resources or performance issues.
+*   **Cost Optimization (Showback/Chargeback Foundation):** Provide visibility into actual resource consumption by tenants and projects. This forms the foundational data for implementing showback (showing consumption costs without billing) and chargeback (billing for consumed resources).
+*   **Resource Reclamation:** Identify stale or unused resources that can be reclaimed, improving overall infrastructure efficiency.
+
+### 4. Security and Compliance Auditing
+*   **Activity Monitoring:** Track user activities, API calls, and resource changes for auditing purposes. For example, identifying who created or deleted a VM at a specific time.
+*   **Anomaly Detection:** Detect unusual patterns in logs or metrics that could indicate security breaches or unauthorized access attempts.
+*   **Compliance Reporting:** Generate reports on resource usage and access patterns to meet regulatory compliance requirements.
+
+### 5. Operational Efficiency and Automation
+*   **Automated Responses:** Integrate with orchestration tools to automate responses to specific alerts, such as auto-scaling resources or restarting failed services.
+*   **Reduced Manual Effort:** Minimize the need for manual checks and log parsing, allowing operations teams to focus on more strategic tasks.
+*   **Improved SLA Management:** Ensure Service Level Agreements (SLAs) are met by continuously monitoring key performance indicators (KPIs) and alerting on deviations.
+
+== Hands-on Activity: Exploring RHOSO Observability Dashboards (Conceptual)
+
+While a full hands-on lab requires a deployed RHOSO environment, we can outline the steps you would typically take to explore its observability features. This conceptual activity helps understand the practical application of the core functionalities.
+
+**Objective:** Get familiar with viewing resource consumption and service health within a hypothetical RHOSO dashboard.
+
+**Environment:** A deployed Red Hat OpenStack Platform (RHOSP) environment with RHOSO Observability configured and integrated. Access to the RHOSO user interface.
+
+=== Step 1: Access the RHOSO Observability Dashboard
+.  Open your web browser and navigate to the RHOSO dashboard URL provided by your administrator.
+.  Log in using your designated OpenStack project credentials. You should be presented with a high-level overview of your OpenStack environment or your specific project's resources.
+
+=== Step 2: Navigate to the Global Overview Dashboard
+.  Look for a "Global Overview" or "Platform Health" dashboard. This typically provides a summary of key metrics across the entire OpenStack deployment.
+.  *Observe:*
+    *   Overall CPU, memory, and storage utilization across all compute nodes.
+    *   Network traffic patterns.
+    *   Status of core OpenStack services (e.g., Nova, Neutron, Cinder are "Up").
+    *   Any active alerts or warnings.
+
+=== Step 3: Drill Down into Project/Tenant Resources
+.  Locate a section or dropdown to select your specific OpenStack project or tenant.
+.  *Observe:*
+    *   Total number of instances, volumes, and networks provisioned within your project.
+    *   Aggregated CPU, memory, and disk usage for all your project's instances.
+    *   Network I/O for your project's networks.
+.  Click on an individual instance (VM) from the list. This should take you to a dedicated dashboard for that specific instance.
+.  *Observe:*
+    *   Real-time and historical graphs for the instance's CPU utilization, memory usage, disk read/write operations, and network ingress/egress.
+    *   A list of recent logs from the instance's operating system or applications (if log aggregation is enabled).
+    *   Any alerts specific to this instance (e.g., "High CPU usage for vm-001").
+
+=== Step 4: Explore Log Aggregation (If Available)
+.  Navigate to the "Logs" or "Log Explorer" section within the RHOSO interface.
+.  Use the search bar to filter logs. Try searching for:
+    *   `error`: To find any error messages across your services or instances.
+    *   `nova`: To see logs specifically from the Nova compute service.
+    *   The name of one of your instances: To view only logs related to that particular VM.
+.  *Observe:* The timestamp, source, and content of various log entries.
+
+=== Step 5: Review Active Alerts
+.  Find the "Alerts" or "Notifications" section.
+.  *Observe:* Any active alerts for your project or the overall environment.
+.  Click on an alert to see its details, including the trigger condition, severity, and time.
+
+[FIXME]
+For a real lab, instructions would need specific URLs, login credentials, and pre-configured OpenStack instances and services to generate observable data.
+Consider providing a specific set of sample search queries for the log aggregation step.
+Add a video showing a step-by-step walkthrough of this conceptual activity within a live RHOSO environment. This would greatly enhance understanding.

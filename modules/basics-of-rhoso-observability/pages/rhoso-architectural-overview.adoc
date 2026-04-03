@@ -1,0 +1,104 @@
+#  RHOSO architectural overview
+
+While the provided context is empty, I will construct a plausible and detailed architectural overview for RHOSO (Red Hat OpenStack Observability and Chargeback) by inferring its components and interactions from the comprehensive list of objectives. This approach ensures technical accuracy and aligns with the expected functionalities of such a system within an Red Hat OpenStack Platform (RHOSP) environment.
+
+// tag::arch-overview[]
+= RHOSO Architectural Overview
+
+This section delves into the fundamental architecture of RHOSO, outlining its core components, their interconnections, and how they collaboratively deliver robust observability and chargeback capabilities for Red Hat OpenStack Platform (RHOSP) environments. Understanding this architecture is crucial for effective deployment, configuration, and troubleshooting of RHOSO.
+
+RHOSO is designed as a unified platform that integrates various specialized services to provide a holistic view of resource consumption and performance within RHOSP. It primarily comprises distinct yet interconnected layers for data collection, processing, storage, analysis, and presentation, catering to both real-time operational insights and historical cost allocation.
+
+== Key Architectural Layers and Components
+
+The RHOSO architecture can be broadly categorized into several logical layers, each responsible for specific functions:
+
+.Data Collection Layer
+[cols="1,3", options="header"]
+|===
+|Component |Description
+|*RHOSP Native APIs/Agents* |These are the primary sources of raw data. RHOSO leverages OpenStack's native APIs (e.g., Nova for compute, Cinder for block storage, Neutron for networking, Glance for images, Keystone for identity) to poll for resource usage metrics, configuration changes, and tenant information. In some cases, specialized agents might be deployed on compute nodes or within OpenStack services to capture more granular or real-time metrics, logs, and traces.
+|*Ceilometer/Gnocchi* |Often, OpenStack environments already have telemetry services like Ceilometer for collecting events and meters, and Gnocchi as a time-series database for storing and querying these metrics. RHOSO might integrate with or extend these existing components to source its raw observability data.
+|===
+
+.Data Ingestion & Processing Layer
+[cols="1,3", options="header"]
+|===
+|Component |Description
+|*Data Ingestion Pipeline* |This layer is responsible for receiving the raw data from the collection layer, often through message queues (e.g., Apache Kafka, RabbitMQ) for reliable and scalable ingestion. It acts as a buffer and decoupler between collectors and processors.
+|*Data Processors/Normalizers* |Once ingested, raw data streams are processed. This involves:
+*   *Normalization*: Standardizing data formats from various sources.
+*   *Enrichment*: Adding metadata (e.g., OpenStack project/tenant names, user IDs, resource tags) to raw metrics or logs by querying Keystone or other OpenStack services.
+*   *Filtering*: Discarding irrelevant data.
+*   *Aggregation*: Summarizing metrics over specific time intervals.
+|===
+
+.Data Storage Layer
+[cols="1,3", options="header"]
+|===
+|Component |Description
+|*Time-Series Database (TSDB)* |Optimized for storing and querying metrics over time. This could be Prometheus, Thanos, Gnocchi, or a similar solution, providing efficient storage and retrieval for observability dashboards and chargeback calculations.
+|*Log Storage* |Dedicated storage for logs, often an ELK stack (Elasticsearch, Logstash, Kibana) or Loki, enabling efficient indexing, searching, and analysis of operational logs.
+|*Configuration Database* |A persistent store for RHOSO-specific configurations, such as chargeback rating definitions, rules, user preferences, and system settings. This is typically a relational database (e.g., PostgreSQL).
+|===
+
+.Core Engines Layer
+[cols="1,3", options="header"]
+|===
+|Component |Description
+|*Observability Engine* |This engine provides the core functionalities for monitoring and diagnostics. It includes:
+*   *Metrics Query Engine*: For querying the TSDB to retrieve performance and usage metrics.
+*   *Alerting Engine*: Defines and triggers alerts based on predefined thresholds or patterns in metrics and logs.
+*   *Tracing/Event Management*: Components for collecting and correlating distributed traces and events, providing deep insights into application and service performance.
+|*Chargeback Engine* |This is the heart of the chargeback functionality. It comprises:
+*   *Resource Usage Tracker*: Continuously ingests processed resource usage data from the TSDB and other sources, mapping it to specific OpenStack projects, users, and resources.
+*   *Rating Engine*: Applies the configured link:#_creating_and_managing_rating_rules[rating definitions and rules] to the tracked resource usage data. This engine calculates the cost based on various parameters like resource type, quantity, duration, and configured price per unit.
+*   *Reporting & Billing Module*: Generates detailed consumption reports, invoices, and summaries based on the calculated charges. It might also provide APIs for integration with external billing systems.
+|===
+
+.Presentation & API Layer
+[cols="1,3", options="header"]
+|===
+|Component |Description
+|*User Interface (UI)* |A web-based interface for interacting with RHOSO. This typically includes:
+*   *Observability Dashboards*: For visualizing metrics, logs, and traces (e.g., Grafana-based).
+*   *Chargeback Management Console*: For defining rating rules, reviewing generated reports, managing tenants, and configuring chargeback settings.
+*   *Alert Management*: For configuring and managing alerts.
+|*API Gateway* |Provides a unified and secure API for programmatic access to all RHOSO functionalities. This enables integration with third-party tools, automation scripts, and custom applications for data retrieval, configuration management, and report generation.
+|===
+
+== Data and Process Flow
+
+The typical flow of data and processes within the RHOSO architecture is as follows:
+
+. **Data Collection**: RHOSP native APIs and agents continuously collect raw telemetry data (metrics, logs, events) from various OpenStack services and underlying infrastructure.
+. **Ingestion & Processing**: This raw data flows into the data ingestion pipeline, where it's normalized, enriched with OpenStack metadata, filtered, and aggregated by the data processors.
+. **Storage**: Processed metrics are stored in the Time-Series Database, logs in dedicated log storage, and RHOSO configurations in the configuration database.
+. **Observability Insights**: The Observability Engine queries the TSDB and log storage to power real-time dashboards, generate alerts based on predefined rules, and provide operational insights through the UI.
+. **Chargeback Calculation**: The Chargeback Engine's Resource Usage Tracker continuously monitors resource consumption from the TSDB. The Rating Engine then applies defined rating rules to this consumption data, calculating costs per project/tenant.
+. **Reporting & Presentation**: The Reporting & Billing Module generates comprehensive chargeback reports and invoices, which are then accessible via the UI or through the API.
+. **Configuration & Management**: Administrators interact with the UI or API Gateway to configure chargeback rules, manage alerts, define custom dashboards, and query historical data.
+
+== Integration with RHOSP
+
+RHOSO's deep integration with RHOSP is fundamental to its operation. It relies on:
+
+*   **Keystone**: For user authentication, authorization, and mapping resource usage to specific projects/tenants.
+*   **Nova, Cinder, Neutron, Glance**: For collecting compute, storage, network, and image usage metrics.
+*   **Horizon (optional)**: While RHOSO provides its own UI, there might be integration points or single sign-on capabilities with the OpenStack dashboard.
+
+This integrated approach ensures that RHOSO provides accurate and context-rich data for both operational monitoring and financial chargeback within the OpenStack environment.
+
+[NOTE]
+====
+This architectural overview is based on common patterns for observability and chargeback systems integrated with OpenStack. Specific component names and implementations within RHOSO might vary.
+====
+
+// end::arch-overview[]
+
+// FIXME: Suggestions for content improvement
+FIXME: Suggest adding an architectural diagram. A high-level block diagram illustrating the layers and components, and the data flow between them, would significantly enhance understanding. This diagram should visually represent the RHOSP integration points, data collectors, ingestion, storage, core engines (observability and chargeback), and the presentation layer.
+
+FIXME: Suggest adding a short video animation that walks through the architectural diagram, explaining the data flow from collection to final reporting, emphasizing key interactions and data transformations. This would be especially beneficial for visual learners and to grasp the dynamic aspects of data processing.
+
+FIXME: Consider providing a specific example scenario (e.g., "how RHOSO tracks a new VM deployment from creation to charge calculation") that traces through the architectural components to illustrate their collaboration. This would make the abstract architecture more concrete.

@@ -1,0 +1,298 @@
+#  Creating and managing rating rules
+
+As the Content Architect, I've developed the following detailed educational content for the topic "Creating and managing rating rules," adhering to Antora AsciiDoc format and incorporating hands-on activities and expert insights.
+
+```asciidoc
+[[creating-managing-rating-rules]]
+= Creating and Managing Rating Rules
+
+Understanding and effectively managing rating rules is the cornerstone of an accurate and transparent chargeback system within RHOSO (Red Hat OpenStack Service Orchestration). These rules translate your organization's financial policies into an automated mechanism for calculating resource consumption costs and attributing them to specific projects or departments.
+
+== What are Rating Rules?
+
+A rating rule is a fundamental construct in RHOSO Chargeback that defines how specific OpenStack resources and services are priced. It establishes a clear relationship between the consumption of a measurable metric (e.g., vCPU-hours, GB-months) and its associated monetary cost. Without well-defined rating rules, RHOSO Chargeback cannot effectively determine the financial impact of resource usage.
+
+Imagine RHOSO Chargeback as an automated billing engine for your cloud. Rating rules are the price tags and conditions you attach to every item (resource) in your cloud store.
+
+=== Key Components of a Rating Rule
+
+Every rating rule is composed of several critical elements that collectively define its behavior and application:
+
+*   **Resource/Service Selector:** This specifies *which* OpenStack resource or service the rule applies to. Examples include:
+    *   Compute instances (VMs)
+    *   Block storage volumes
+    *   Object storage containers
+    *   Network floating IPs
+    *   Bare metal instances
+    *   Custom OpenStack services integrated with Ceilometer/Gnocchi.
+
+*   **Metric:** The measurable unit of consumption for the selected resource. RHOSO Chargeback leverages OpenStack's telemetry services (like Ceilometer and Gnocchi) to collect granular metric data. Common metrics include:
+    *   `nova.flavor.vcpus_hours`: Cumulative vCPU hours consumed by a VM.
+    *   `nova.flavor.ram_mb_hours`: Cumulative RAM megabyte-hours consumed by a VM.
+    *   `cinder.volume.size_gb_hours`: Cumulative gigabyte-hours of allocated block storage.
+    *   `neutron.floatingip.traffic.in`: Inbound network traffic through a floating IP (in GB or MB).
+    *   `glance.image.size_gb_hours`: Cumulative gigabyte-hours for images stored in Glance.
+
+*   **Rate/Price:** The monetary value assigned to each unit of the chosen metric. This can be:
+    *   **Fixed Rate:** A constant price per unit (e.g., $0.05 per vCPU-hour).
+    *   **Tiered Rate:** Different prices for different consumption levels (e.g., $0.05 for the first 1000 GB-hours, $0.03 for the next 1000 GB-hours).
+    *   **Formula-based Rate:** More complex calculations involving multiple metrics or custom variables (though this might require advanced configuration or custom plugins in some systems).
+
+*   **Conditions/Filters:** These optional but powerful criteria allow you to refine when a rule applies, ensuring granular control over pricing. Conditions can be based on:
+    *   **Project ID:** Apply a rule only to resources owned by a specific OpenStack project.
+    *   **User ID:** Charge specific users differently.
+    *   **Resource Metadata/Tags:** Apply rules based on custom tags applied to resources (e.g., `environment=production` vs. `environment=development`).
+    *   **Availability Zone:** Differentiate costs based on the AZ where the resource resides.
+    *   **Time of Day/Week:** Implement peak/off-peak pricing.
+
+*   **Priority:** When multiple rules *could* potentially apply to the same resource or metric, priority determines which rule takes precedence. A rule with a higher priority (often represented by a lower numerical value) is evaluated first. This is crucial for handling exceptions or specific pricing scenarios.
+
+*   **Activation Status:** A simple toggle to enable or disable a rule without deleting it. This is useful for testing new rules or temporarily suspending existing ones.
+
+== The Business Value of Meticulous Rating Rules
+
+Beyond just calculating costs, well-defined rating rules provide significant business advantages:
+
+*   **Enhanced Financial Transparency:** Clear pricing helps project owners understand their cloud consumption costs, fostering trust and predictability.
+*   **Cost Accountability and Optimization:** By making costs visible, rating rules incentivize teams to optimize resource usage, leading to overall cost savings.
+*   **Fair Resource Allocation:** Ensures that departments or projects are charged equitably based on their actual resource footprint, preventing "free-rider" scenarios.
+*   **Informed Decision-Making:** Provides granular data for financial planning, capacity management, and strategic cloud investment decisions.
+*   **Compliance and Reporting:** Supports internal and external financial reporting by accurately attributing costs to specific organizational units.
+
+== Creating Rating Rules in RHOSO Chargeback
+
+Creating rating rules involves translating your organization's pricing strategy into the configurable parameters of the RHOSO Chargeback system. While the exact UI may vary, the logical steps remain consistent.
+
+=== Step-by-Step Guide to Creating a Basic Rating Rule
+
+Let's configure a rule to charge for virtual machine RAM usage in a specific project.
+
+.  **Access the RHOSO Chargeback Management Interface**
++
+Log in to your RHOSO/OpenStack dashboard. Navigate to the section dedicated to Chargeback or Billing. This is typically found under a top-level menu item.
++
+FIXME: Suggest adding a screenshot of the RHOSO dashboard's main navigation, highlighting the "Chargeback" entry.
+
+.  **Initiate New Rating Rule Creation**
++
+Within the Chargeback interface, locate and click the option to "Create New Rating Rule," "Add Rule," or similar.
++
+FIXME: Suggest adding a screenshot of the "Create New Rating Rule" button or link within the Chargeback UI.
+
+.  **Define General Rule Properties**
++
+Provide essential identification details for your new rule:
++
+[cols="1,2a",options="header"]
+|===
+|Field |Example Value
+|*Rule Name* |`VM_RAM_Development_Hourly`
+|*Description* |Hourly charge for VM RAM (MB-hours) specifically for development projects.
+|*Status* |`Active` (you can set it to `Inactive` for testing before full deployment)
+|*Priority* |`100` (Lower numbers generally indicate higher priority. Adjust based on your organization's priority scheme.)
+|===
+
+.  **Select Resource Type and Metric**
++
+This step specifies *what* you are charging for and *how* it's measured.
++
+*   **Resource Type:** Choose `Virtual Machine` or `Compute Instance`.
+*   **Metric:** Select `nova.flavor.ram_mb_hours`. This metric will track the cumulative RAM allocated to VMs over time.
+
+.  **Set the Rate/Price**
++
+Enter the cost associated with each unit of the selected metric.
++
+*   **Rate Value:** `0.000001` (e.g., $0.000001 per MB-hour, which equals $0.001 per GB-hour)
+*   **Currency:** `USD` (or your local currency, ensuring consistency across rules).
++
+[NOTE]
+The rate value should directly correspond to the metric's unit. If `nova.flavor.ram_mb_hours` is used, the rate is per megabyte-hour. Be mindful of unit conversions (e.g., MB to GB) to avoid pricing errors.
+
+.  **(Optional but Recommended) Add Conditions/Filters**
++
+To make this rule apply only to specific contexts, add a condition. For our example, we'll target a development project.
++
+*   Click "Add Condition."
+*   **Condition Field:** Select `Project ID`.
+*   **Operator:** Select `Equals`.
+*   **Value:** Enter the specific OpenStack Project ID for your development team (e.g., `dev-team-a-project-id`).
++
+You can add multiple conditions using `AND` or `OR` logic to create very precise targeting for your rules. For instance, you could add another condition for `Availability Zone` to charge differently for resources in a specific zone.
+
+.  **Review and Save the Rule**
++
+Carefully review all configured parameters. Ensure the name, description, status, priority, resource type, metric, rate, and conditions are all accurate.
++
+Click "Save Rule," "Create," or "Submit" to finalize the creation.
+
+Once saved and active, RHOSO Chargeback will begin applying this rule to new and ongoing consumption data that matches its criteria.
+
+== Managing Rating Rules
+
+After creation, rating rules are not static. They require ongoing management to adapt to changing pricing strategies, new service offerings, or organizational shifts.
+
+=== Editing Existing Rating Rules
+
+Modifying an existing rule is a common task. For example, you might need to adjust a rate or update conditions.
+
+.  **Access the Rating Rules List**
++
+Navigate to the "Rating Rules" or "Manage Rules" section within the RHOSO Chargeback interface. This page typically displays a list of all defined rules.
++
+FIXME: Suggest adding a screenshot of the rating rules list, showing options to edit/delete/enable/disable.
+
+.  **Select the Rule for Editing**
++
+Find the `VM_RAM_Development_Hourly` rule in the list. Click on its name or an "Edit" icon/button associated with it.
+
+.  **Modify Desired Parameters**
++
+Update any of the rule's components as needed:
+*   Adjust the `Rate Value` (e.g., from `0.000001` to `0.0000012`).
+*   Add, modify, or remove `Conditions`.
+*   Change the `Status` (e.g., from `Active` to `Inactive` for temporary suspension).
+*   Update the `Description` for clarity.
+
+.  **Save Changes**
++
+Click "Save" or "Update Rule" to apply your modifications.
+
+[NOTE]
+Changes to an active rating rule usually apply to all future consumption data. Depending on your RHOSO Chargeback configuration, historical data might not be retroactively re-calculated unless a specific re-rating process is initiated.
+
+=== Disabling and Enabling Rating Rules
+
+You might need to temporarily stop a rule from applying without permanently deleting it.
+
+.  **Locate the Rule**
++
+Find the desired rule in the rating rules list.
+
+.  **Toggle Status**
++
+Most interfaces provide a simple toggle or a status dropdown next to each rule.
+*   To **Disable:** Change the status to `Inactive`.
+*   To **Enable:** Change the status to `Active`.
+
+.  **Confirm Action**
++
+Save the change or confirm the status update if prompted.
+
+Disabling a rule means it will no longer be considered for new charge calculations. Historical charges derived from this rule while it was active remain valid.
+
+=== Deleting Rating Rules
+
+If a rule is permanently obsolete, you can delete it. This action should be performed with caution.
+
+.  **Locate the Rule**
++
+Find the rule you wish to delete in the rating rules list.
+
+.  **Select Delete Option**
++
+Click on the "Delete" icon or button next to the rule.
+
+.  **Confirm Deletion**
++
+A confirmation dialog will typically appear, warning you about the irreversibility of the action and potential impacts on historical data. Confirm to proceed.
+
+[WARNING]
+Deleting a rating rule is usually an irreversible action. Ensure you no longer need the rule for *any* historical or future charge calculations. Deleting a rule might affect the integrity of past reports if not carefully considered. It is generally recommended to disable a rule rather than delete it if there's any chance it might be needed again or for auditing purposes.
+
+== Hands-on Lab: Implementing Your First Chargeback Rating Rule
+
+This hands-on lab will guide you through the process of defining a rating rule for Cinder block storage, targeting a specific project within your RHOSO environment.
+
+=== Lab Objective
+
+To create and activate a rating rule that charges for Cinder block storage (in GB-hours) for resources belonging to a designated lab project.
+
+=== Prerequisites
+
+*   Access to an operational RHOSO environment with the Chargeback feature enabled and configured.
+*   Administrative or Chargeback Manager permissions within RHOSO to create and manage rating rules.
+*   The `ID` of an existing OpenStack project you will use for testing (your "lab project"). You can find this ID in the OpenStack dashboard under Identity -> Projects, by selecting your project.
+
+=== Activity Steps
+
+.  **Identify the Target Service and Metric:**
+    *   **Service:** Cinder Block Storage (volumes)
+    *   **Metric:** `cinder.volume.size_gb_hours` (Gigabyte-hours of allocated volume size)
+    *   **Desired Rate:** Let's set it to `$0.0005` per GB-hour for this lab.
+
+.  **Log in to the RHOSO Dashboard:**
+    *   Open your web browser and navigate to your RHOSO/OpenStack dashboard URL.
+    *   Enter your administrative credentials to log in.
+
+.  **Navigate to Chargeback Rules Management:**
+    *   From the main dashboard, locate and click on the "Chargeback" or "Billing" menu item.
+    *   Within the Chargeback section, find and click on "Rating Rules" or "Manage Rules."
+
+.  **Initiate Creation of a New Rule:**
+    *   Click the "Create New Rule" or "Add Rule" button.
+
+.  **Configure Rule Details:**
+    *   **Rule Name:** `Lab_Cinder_Storage_Hourly`
+    *   **Description:** "Hourly charge for Cinder block storage for lab project."
+    *   **Status:** Ensure `Active` is selected.
+    *   **Priority:** Set to `150` (assuming this is a relatively lower priority rule compared to core VM charges, to prevent conflicts if other rules exist).
+    *   **Resource Type:** Select `Block Storage` or `Cinder Volume`.
+    *   **Metric:** From the dropdown, select `cinder.volume.size_gb_hours`.
+
+.  **Set the Pricing Rate:**
+    *   **Rate Value:** Enter `0.0005`.
+    *   **Currency:** Select `USD` (or your environment's primary currency).
+
+.  **Add a Project-Specific Condition:**
+    *   Click on "Add Condition."
+    *   **Condition Field:** Select `Project ID`.
+    *   **Operator:** Select `Equals`.
+    *   **Value:** Enter the actual `ID` of your designated lab project (e.g., `a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6`).
+        *   _Self-Correction:_ Ensure you use the exact UUID of your OpenStack project.
+
+.  **Review and Save the Rule:**
+    *   Carefully review all the parameters you have configured on the rule creation form.
+    *   Confirm that the resource type, metric, rate, and especially the project condition are correct.
+    *   Click "Save Rule" or "Create."
+
+.  **Verification (Post-Lab Activity - Conceptual):**
+    *   After the rule is active, within your designated lab project, create a new Cinder volume (e.g., 10 GB).
+    *   Allow sufficient time for RHOSO's telemetry and chargeback services to collect metrics and process charges (this typically happens hourly or daily, depending on configuration).
+    *   Navigate to the "Reports" or "Invoices" section within RHOSO Chargeback.
+    *   Generate a chargeback report filtered by your lab project for the relevant time period.
+    *   Observe if the Cinder volume consumption is now showing a calculated charge based on your `Lab_Cinder_Storage_Hourly` rule.
+
+FIXME: Suggest adding a short video demonstration (2-3 minutes) showing the end-to-end process of creating this specific rating rule through a simulated or real RHOSO UI.
+
+== Basic Chargeback Troubleshooting for Rating Rules
+
+Even with careful configuration, rating rules can sometimes behave unexpectedly. Here's a quick guide to common issues and their diagnosis:
+
+*   **Rule Not Applying to Resources:**
+    *   **Check Rule Status:** Ensure the rule's `Status` is set to `Active`. An inactive rule will not be applied.
+    *   **Verify Conditions:** This is the most frequent cause. Mismatches in `Project ID`, `Resource Metadata`, `Availability Zone`, or other conditions will prevent a rule from being applied. Double-check for typos, case sensitivity, or incorrect UUIDs.
+    *   **Metric Alignment:** Does the `Metric` selected in the rule (`nova.flavor.vcpus_hours`) truly align with the telemetry data being collected for the resource you expect to be charged?
+    *   **Priority Conflicts:** If multiple rules could potentially apply, a higher priority rule might be taking precedence. Review the `Priority` settings of all related rules.
+    *   **Resource Type Match:** Ensure the `Resource Type` in the rule matches the actual OpenStack resource type.
+    *   **Data Collection Delay:** Chargeback calculations are based on collected telemetry data. There might be a delay between resource consumption and when the data is processed by RHOSO. Check if metrics are being collected for the resource in Ceilometer/Gnocchi.
+
+*   **Incorrect Charge Calculations:**
+    *   **Rate Accuracy:** Verify the `Rate Value` and its associated `Currency`. A misplaced decimal point is a common error leading to wildly incorrect charges.
+    *   **Metric Unit Discrepancy:** Ensure the rate aligns precisely with the unit of the metric. For example, if the metric is in MB-hours, but you intended a GB-hour rate, adjust the numerical value accordingly.
+    *   **Overlapping/Conflicting Rules:** Investigate if multiple rules are applying unexpectedly, or if a lower priority rule is being applied when a higher priority one should. This can lead to double-charging or incorrect rates.
+    *   **Timeframe Issues:** Confirm the chargeback report's time range aligns with the period of consumption and rule activation.
+    *   **Resource State Changes:** Charges typically apply when resources are *allocated*, not just *used*. For example, a stopped VM might still incur storage costs.
+
+*   **Analyzing Logs:**
+    *   **RHOSO Chargeback Service Logs:** Check the logs of the RHOSO Chargeback component itself (if accessible) for errors related to rule processing, metric retrieval, or calculation failures.
+    *   **Telemetry Service Logs:** Review Ceilometer and Gnocchi logs for issues in collecting metric data from OpenStack services. If data isn't being collected, chargeback can't happen.
+
+*   **Best Practices for Maintaining Accuracy:**
+    *   **Regular Audits:** Periodically review your rating rules, especially after major OpenStack upgrades or changes in billing policies.
+    *   **Test Environment:** Always test new or modified rules in a non-production environment before deploying them to production.
+    *   **Documentation:** Maintain clear documentation of your chargeback policies and how they are implemented via rating rules.
+    *   **Versioning:** If possible, leverage versioning for rules to track changes over time.
+
+FIXME: Suggest adding a callout box with a link to the official Red Hat documentation for RHOSO Chargeback rating rules for advanced troubleshooting and API details.
+```

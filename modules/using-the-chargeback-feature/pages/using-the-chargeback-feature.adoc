@@ -1,0 +1,13 @@
+#  Using the Chargeback Feature
+
+=== Using the Chargeback Feature
+
+The Chargeback feature in RHOSO allows users to define, apply, and monitor resource consumption costs. This involves:
+
+*   Understanding the building blocks of cost calculation through rating definitions and components.
+*   Establishing specific rules for resource pricing by creating and managing rating rules.
+*   Generating comprehensive reports and invoices to reflect consumption charges.
+*   Analyzing the chargeback data to gain insights into resource usage and costs.
+
+FIXME: Consider adding a diagram illustrating the flow from rating rule creation to report generation.
+FIXME: Include a short video demonstrating the creation of a simple rating rule.

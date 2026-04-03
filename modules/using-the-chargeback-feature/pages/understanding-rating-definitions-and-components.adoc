@@ -1,0 +1,158 @@
+#  Understanding rating definitions and components
+
+Here is the detailed educational content for "Understanding rating definitions and components" in Antora AsciiDoc format.
+
+```asciidoc
+= Understanding Rating Definitions and Components
+
+Chargeback is a critical feature for managing cloud resource consumption and costs within an organization. At its core, the ability to accurately attribute and bill for resource usage relies on well-defined *rating definitions* and their underlying *components*. These definitions translate raw resource consumption data into tangible costs, providing transparency and accountability for cloud expenditures.
+
+== What is a Rating Definition?
+
+In the context of RHOSO Chargeback, a *rating definition* is a structured set of rules that specifies how different types of resource consumption are costed. It acts as a blueprint, telling the Chargeback system how to calculate the monetary value of a particular resource (e.g., vCPU, RAM, storage, network traffic) consumed by a project, department, or user over a given period.
+
+The primary purpose of a rating definition is to standardize pricing logic, ensuring that all charges are consistent, predictable, and fair across the cloud environment. Without clear rating definitions, it would be impossible to generate accurate invoices or reports for resource usage.
+
+== Key Components of a Rating Definition
+
+A typical rating definition is comprised of several essential components that, when combined, determine the final cost of a consumed resource. Understanding each component is crucial for effective chargeback implementation.
+
+=== 1. Resource Type and Metric
+
+This component identifies *what* is being measured and charged for. RHOSO Chargeback integrates with various monitoring sources to collect consumption data for a wide array of resources.
+
+*   **Resource Type**: The category of the resource being tracked. Examples include:
+    *   Virtual Machine (VM)
+    *   Block Storage
+    *   Object Storage
+    *   Network Bandwidth
+    *   vCPU
+    *   RAM
+*   **Metric**: The specific unit of measurement within that resource type. For instance, for a VM, metrics could be:
+    *   `cpu_utilization` (average percentage over time)
+    *   `memory_allocated` (GB per hour)
+    *   `disk_read_bytes` (bytes per second)
+    *   `network_outgoing_bytes` (bytes per second)
+
+[NOTE]
+The available resource types and metrics are typically predefined by the RHOSO observability components, which gather this telemetry data.
+
+=== 2. Unit of Measure
+
+Once the resource and metric are identified, the *unit of measure* defines the quantum in which the consumption is expressed for pricing. This ensures consistency in calculations.
+
+Examples:
+*   `GB-hour` (Gigabyte-hour) for memory or storage usage over time.
+*   `vCPU-hour` (Virtual CPU-hour) for vCPU allocation.
+*   `TB-month` (Terabyte-month) for long-term storage.
+*   `Mbps-hour` (Megabits per second-hour) for network throughput.
+*   `count` for discrete events or fixed charges.
+
+=== 3. Rate (Price per Unit)
+
+The *rate* is the monetary value assigned to a single unit of the defined resource metric. This is the core pricing component.
+
+Examples:
+*   `$0.05` per `GB-hour` of RAM.
+*   `$0.10` per `vCPU-hour`.
+*   `$20.00` per `TB-month` of block storage.
+
+Rates can be simple fixed values or can incorporate more complex logic such as:
+
+*   **Tiered Rates**: Different rates apply based on consumption levels. For example, the first 100 GB-hours might cost $0.05/GB-hour, while subsequent GB-hours cost $0.03/GB-hour.
+*   **Graduated Rates**: Rates change incrementally based on total usage.
+*   **Time-based Rates**: Different rates for peak vs. off-peak hours (less common but possible).
+
+=== 4. Periodicity / Interval
+
+This component specifies the frequency at which charges are calculated and aggregated. It defines the billing cycle for the resource.
+
+Examples:
+*   `Hourly`: Charges are calculated for every hour a resource is consumed.
+*   `Daily`: Charges are aggregated daily.
+*   `Monthly`: Charges are aggregated monthly.
+
+The periodicity impacts how granular the chargeback reports will be and how frequently invoices are generated.
+
+=== 5. Attributes and Filters (Categorization)
+
+*Attributes* (often referred to as *tags* or *labels*) and *filters* are crucial for applying different rating definitions to specific subsets of resources. This allows for granular control over pricing based on various criteria.
+
+Examples of attributes/filters:
+*   **Project ID**: Different projects might have different internal pricing structures.
+*   **Department**: Charge different departments distinct rates for the same resource.
+*   **Service Tier**: Premium tier VMs might have a higher rate than standard tier VMs.
+*   **Region/Availability Zone**: Different costs for resources deployed in different geographical locations.
+*   **Resource Name Pattern**: Apply a rate to all VMs whose names start with "prod-".
+
+Filters use these attributes to determine which resources a particular rating definition applies to. For instance, a definition might apply *only* to VMs belonging to `project_alpha` and running in the `us-east` region.
+
+=== 6. Calculation Logic / Formulas
+
+While not always explicitly a *component* you configure in every UI, underlying each rating definition is a *calculation logic* or *formula*. This dictates how the measured consumption, unit of measure, and rate interact to produce a total charge.
+
+Typical formulas involve:
+
+[source,math]
+Total Charge = (Consumption Quantity * Rate per Unit)
+
+For time-based metrics, this might be:
+
+[source,math]
+Total Charge = (Average Consumption per Hour * Number of Hours * Rate per Unit)
+
+Complex scenarios, like tiered pricing or discounts, would involve more elaborate formulas built into the system's logic based on the definition's parameters.
+
+== Hands-on Concept: Deconstructing a Simple Rating Definition
+
+Let's imagine a scenario where your organization wants to charge for memory usage on virtual machines.
+
+*Scenario*: Charge Project `dev-team` for RAM allocated to their VMs in the `us-east-1` region.
+
+*   **Resource Type**: Virtual Machine (VM)
+*   **Metric**: `memory_allocated`
+*   **Unit of Measure**: `GB-hour`
+*   **Rate**: `$0.02` per `GB-hour`
+*   **Periodicity**: `Monthly`
+*   **Filters**:
+    *   `project_id` = `dev-team`
+    *   `region` = `us-east-1`
+
+How would this translate to a charge?
+
+Assume a VM belonging to `dev-team` in `us-east-1` has 8 GB of RAM allocated and runs for 720 hours in a month.
+
+. *Calculate total consumption*: 8 GB * 720 hours = 5760 GB-hours
+. *Apply the rate*: 5760 GB-hours * $0.02/GB-hour = $115.20
+
+This VM would incur a charge of $115.20 for the month. This conceptual exercise demonstrates how each component works together to derive a final cost.
+
+[FIXME]
+It would be beneficial to add a diagram here illustrating the flow from resource consumption data through a rating definition to a calculated charge.
+
+[FIXME]
+A short video demonstrating the UI elements for defining these components in RHOSO Chargeback would significantly enhance understanding.
+
+```
+**Suggestions for Improvement:**
+
+1.  **FIXME: Visual Representation of Components:**
+    *   *Suggestion*: Add a diagram (e.g., a flowchart or block diagram) illustrating the relationship between the different components of a rating definition. This diagram could visually map how "Resource Type", "Metric", "Unit", "Rate", "Periodicity", and "Filters" come together to form a complete definition.
+    *   *Placement*: After the "Key Components of a Rating Definition" section.
+
+2.  **FIXME: Example UI Snippets (Image/Screenshot):**
+    *   *Suggestion*: Include screenshots of a hypothetical (or actual, if available) RHOSO Chargeback UI showing where these components would be configured. For example, a screenshot highlighting input fields for "Metric Name," "Unit of Measure," and "Rate."
+    *   *Placement*: Within the respective component explanations (e.g., an image for "Rate (Price per Unit)" showing a field for entering the price).
+
+3.  **FIXME: Video Demonstration:**
+    *   *Suggestion*: Create a short video tutorial demonstrating the creation of a simple rating definition using the RHOSO Chargeback UI. This could walk through selecting a resource, defining its unit and rate, and applying basic filters.
+    *   *Placement*: As an optional learning resource at the end of this topic or linking to a dedicated "Hands-on Lab: Implementing Your First Chargeback Rating" section.
+
+4.  **FIXME: Cross-referencing to Metric Collection:**
+    *   *Suggestion*: Add an explicit cross-reference (if a section exists) to the "Basics of RHOSO Observability" to explain *how* these metrics are collected and made available to Chargeback. This reinforces the integration aspect.
+    *   *Placement*: Within the "Resource Type and Metric" section.
+
+5.  **FIXME: Advanced Scenarios (Image/Diagram):**
+    *   *Suggestion*: If possible, add a visual example (e.g., a small table or simple chart) illustrating how "Tiered Rates" work, as this can be a more complex concept.
+    *   *Placement*: Within the "Rate (Price per Unit)" section, specifically where tiered rates are mentioned.
+```

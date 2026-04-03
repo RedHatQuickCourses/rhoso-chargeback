@@ -1,0 +1,15 @@
+#  Introduction to RHOSO Chargeback
+
+== Introduction to RHOSO Chargeback
+
+RHOSO Chargeback provides financial accountability for cloud resource consumption. It enables organizations to track, measure, and assign costs to specific departments, projects, or users based on their usage of OpenShift resources.
+
+Key aspects include:
+
+*   **Understanding the Feature::** Chargeback extends RHOSO's observability by adding a financial dimension, translating resource usage into billable units.
+*   **Business Value::** It facilitates cost transparency, optimizes resource allocation, and supports showback/chargeback models, promoting responsible cloud consumption within an organization.
+*   **Process Flow::** Involves defining rating rules based on resource metrics, processing usage data, and generating reports or invoices.
+*   **Integration::** Seamlessly integrates with RHOSO Observability, leveraging collected metrics to calculate and attribute costs.
+
+FIXME: Add an image illustrating the high-level chargeback process flow, from resource usage to report generation.
+FIXME: Consider a short video explaining the core concept of chargeback and its benefits.

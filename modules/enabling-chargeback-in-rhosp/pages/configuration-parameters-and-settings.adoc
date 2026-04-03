@@ -1,0 +1,221 @@
+#  Configuration parameters and settings
+
+= Configuration Parameters and Settings for RHOSO Chargeback
+
+This section delves into the critical configuration parameters and settings required to successfully enable and operate the Chargeback feature within your Red Hat OpenStack Platform (RHOSP) environment. Understanding these settings is crucial for ensuring accurate resource consumption tracking, proper cost allocation, and seamless integration with your existing infrastructure.
+
+== Understanding Core Chargeback Configuration
+
+Enabling Chargeback in RHOSP involves configuring various components that interact to collect resource usage data, apply rating rules, and generate reports. These configurations typically cover aspects such as API endpoints, authentication, data retention, resource discovery intervals, and logging.
+
+The Chargeback service, as part of RHOSO, relies on a robust set of configurations to define its operational behavior. These parameters dictate how the system connects to RHOSP, stores its data, processes information, and handles reporting.
+
+=== Key Configuration Areas and Parameters
+
+When configuring RHOSO Chargeback, you'll generally interact with parameters related to the following areas:
+
+*   **API Connectivity**: How RHOSO connects to RHOSP and potentially other external services.
+*   **Database Settings**: Where Chargeback stores its raw data, processed charges, and configuration.
+*   **Resource Discovery**: How often RHOSO scans your RHOSP environment for new or updated resources.
+*   **Billing Cycle Definitions**: Parameters that define the start and end of billing periods.
+*   **Data Retention**: Policies for how long raw usage data and generated charges are kept.
+*   **Logging and Monitoring**: Settings for logging verbosity and integration with monitoring tools.
+
+Let's explore some illustrative parameters and their purpose.
+
+.Illustrative Chargeback Configuration Parameters
+[cols="1,2,3",options="header"]
+|===
+|Parameter | Category | Description
+
+|`rhosp_api_endpoint`
+|API Connectivity
+|The URL endpoint for the Red Hat OpenStack Platform API. This is essential for RHOSO to discover resources and retrieve usage data from RHOSP.
+FIXME: Provide specific API endpoint examples for RHOSP environments (e.g., Keystone, Nova, Cinder).
+
+|`rhosp_admin_credentials`
+|API Connectivity
+|Authentication credentials (username and password or API key) for an administrative user in RHOSP. RHOSO uses these to access and collect data from various RHOSP services.
+FIXME: Specify the recommended privilege level and any required roles for the RHOSP user.
+
+|`chargeback_db_connection_string`
+|Database Settings
+|The connection string for the database where Chargeback data is stored. This typically includes the database type, host, port, database name, username, and password. This is critical for data persistence and retrieval.
+
+|`resource_discovery_interval_minutes`
+|Resource Discovery
+|An integer value specifying how frequently (in minutes) RHOSO should poll RHOSP for new or updated resources. A shorter interval provides more up-to-date data but might increase load.
+
+|`data_retention_days`
+|Data Retention
+|The number of days to retain raw resource usage data within the Chargeback database. Older data might be purged or archived based on this setting to manage storage.
+
+|`billing_period_start_day`
+|Billing Cycle Definitions
+|An integer (1-31) representing the day of the month when a new billing period officially starts. This is fundamental for generating monthly chargeback reports.
+
+|`default_currency_symbol`
+|Billing Cycle Definitions
+|The currency symbol (e.g., `USD`, `€`, `£`) to be used in all generated chargeback reports and invoices.
+
+|`log_level`
+|Logging and Monitoring
+|Defines the verbosity of the Chargeback service's logs (e.g., `DEBUG`, `INFO`, `WARNING`, `ERROR`). `INFO` is usually suitable for production; `DEBUG` for troubleshooting.
+
+|`chargeback_queue_size`
+|Performance
+|The maximum number of unprocessed chargeback tasks or events that can be held in an internal queue. This helps manage load during peak usage.
+|===
+
+FIXME: Add a table or section detailing specific configuration file paths (e.g., `/etc/rhoso/chargeback.conf`) or CLI commands (e.g., `rhoso-cli config set`) relevant to RHOSO for setting these parameters.
+
+=== Configuration Methods
+
+Configuration parameters can typically be set using one or more of the following methods, depending on the RHOSO deployment model:
+
+*   **Configuration Files**: Often YAML or INI files located in `/etc/rhoso/` or a similar path. These files provide a persistent way to define settings.
+*   **Environment Variables**: Useful for containerized deployments (e.g., OpenShift) or temporary overrides, where parameters are passed as environment variables to the service.
+*   **CLI Tools**: RHOSO might provide command-line interface tools to manage and modify configurations dynamically, which then update the underlying configuration files or database.
+*   **API/UI**: In some cases, core parameters might be exposed via a web UI or a dedicated API for easier management.
+
+// tag::hands-on[]
+== Hands-on Activity: Reviewing and Modifying Basic Chargeback Configuration
+
+This lab will guide you through the process of accessing and making a rudimentary change to a hypothetical Chargeback configuration file. This activity assumes you have administrative access to the server or container running the RHOSO Chargeback service.
+
+*NOTE*: The file paths and specific commands are illustrative. In a real-world scenario, you would consult the official RHOSO documentation for exact details.
+
+=== Setting Up the Lab Environment (Conceptual)
+
+1.  **Access the RHOSO Chargeback Host**: SSH into the virtual machine or container host where the RHOSO Chargeback service is deployed.
+    [source,bash]
+    ----
+    ssh cloud-admin@rhoso-chargeback-host.example.com
+    ----
+    FIXME: Provide actual IP address or hostname for a lab environment.
+
+2.  **Identify Configuration Directory**: Navigate to the assumed configuration directory for RHOSO Chargeback.
+    [source,bash]
+    ----
+    cd /etc/rhoso/
+    ----
+    FIXME: Confirm the actual configuration directory for RHOSO Chargeback.
+
+=== Task 1: Reviewing Current Configuration
+
+1.  **List Configuration Files**: Use `ls` to see the configuration files in the directory. You're looking for a file like `chargeback.conf` or `chargeback.yaml`.
+    [source,bash]
+    ----
+    ls
+    ----
+    Expected output might include:
+    ```
+    chargeback.conf  observability.conf  rhoso.yaml
+    ```
+
+2.  **View `chargeback.conf`**: Use a text editor like `cat` or `less` to view the contents of the Chargeback configuration file.
+    [source,bash]
+    ----
+    sudo cat chargeback.conf
+    ----
+    You might see content similar to this (illustrative YAML format):
+    ```yaml
+    # RHOSO Chargeback Configuration
+    api:
+      rhosp_endpoint: "https://keystone.rhosp.example.com:5000/v3"
+      rhosp_admin_user: "chargeback_user"
+      # rhosp_admin_password: "SUPER_SECRET_PASSWORD" # Not recommended to store plaintext
+    database:
+      type: "postgresql"
+      host: "db.rhoso.example.com"
+      port: 5432
+      name: "rhoso_chargeback"
+      user: "rhoso_db_user"
+      # password: "DB_SUPER_SECRET_PASSWORD"
+    settings:
+      resource_discovery_interval_minutes: 60
+      data_retention_days: 90
+      billing_period_start_day: 1
+      default_currency_symbol: "USD"
+    logging:
+      level: "INFO"
+      log_file: "/var/log/rhoso/chargeback.log"
+    ```
+
+=== Task 2: Modifying a Configuration Parameter
+
+We will modify the `data_retention_days` parameter to an arbitrary value (e.g., 120 days) for demonstration purposes.
+
+1.  **Open `chargeback.conf` for Editing**: Use a text editor like `vi` or `nano`.
+    [source,bash]
+    ----
+    sudo vi chargeback.conf
+    ----
+
+2.  **Locate and Modify `data_retention_days`**:
+    Navigate to the `settings` section and change the value:
+    ```yaml
+    # ... (previous content)
+    settings:
+      resource_discovery_interval_minutes: 60
+      data_retention_days: 120 # Changed from 90 to 120
+      billing_period_start_day: 1
+      default_currency_symbol: "USD"
+    # ... (rest of content)
+    ```
+
+3.  **Save and Exit the Editor**:
+    *   For `vi`: Press `Esc`, then type `:wq` and press `Enter`.
+    *   For `nano`: Press `Ctrl+X`, then `Y` to confirm save, then `Enter`.
+
+=== Task 3: Applying Configuration Changes
+
+For most services, a configuration change requires a service restart to take effect.
+
+1.  **Restart the RHOSO Chargeback Service**: The exact command depends on the system's init system (e.g., `systemd`).
+    [source,bash]
+    ----
+    sudo systemctl restart rhoso-chargeback.service
+    ----
+    FIXME: Provide the actual service name for RHOSO Chargeback. If deployed via OpenShift, provide `oc` commands to restart pods.
+
+2.  **Verify Service Status**: Ensure the service restarted successfully.
+    [source,bash]
+    ----
+    sudo systemctl status rhoso-chargeback.service
+    ----
+    Look for "active (running)" in the output.
+
+=== Task 4: Verifying the Change (Conceptual)
+
+Verifying the change would typically involve looking at logs, checking an administrative UI, or potentially running a command to query the active configuration.
+
+1.  **Check Logs for Confirmation**: Look for log messages indicating that the new configuration value was loaded.
+    [source,bash]
+    ----
+    sudo journalctl -u rhoso-chargeback.service -n 50 --since "5 minutes ago" | grep "data_retention_days"
+    ----
+    You might see a line similar to:
+    ```
+    INFO: Chargeback service loaded configuration: data_retention_days = 120
+    ```
+    FIXME: Suggest how to verify the change through the RHOSO UI if such a feature exists.
+
+This completes the hands-on activity for modifying basic Chargeback configuration.
+// end::hands-on[]
+
+== Best Practices for Configuration
+
+*   **Version Control**: Keep configuration files under version control (e.g., Git) to track changes, enable rollbacks, and facilitate collaboration.
+*   **Secrets Management**: Avoid hardcoding sensitive information like passwords in configuration files. Utilize secret management solutions (e.g., HashiCorp Vault, Kubernetes Secrets, OpenStack Barbican) and environment variables or secure credential stores.
+*   **Documentation**: Document all configuration changes, including the rationale, date, and who made the change.
+*   **Testing**: Always test configuration changes in a non-production environment before deploying to production.
+*   **Regular Review**: Periodically review your Chargeback configuration to ensure it aligns with your organizational policies and performance requirements.
+
+== Suggestions for Improvement
+
+*   FIXME: Add specific screenshots of the configuration file before and after modification.
+*   FIXME: Include a short video demonstrating the entire hands-on activity, including SSH, editing, saving, and restarting the service.
+*   FIXME: Provide a link to the official RHOSO documentation section on "Chargeback Configuration" for comprehensive parameter details.
+*   FIXME: Integrate specific command-line tools or API calls for configuring RHOSO Chargeback if they exist, beyond just editing files.
+*   FIXME: Discuss how configuration can differ in containerized deployments (e.g., OpenShift) versus traditional VM deployments, specifically regarding environment variables and ConfigMaps.

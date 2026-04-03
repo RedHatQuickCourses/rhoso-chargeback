@@ -1,0 +1,13 @@
+#  Basics of RHOSO Observability
+
+* xref:rhoso-observability-fundamentals.adoc#_introduction_to_rhoso_and_its_purpose[Red Hat OpenShift Service on OpenStack (RHOSO)] Observability provides comprehensive insights into your cloud environment.
+* It helps monitor the health, performance, and resource utilization of RHOSO deployments.
+* Key features include:
+** Monitoring resource usage (CPU, memory, storage)
+** Tracking application performance and availability
+** Identifying bottlenecks and optimizing resource allocation
+** Providing dashboards and alerts for proactive management
+* It is crucial for maintaining operational efficiency and ensuring reliable service delivery within RHOSO.
+
+FIXME: Add an image illustrating the RHOSO Observability dashboard.
+FIXME: Consider a short video demonstrating core observability features.

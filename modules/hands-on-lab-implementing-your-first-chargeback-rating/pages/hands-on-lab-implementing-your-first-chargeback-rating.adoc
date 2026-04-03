@@ -1,0 +1,13 @@
+#  Hands-on Lab: Implementing Your First Chargeback Rating
+
+=== Hands-on Lab: Implementing Your First Chargeback Rating
+
+This lab guides you through the practical steps of configuring and applying your first Chargeback rating. You will learn how to:
+
+* Set up the necessary lab environment for Chargeback.
+* Define a basic rating rule for a specific service.
+* Apply the newly defined rating rule to your resources.
+* Review the generated charges and reports to verify the implementation.
+
+FIXME: Add a screenshot of the lab environment setup.
+FIXME: Include a short video demonstration of defining and applying a rating rule.

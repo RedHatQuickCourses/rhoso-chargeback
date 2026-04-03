@@ -1,0 +1,180 @@
+#  Prerequisites for Chargeback deployment in RHOSP
+
+= Prerequisites for Chargeback Deployment in RHOSP
+
+This section outlines the essential prerequisites that must be met before deploying and enabling the Chargeback feature within your Red Hat OpenStack Platform (RHOSP) environment. Ensuring these foundational requirements are in place is critical for a smooth deployment, accurate data collection, and reliable charge calculation.
+
+=== Understanding Chargeback Prerequisites
+
+Chargeback in RHOSO (Red Hat OpenStack Observability) leverages data from RHOSP to calculate resource consumption costs. Therefore, the successful implementation of Chargeback heavily depends on the underlying RHOSP environment's configuration, the presence of necessary RHOSO components, and appropriate administrative access. Neglecting any of these prerequisites can lead to deployment failures, inaccurate chargeback reports, or operational issues.
+
+==== RHOSP Environment Readiness
+
+For Chargeback to function correctly, your RHOSP environment must be stable, properly configured, and meet minimum version requirements.
+
+===== RHOSP Version Compatibility
+
+Chargeback functionality is typically tied to specific versions of RHOSP and RHOSO to ensure full compatibility and access to necessary APIs and data sources.
+
+*   **Detailed Technical Explanation**:
+    RHOSO Chargeback components rely on specific APIs and data models exposed by RHOSP services (like Nova for compute, Cinder for storage, Neutron for networking, and Keystone for identity). Older RHOSP versions might lack the necessary APIs, or their data structures might differ, leading to incompatibility issues. It's crucial to verify that your RHOSP deployment meets the minimum version specified in the RHOSO Chargeback documentation. This ensures that the chargeback agents can correctly collect telemetry data and interact with RHOSP services without errors.
+
+*   **Hands-on Activity: Verify RHOSP Version**
+    . Log in to your RHOSP undercloud or a control plane node via SSH.
+    . Use the `openstack` client to check the version of the installed services.
+    +
+    [source,bash]
+    ----
+    openstack --version
+    openstack compute service list
+    openstack network agent list
+    ----
+    . Consult the official RHOSO Chargeback documentation to confirm your RHOSP version meets the minimum requirements.
+    +
+    FIXME: Suggest adding a link to the official RHOSO Chargeback documentation for specific version compatibility matrix once available.
+
+*   FIXME: Consider adding a short video demonstrating how to check RHOSP service versions and where to find compatibility information.
+
+===== Sufficient Resource Availability
+
+Chargeback components themselves consume resources (CPU, memory, disk). Ensure that your RHOSP control plane or designated nodes have adequate capacity.
+
+*   **Detailed Technical Explanation**:
+    The Chargeback service, as part of RHOSO, deploys agents and services that run within or alongside your RHOSP environment. These services require CPU, memory, and storage resources to operate efficiently, process data, and store configuration and historical information. Insufficient resources can lead to performance bottlenecks, service instability, and delays in charge calculation or report generation. It's essential to plan for these resource overheads during deployment.
+
+*   **Hands-on Activity: Assess Resource Availability**
+    . Review the RHOSP control plane resource usage.
+    . Check available CPU, memory, and disk space on potential deployment nodes for Chargeback services.
+    +
+    [source,bash]
+    ----
+    # Example: Check overall system resources on a control plane node
+    free -h
+    df -h
+    nproc
+    ----
+    . Compare these against the recommended resource specifications for RHOSO Chargeback components (typically found in the official documentation).
+
+*   FIXME: Provide a table of estimated resource requirements for Chargeback components, once specific values are known.
+*   FIXME: An image showing a `nova service list` output highlighting control plane nodes could be useful here.
+
+==== RHOSO Component Readiness
+
+Chargeback is an integrated feature of RHOSO. Therefore, the core RHOSO platform must be operational and properly configured.
+
+===== RHOSO Core Platform Deployed and Functional
+
+*   **Detailed Technical Explanation**:
+    Chargeback is not a standalone service; it builds upon the existing RHOSO Observability platform. This means that the core RHOSO components, including its data collection agents, data store (e.g., Prometheus, Thanos, Cortex), and visualization tools (e.g., Grafana), must be already deployed, configured, and fully operational. Chargeback relies on the telemetry data collected by these core components to derive consumption metrics. If the core RHOSO platform is not functioning correctly, Chargeback will not have the necessary data to perform its calculations.
+
+*   **Hands-on Activity: Verify RHOSO Core Functionality**
+    . Access the RHOSO Grafana instance.
+    . Verify that dashboards are loading data from your RHOSP environment (e.g., compute, network, storage metrics).
+    . Check the status of RHOSO agents on RHOSP nodes to ensure they are collecting and pushing metrics.
+    +
+    [source,bash]
+    ----
+    # Example (commands may vary based on RHOSO deployment method)
+    # Check status of a typical agent service
+    sudo systemctl status rhoso-agent
+    ----
+
+*   FIXME: Suggest a short video tour of checking basic RHOSO Grafana dashboards to confirm data flow.
+*   FIXME: Add a screenshot of a healthy RHOSO Grafana dashboard displaying RHOSP metrics.
+
+==== Network Configuration
+
+Proper network connectivity is vital for Chargeback components to communicate with RHOSP services and the RHOSO core platform.
+
+===== Network Reachability
+
+*   **Detailed Technical Explanation**:
+    Chargeback components deployed within RHOSP or in a separate management cluster require network access to:
+    *   RHOSP API endpoints (Nova, Cinder, Neutron, Keystone) to query resource details and usage.
+    *   The RHOSO core data store (e.g., Prometheus) to push processed metrics.
+    *   Other RHOSO services for inter-component communication.
+    Firewall rules, security groups, and network policies must permit the necessary traffic flows between these components. Failure to configure network reachability will result in data collection errors and impede charge calculation.
+
+*   **Hands-on Activity: Verify Network Connectivity**
+    . From the node where Chargeback components will run, attempt to reach key RHOSP API endpoints and the RHOSO data store.
+    +
+    [source,bash]
+    ----
+    # Example: Ping a Keystone endpoint (replace with your actual endpoint)
+    ping <keystone-api-ip-or-hostname>
+
+    # Example: Test API access (requires openstack client configured)
+    openstack project list
+
+    # Example: Verify connectivity to RHOSO data store (e.g., Prometheus)
+    # This might involve curling a Prometheus endpoint from a relevant node
+    curl -v http://<rhoso-prometheus-ip-or-hostname>:9090/-/ready
+    ----
+    . Review firewall rules (`firewall-cmd --list-all`, `iptables -S`) and OpenStack security groups to ensure necessary ports are open.
+
+*   FIXME: A network diagram showing the required communication flows and ports for Chargeback would significantly enhance understanding.
+
+==== User Permissions and Authentication
+
+Chargeback components need specific permissions to access RHOSP data.
+
+===== Dedicated Service Account with Required Permissions
+
+*   **Detailed Technical Explanation**:
+    For security and operational clarity, Chargeback services should operate using a dedicated service account within RHOSP Keystone. This account must be granted specific roles and permissions (e.g., `member`, `reader`, or custom roles designed for observability) that allow it to query resource metadata, usage statistics, and project information from various RHOSP services without having administrative privileges over resource provisioning. Granting overly broad permissions can pose a security risk, while insufficient permissions will lead to data access errors and incomplete chargeback calculations.
+
+*   **Hands-on Activity: Prepare and Verify Service Account**
+    . Ensure a dedicated OpenStack user (service account) exists for RHOSO/Chargeback.
+    . Assign the necessary roles to this user at the appropriate scope (e.g., `member` role at the `cloud_admin` project or a custom role across all projects).
+    +
+    [source,bash]
+    ----
+    # Example: Create a service user if it doesn't exist
+    openstack user create --domain Default --password <password> rhoso-chargeback-user
+
+    # Example: Create a project for the service user (optional, but good practice)
+    openstack project create rhoso-service-project
+
+    # Example: Assign roles to the service user on specific projects or globally
+    # (Consult RHOSO Chargeback documentation for exact required roles)
+    openstack role add --user rhoso-chargeback-user --project <your-project-id> reader
+    ----
+    . Validate that the service account can authenticate and perform necessary queries.
+    +
+    [source,bash]
+    ----
+    # Example: Test authentication
+    openstack --os-username rhoso-chargeback-user --os-password <password> --os-project-name <project-name> --os-auth-url <keystone-endpoint> --os-user-domain-name Default --os-project-domain-name Default token issue
+
+    # Example: Test listing instances (if 'reader' role is sufficient)
+    openstack --os-username rhoso-chargeback-user --os-password <password> --os-project-name <project-name> --os-auth-url <keystone-endpoint> --os-user-domain-name Default --os-project-domain-name Default server list
+    ----
+
+*   FIXME: A clear list of minimum required OpenStack roles and permissions for the service account should be provided by the RHOSO Chargeback documentation. Reference this list when it becomes available.
+
+==== Resource Tagging and Metadata Strategy (Highly Recommended)
+
+While not strictly a "deployment" prerequisite, having a consistent resource tagging strategy is crucial for *effective* Chargeback.
+
+*   **Detailed Technical Explanation**:
+    Chargeback typically calculates costs based on resource consumption aggregated by various criteria (e.g., project, user, department, application). To enable flexible and meaningful reporting beyond basic project-level aggregation, RHOSP resources (instances, volumes, networks, etc.) should be tagged with relevant metadata. This allows Chargeback rules to categorize and allocate costs based on business units, cost centers, or specific applications, providing much richer insights. Without a tagging strategy, chargeback reports will be limited to the default OpenStack project structure.
+
+*   **Hands-on Activity: Implement and Verify Tagging (Pre-deployment)**
+    . Define a tagging policy for your organization (e.g., `cost_center:DEV`, `environment:PROD`, `application:webapp1`).
+    . Apply tags to existing OpenStack resources using the `openstack` client.
+    +
+    [source,bash]
+    ----
+    # Example: Add a tag to an instance
+    openstack server set --tag cost_center:DEV <instance-id>
+
+    # Example: Add multiple tags to a volume
+    openstack volume set --tag environment:PROD --tag application:database <volume-id>
+
+    # Example: View tags on a resource
+    openstack server show <instance-id> -c properties -f value
+    ----
+    . Ensure that new resources are provisioned with the required tags.
+
+*   FIXME: Suggest adding a section on "Best Practices for OpenStack Resource Tagging" within the broader Chargeback documentation.
+*   FIXME: A screenshot or short video demonstrating how to apply and view tags on resources in the OpenStack dashboard would be beneficial.

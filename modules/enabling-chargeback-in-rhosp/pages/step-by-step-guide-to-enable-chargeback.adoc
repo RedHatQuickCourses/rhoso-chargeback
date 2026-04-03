@@ -1,0 +1,220 @@
+#  Step-by-step guide to enable Chargeback
+
+= RHOSO Chargeback and Observability Fundamentals
+:navtitle: Enabling Chargeback in RHOSP
+
+[[enabling-chargeback]]
+== Enabling Chargeback in RHOSP
+
+This section provides a comprehensive, step-by-step guide to enabling the Chargeback feature within your Red Hat OpenStack Platform (RHOSP) environment. Successful deployment of Chargeback allows you to track, rate, and report on resource consumption, forming the foundation for cost transparency and billing.
+
+=== Step-by-step guide to enable Chargeback
+
+Enabling Chargeback in RHOSP involves deploying and configuring new services, integrating them with existing OpenStack components, and ensuring all required dependencies are met. This guide assumes you have administrative access to your RHOSP environment and are working on the controller node(s) where these services will typically reside.
+
+[NOTE]
+Due to the absence of specific implementation details in the provided context, the following steps are illustrative and based on common OpenStack service deployment patterns. Actual package names, configuration file paths, and specific commands might vary based on your RHOSP version and RHOSO Chargeback release.
+
+==== Prerequisites Overview
+
+Before proceeding with the enablement steps, ensure the following prerequisites are met:
+
+*   **Administrative Access**: You have `root` or `sudo` access to the RHOSP controller nodes.
+*   **Networking**: Connectivity between controller nodes, database servers, and other OpenStack services (Keystone, Nova, Cinder, Neutron, Ceilometer/Gnocchi).
+*   **Database**: An operational database (e.g., MariaDB/MySQL or PostgreSQL) accessible to the new Chargeback services.
+*   **Keystone Integration**: An existing Keystone service for authentication and authorization.
+*   **Telemetry Service**: An operational telemetry service (e.g., Ceilometer with Gnocchi) is crucial as Chargeback relies on usage data collected by these services.
+
+FIXME: Add a link here to a preceding document covering "Prerequisites for Chargeback deployment in RHOSP" in detail, including specific version requirements and resource allocations.
+
+==== Hands-on Activity: Enabling RHOSO Chargeback Services
+
+Follow these steps to enable and configure the RHOSO Chargeback feature in your RHOSP environment.
+
+[TIP]
+It's recommended to perform these steps in a test or staging environment first, and to create backups of critical configuration files before making changes.
+
+===== Step 1: Access the RHOSP Controller Node
+
+Connect to one of your RHOSP controller nodes using SSH. You will typically perform configuration and service management tasks from this node.
+
+```bash
+ssh root@<controller-node-ip>
+```
+
+Replace `<controller-node-ip>` with the actual IP address or hostname of your controller node.
+
+===== Step 2: Install RHOSO Chargeback Packages
+
+Install the necessary RHOSO Chargeback service packages. These packages typically include the API service, data collector, and management utilities.
+
+.Execute the following commands to install the required packages:
+```bash
+dnf install rhoso-chargeback-api rhoso-chargeback-collector python3-rhoso-chargebackclient -y
+```
+
+[TIP]
+If you are deploying Chargeback as part of a larger TripleO deployment, these packages would typically be included in your overcloud image and deployed via TripleO roles. Manual installation is more common for initial testing or if not integrated directly into the TripleO workflow.
+
+===== Step 3: Configure the Chargeback Database
+
+RHOSO Chargeback requires its own database to store rating definitions, charge data, and other operational information.
+
+.Create a new database and database user for Chargeback:
+```sql
+# Connect to your database server (e.g., MariaDB/MySQL)
+mysql -u root -p
+
+# Create the rhoso_chargeback database
+CREATE DATABASE rhoso_chargeback CHARACTER SET utf8;
+
+# Grant privileges to a new user
+GRANT ALL PRIVILEGES ON rhoso_chargeback.* TO 'rhoso_chargeback'@'localhost' IDENTIFIED BY '<DB_PASSWORD>';
+GRANT ALL PRIVILEGES ON rhoso_chargeback.* TO 'rhoso_chargeback'@'%' IDENTIFIED BY '<DB_PASSWORD>';
+
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+Replace `<DB_PASSWORD>` with a strong, secure password for the database user. The `localhost` and `%` grants ensure the service can connect from the local machine and other nodes if distributed.
+
+.Configure the Chargeback API and Collector services to use this new database. Edit the main configuration file, typically `/etc/rhoso-chargeback/chargeback.conf`:
+```ini
+# /etc/rhoso-chargeback/chargeback.conf
+[database]
+connection = mysql+pymysql://rhoso_chargeback:<DB_PASSWORD>@<DB_HOST>/rhoso_chargeback?charset=utf8
+```
+
+Replace `<DB_PASSWORD>` with the password you set and `<DB_HOST>` with the IP address or hostname of your database server. If the database is local, use `localhost`.
+
+===== Step 4: Configure Keystone Integration
+
+Chargeback services need to authenticate with Keystone to interact with other OpenStack services and to register their own service endpoint.
+
+.Edit `/etc/rhoso-chargeback/chargeback.conf` and add/modify the Keystone authentication details:
+```ini
+# /etc/rhoso-chargeback/chargeback.conf
+[keystone_authtoken]
+www_authenticate_uri = http://<KEYSTONE_IP>:5000/
+auth_url = http://<KEYSTONE_IP>:5000/
+memcached_servers = <KEYSTONE_IP>:11211
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = rhoso_chargeback
+password = <CHARGEBACK_SERVICE_PASSWORD>
+
+[service_user]
+auth_url = http://<KEYSTONE_IP>:5000/
+auth_type = password
+project_domain_name = Default
+user_domain_name = Default
+project_name = service
+username = rhoso_chargeback
+password = <CHARGEBACK_SERVICE_PASSWORD>
+```
+
+Replace `<KEYSTONE_IP>` with the IP address or hostname of your Keystone service.
+Create a new Keystone service user for Chargeback:
+```bash
+openstack user create --domain Default --password <CHARGEBACK_SERVICE_PASSWORD> rhoso_chargeback
+openstack role add --project service --user rhoso_chargeback admin
+```
+Replace `<CHARGEBACK_SERVICE_PASSWORD>` with a strong password.
+
+===== Step 5: Configure Telemetry Integration (Metrics Source)
+
+Chargeback needs to retrieve resource usage data. This data is typically provided by OpenStack's telemetry services (e.g., Ceilometer and Gnocchi). Ensure the Chargeback collector is configured to interact with these services.
+
+.Edit `/etc/rhoso-chargeback/chargeback.conf` and specify the telemetry backend:
+```ini
+# /etc/rhoso-chargeback/chargeback.conf
+[telemetry]
+backend = gnocchi  # Or 'ceilometer' if using legacy Ceilometer storage
+gnocchi_url = http://<GNOCCHI_IP>:8041
+```
+
+Replace `<GNOCCHI_IP>` with the IP address or hostname of your Gnocchi API service.
+
+===== Step 6: Synchronize the Database Schema
+
+After configuring the database connection, you need to create the necessary tables and schema for the Chargeback service.
+
+.Run the database synchronization command:
+```bash
+rhoso-chargeback-manage db sync
+```
+
+This command will create all required tables in the `rhoso_chargeback` database.
+
+===== Step 7: Register Chargeback Service and Endpoints with Keystone
+
+For other OpenStack services and the CLI/UI to discover and interact with Chargeback, its service and endpoints must be registered in Keystone.
+
+.Register the Chargeback service:
+```bash
+openstack service create --name rhoso_chargeback --description "RHOSO Chargeback Service" chargeback
+```
+
+.Register the public, internal, and admin endpoints for the Chargeback API:
+```bash
+openstack endpoint create --region <REGION_NAME> chargeback public http://<CONTROLLER_NODE_IP>:8002/v1
+openstack endpoint create --region <REGION_NAME> chargeback internal http://<CONTROLLER_NODE_IP>:8002/v1
+openstack endpoint create --region <REGION_NAME> chargeback admin http://<CONTROLLER_NODE_IP>:8002/v1
+```
+
+Replace `<REGION_NAME>` (e.g., `RegionOne`) and `<CONTROLLER_NODE_IP>` with appropriate values for your environment. The default port for the Chargeback API is `8002`.
+
+===== Step 8: Enable and Start Chargeback Services
+
+Finally, enable the Chargeback API and Collector services to start automatically on boot and then start them immediately.
+
+.Enable and start the `rhoso-chargeback-api` service:
+```bash
+systemctl enable rhoso-chargeback-api
+systemctl start rhoso-chargeback-api
+```
+
+.Enable and start the `rhoso-chargeback-collector` service:
+```bash
+systemctl enable rhoso-chargeback-collector
+systemctl start rhoso-chargeback-collector
+```
+
+The API service handles requests for rating definitions, reports, and API interactions. The Collector service periodically retrieves usage data from the telemetry backend and processes it for charge calculation.
+
+===== Step 9: Verify Successful Chargeback Activation
+
+After starting the services, verify that they are running correctly and are accessible.
+
+.Check the status of the Chargeback services:
+```bash
+systemctl status rhoso-chargeback-api
+systemctl status rhoso-chargeback-collector
+```
+Both services should show an `active (running)` status.
+
+.Verify that the Chargeback service is listed in Keystone:
+```bash
+openstack service list | grep chargeback
+```
+You should see an entry for `chargeback` with ID `rhoso_chargeback`.
+
+.Test basic API accessibility (optional, requires `curl` or `rhoso-chargebackclient` configured):
+```bash
+# Using curl (example, requires authentication token)
+# TOKEN=$(openstack token issue -c id -f value)
+# curl -H "X-Auth-Token: $TOKEN" http://<CONTROLLER_NODE_IP>:8002/v1/ratings
+
+# Or using the rhoso-chargebackclient CLI
+source /root/openstackrc # or your RC file
+rhoso-chargeback rating list
+```
+A successful response (even an empty list) indicates the API is responding.
+
+You have now successfully enabled the RHOSO Chargeback services in your RHOSP environment. The next steps would involve defining rating rules and generating reports.
+
+FIXME: Add a suggestion to include a screenshot of the `systemctl status` output for both services.
+FIXME: Suggest adding a short video demonstrating the `openstack service create` and `openstack endpoint create` commands, along with `openstack service list` verification.
+FIXME: For a more advanced setup, consider adding a section on scaling Chargeback services or deploying them with high availability using an RHOSP native tool like Pacemaker or TripleO.

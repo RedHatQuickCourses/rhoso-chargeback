@@ -1,0 +1,13 @@
+#  Enabling Chargeback in RHOSP
+
+=== Enabling Chargeback in RHOSP
+
+This section covers the process of activating the Chargeback feature within a Red Hat OpenStack Platform (RHOSP) environment.
+
+*   **Prerequisites:** Understand the necessary conditions and dependencies before deployment.
+*   **Deployment Steps:** Follow a step-by-step guide to enable Chargeback functionality.
+*   **Configuration:** Learn about key parameters and settings required for proper operation.
+*   **Verification:** Confirm successful activation and proper functioning of Chargeback.
+
+FIXME: Consider adding a diagram illustrating the high-level steps for enabling Chargeback in RHOSP, perhaps showing the interaction with different RHOSP components.
+FIXME: A short video tutorial demonstrating the configuration parameters and verification steps could enhance understanding.

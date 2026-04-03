@@ -1,0 +1,188 @@
+#  Diagnosing incorrect charge calculations
+
+Below is the training content for diagnosing incorrect charge calculations in RHOSO.
+
+[#diagnosing-incorrect-charge-calculations]
+= Diagnosing Incorrect Charge Calculations
+
+This section provides a detailed guide on how to diagnose and resolve issues related to incorrect charge calculations within the RHOSO Chargeback system. Accurate charge calculations are critical for proper cost allocation, billing, and financial transparency within your organization.
+
+== Understanding Potential Causes for Incorrect Charges
+
+Incorrect charge calculations can stem from various sources within the complex interplay of observability data collection, rating rule application, and reporting. Identifying the root cause systematically is key to resolution.
+
+Common causes include:
+
+*   *Misconfigured Rating Rules:* This is often the primary culprit. Errors can include incorrect rates, multipliers, conditions (e.g., matching wrong resource types or labels), overlapping rules, or incorrect priority settings.
+*   *Inaccurate or Missing Usage Data:* The Chargeback system relies on accurate usage metrics collected by RHOSO's observability components. If the underlying metrics (e.g., CPU hours, GB-months, network transfer) are incorrect, incomplete, or delayed, the charge calculations will naturally be flawed.
+*   *Resource Tagging and Categorization Issues:* Rating rules often depend on specific tags, labels, projects, or namespaces to identify which resources they apply to. If resources are incorrectly tagged or grouped, the wrong rules might apply, or resources might be missed entirely.
+*   *Time Synchronization Problems:* Discrepancies in system clocks between various components (observability agents, chargeback processing engine, database) can lead to usage data being attributed to incorrect billing periods, or even missed entirely.
+*   *Data Processing Failures or Delays:* Intermittent issues within the data pipeline that processes raw observability metrics into consumable chargeback data can lead to gaps or inaccuracies in the final charges.
+*   *Software Bugs or Configuration Errors:* While less common, unexpected behavior in the RHOSO Chargeback software itself or misconfigurations of its underlying services (e.g., database, message queues) can lead to calculation errors.
+
+== Troubleshooting Steps for Incorrect Charge Calculations
+
+When you identify discrepancies in your chargeback reports, follow these systematic steps to diagnose the issue.
+
+=== Step 1: Verify Rating Rule Definitions
+
+The first step is to meticulously review the rating rules that are expected to apply to the resources in question.
+
+*   *Objective:* Ensure the rules are logically sound, target the correct resources, and have the intended rates and multipliers.
+*   *Technical Explanation:* Chargeback rules define *what* gets charged, *how much*, and *under what conditions*. A mismatch here is a common source of error. You need to check the conditions (e.g., `resource_type='compute'`, `project_id='my-project'`) and ensure they accurately reflect the resources being charged. Also, examine the base rates and any multipliers or modifiers configured. Pay close attention to rule priorities; if multiple rules could apply, the one with higher priority will take precedence.
+
+==== Hands-on Activity: Inspecting Rating Rules
+
+.Log in to the RHOSO UI.
+.Navigate to the *Chargeback* section.
+.Go to *Rating Definitions* or *Rating Rules*.
+.Locate the specific rating rule(s) you suspect might be causing the incorrect calculations.
+.Review each component of the rule:
+    *   *Name and Description:* Ensure it's the intended rule.
+    *   *Conditions:* Verify that the `resource_type`, `project`, `tag`, or other criteria accurately match the resources whose charges are incorrect.
+    *   *Rates:* Confirm the base price per unit (e.g., per CPU hour, per GB-month).
+    *   *Unit of Measure:* Ensure it aligns with the expected usage metric (e.g., `hours` for compute, `gigabytes` for storage).
+    *   *Currency:* Check that the currency is correctly set.
+    *   *Priority:* If you have multiple rules, confirm their order of application. A lower number usually means higher priority.
+.Compare the rule's definition against your expected charging logic.
+
+[TIP]
+For more complex scenarios, you might need to use the RHOSO CLI to export rule definitions, which can be easier for detailed review or comparison across different environments.
+
+```bash
+# Example RHOSO CLI command to list and export rating rules in YAML format
+rhoso chargeback rule list --output yaml
+```
+
+FIXME: Consider adding screenshots of the RHOSO UI showing an example rating rule's configuration page. This would greatly enhance clarity and guide users visually.
+
+=== Step 2: Inspect Raw Usage Data
+
+If the rating rules appear correct, the next step is to verify the accuracy and completeness of the raw usage data that the Chargeback system is consuming.
+
+*   *Objective:* Confirm that RHOSO's observability components are collecting and transmitting the correct metrics for the affected resources during the relevant billing period.
+*   *Technical Explanation:* The Chargeback engine processes raw metrics collected by RHOSO Observability (e.g., from Prometheus, Ceilometer, or other agents). If these metrics are absent, delayed, or fundamentally incorrect at the source, the charge calculations will be wrong. You need to check the actual metric values for the resource and time frame in question. For instance, if a VM is charged for 100 CPU hours but only ran for 50, you'd look at the `cpu_usage_seconds_total` (or similar) metric.
+
+==== Hands-on Activity: Reviewing Observability Metrics
+
+.Log in to the RHOSO UI.
+.Navigate to the *Observability* section (e.g., Grafana dashboards integrated with RHOSO).
+.Identify the specific resource (VM, volume, network port, etc.) that has incorrect charges.
+.Select the relevant time period for which charges are incorrect (e.g., the last month, a specific week).
+.Locate the metrics relevant to your chargeback rule. For example:
+    *   For CPU charges: Look for metrics like `instance_cpu_usage_total`, `node_cpu_seconds_total` (per instance/project).
+    *   For Storage charges: Look for metrics like `volume_total_bytes_allocated`, `ceph_pool_bytes_used`.
+    *   For Network charges: Look for `network_receive_bytes_total`, `network_transmit_bytes_total`.
+.Compare the reported usage in the observability dashboards with the usage that was used in the chargeback report.
+.Look for:
+    *   *Missing data points:* Gaps in the graph or periods where no data was collected.
+    *   *Spikes or drops:* Unexpectedly high or low values that don't correspond to actual resource activity.
+    *   *Incorrect labels/tags:* Ensure the metrics are correctly associated with the project, user, or resource ID.
+
+[TIP]
+If RHOSO uses Prometheus/Grafana, you can directly query Prometheus to get precise metric values using PromQL.
+
+```promql
+# Example PromQL query to get average CPU usage for instances within a specific project over the last hour
+sum(avg_over_time(instance_cpu_usage_total{project_id="my-project"}[1h])) by (instance_name, project_id)
+```
+
+FIXME: Include a short video demonstrating how to navigate to a Grafana dashboard within RHOSO and inspect key metrics for a specific resource. This visual aid would be extremely helpful.
+
+=== Step 3: Review Chargeback Processing Logs
+
+The logs generated by the RHOSO Chargeback service components provide a window into the internal processing of usage data and application of rating rules.
+
+*   *Objective:* Identify any errors, warnings, or specific messages that indicate a failure in processing data or applying rules.
+*   *Technical Explanation:* Chargeback services typically log their operations, including data ingestion, rule evaluation, and report generation. Errors here can pinpoint issues with database connectivity, rule parsing, or integration with other RHOSO services. Look for messages indicating failed jobs, unprocessable data, or unexpected calculation results.
+
+==== Hands-on Activity: Analyzing Chargeback Service Logs
+
+.Access the logs for the RHOSO Chargeback service components. This typically involves using `oc logs` if deployed on OpenShift or `journalctl` on a host system.
+    *   *For OpenShift deployments:*
+        .Identify the relevant Chargeback pods (replace `<rhoso-chargeback-namespace>` with your actual namespace):
+        ```bash
+        oc get pods -n <rhoso-chargeback-namespace> -l app.kubernetes.io/component=chargeback
+        ```
+        .View logs for a specific pod (replace `<chargeback-pod-name>`):
+        ```bash
+        oc logs <chargeback-pod-name> -n <rhoso-chargeback-namespace> --since=1h
+        ```
+        .To follow logs in real-time:
+        ```bash
+        oc logs -f <chargeback-pod-name> -n <rhoso-chargeback-namespace>
+        ```
+    *   *For VM/bare-metal deployments:* (If applicable to your RHOSO setup)
+        .Access the server where the Chargeback service is running.
+        .View system logs for the service:
+        ```bash
+        journalctl -u rhoso-chargeback.service -e # View end of logs
+        journalctl -u rhoso-chargeback.service -f # Follow logs in real-time
+        ```
+.Filter the logs for the time period when the incorrect charges were generated.
+.Look for error messages (`ERROR`, `Failed`), warnings (`WARN`), or exceptions.
+.Specifically search for messages related to:
+    *   *Rule evaluation:* Any indication that a rule failed to apply or produced an unexpected result.
+    *   *Data ingestion:* Problems receiving or parsing usage data from observability.
+    *   *Database operations:* Issues writing calculated charges to the database.
+    *   *Report generation:* Errors during the compilation of the final chargeback reports.
+
+[TIP]
+Many logging systems (like OpenShift's default logging stack with OpenSearch/Kibana) provide advanced filtering capabilities that can help you quickly narrow down relevant log entries.
+
+=== Step 4: Validate Resource Tagging and Grouping
+
+Chargeback rules heavily rely on metadata (tags, labels, project assignments) to determine applicability. Incorrect or missing metadata can lead to resources being miscategorized or entirely missed by the charging engine.
+
+*   *Objective:* Ensure that the resources involved in the incorrect charges have the correct tags, labels, or are assigned to the correct projects/namespaces as expected by your rating rules.
+*   *Technical Explanation:* If a rating rule is configured to apply only to resources with a specific tag (e.g., `department: sales`), but the resource in question lacks that tag or has a different one, the rule will not apply, leading to zero charges or the application of a default rule. Similarly, resources might be assigned to the wrong project/tenant, causing charges to appear under the wrong budget.
+
+==== Hands-on Activity: Checking Resource Metadata
+
+.Log in to the RHOSO UI or the underlying platform UI (e.g., RHOSP Horizon, OpenShift Console).
+.Navigate to the details page of the specific resource (VM, volume, project, namespace) whose charges are incorrect.
+.Review its properties, especially:
+    *   *Tags/Labels:* Confirm they match the conditions defined in your rating rules.
+    *   *Project/Namespace/Tenant:* Verify the resource belongs to the expected organizational unit.
+    *   *Owner/Creator:* Sometimes rules are based on these attributes.
+.If any metadata is incorrect, update it accordingly and re-evaluate the chargeback report for the relevant period.
+
+[NOTE]
+Changes to resource metadata might not immediately reflect in historical chargeback reports. You may need to wait for the next chargeback processing cycle or, if available, manually trigger a recalculation for the affected period (if RHOSO supports this feature).
+
+=== Step 5: Consider Time Synchronization
+
+While often an underlying infrastructure issue, time synchronization can subtly affect charge calculations, especially when dealing with granular usage data over specific periods.
+
+*   *Objective:* Briefly assess if clock discrepancies between components could be contributing to misaligned usage data and billing periods.
+*   *Technical Explanation:* If a monitoring agent reports usage with a timestamp that is significantly different from the chargeback engine's clock, usage might be allocated to the wrong billing interval or even ignored if it falls outside defined processing windows. Ensure all RHOSO components and underlying infrastructure nodes are synchronized with a reliable NTP server.
+
+[TIP]
+This is typically a system administration task. Consult your infrastructure team to verify NTP synchronization across all relevant servers and virtual machines.
+
+=== Step 6: Isolate the Issue and Test
+
+If the above steps haven't pinpointed the problem, try to simplify the scenario to isolate the root cause.
+
+*   *Objective:* Reduce variables to make troubleshooting more manageable.
+*   *Technical Explanation:* Complex rating rules or a large number of resources can obscure the actual problem. By testing with a single, simple resource and a basic rating rule, you can often quickly identify if the issue lies with the core chargeback mechanism, a specific rule's complexity, or data associated with a particular resource type.
+
+==== Hands-on Activity: Simplified Testing
+
+.Identify a single, simple resource (e.g., a small VM with minimal activity).
+.Create a very basic rating rule that applies *only* to this resource, with a clear, easy-to-verify rate (e.g., $1/hour for CPU).
+.Monitor its usage through observability.
+.Generate a chargeback report specifically for this resource and the period during which the simple rule was active.
+.Compare the calculated charge with your manual expectation. If this simple test works correctly, the issue is likely with the complexity of your original rules or the data associated with the original problematic resource. If it still fails, the problem might be more fundamental (e.g., data ingestion pipeline).
+
+== Best Practices for Maintaining Chargeback Accuracy
+
+*   *Regular Audits:* Periodically review your rating rules, especially after major infrastructure changes or updates to service offerings.
+*   *Monitoring:* Set up alerts for missing usage data, failed chargeback processing jobs, or unusually high/low charge spikes that could indicate an underlying issue.
+*   *Version Control for Rules:* Manage your rating rule definitions (if exported or configured via CLI/API) using a version control system (like Git) to track changes and enable rollbacks.
+*   *Sanity Checks:* Implement basic sanity checks on generated reports before final distribution (e.g., comparing current month's total charges against previous months, looking for outliers).
+
+[NOTE]
+FIXME: Suggest creating a dedicated "Chargeback Health" dashboard in RHOSO Observability (e.g., Grafana) that displays key metrics like "Number of processed usage records," "Rule application errors," and "Data ingestion latency" to proactively identify issues. This would require integration with RHOSO's observability capabilities.
+
+FIXME: Add a concluding statement encouraging users to consult official RHOSO documentation or Red Hat Support if issues persist after following these troubleshooting steps.
