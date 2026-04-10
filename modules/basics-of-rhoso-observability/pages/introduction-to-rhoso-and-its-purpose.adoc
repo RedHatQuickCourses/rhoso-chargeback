@@ -1,6 +1,5 @@
 #  Introduction to RHOSO and its purpose
 
-```asciidoc
 = Introduction to RHOSO and its Purpose
 
 [#introduction-to-rhoso]
@@ -44,4 +43,3 @@ FIXME: Add an illustrative diagram showing the high-level architecture of RHOSO 
 FIXME: Consider incorporating a short, engaging introductory video (e.g., 2-3 minutes) that visually explains RHOSO's core purpose and briefly showcases its key areas, such as a quick glimpse of a dashboard or a chargeback report. This can provide an effective and engaging initial overview for learners.
 
 FIXME: While this topic is introductory, a very basic hands-on activity could be beneficial in a subsequent section (e.g., 'Key features of RHOSO Observability'). This could involve a guided tour of the RHOSO user interface, focusing on navigating pre-configured dashboards and understanding where key observability metrics and chargeback reports are presented, without requiring any configuration changes.
-```

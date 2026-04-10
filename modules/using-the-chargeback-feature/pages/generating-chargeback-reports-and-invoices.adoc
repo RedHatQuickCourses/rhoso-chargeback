@@ -2,7 +2,6 @@
 
 Here's the detailed content for "Generating chargeback reports and invoices" in Antora AsciiDoc format:
 
-```asciidoc
 = Generating Chargeback Reports and Invoices
 
 This section delves into the critical process of generating, understanding, and effectively utilizing chargeback reports and invoices within the RHOSO ecosystem. These reports are indispensable for ensuring financial accountability, driving cost optimization, and providing transparent billing across various departments or tenants consuming cloud resources.
@@ -100,4 +99,3 @@ Through the disciplined practice of regularly generating and analyzing chargebac
 
 FIXME: Consider adding a section that describes how to automate report generation via RHOSO's API, facilitating seamless integration with existing enterprise billing or financial systems.
 FIXME: Create a concise video tutorial demonstrating the end-to-end report generation process within the RHOSO UI, from selecting filters to exporting the final report.
-```

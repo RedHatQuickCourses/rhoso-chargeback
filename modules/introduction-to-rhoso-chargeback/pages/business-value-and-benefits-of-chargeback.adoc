@@ -2,7 +2,6 @@
 
 Here is the Antora AsciiDoc content covering the business value and benefits of RHOSO Chargeback:
 
-```asciidoc
 [role="doc"]
 = Introduction to RHOSO Chargeback
 
@@ -49,4 +48,3 @@ This section primarily focuses on the conceptual business value and benefits. Ha
 
 FIXME: Add an infographic or diagram illustrating the flow of costs from RHOSO resources through Chargeback to various business units, visually representing the transparency and accountability benefits.
 FIXME: Consider adding a short video explaining "What is IT Chargeback and Why Does it Matter?" from a business perspective, suitable for management-level understanding.
-```

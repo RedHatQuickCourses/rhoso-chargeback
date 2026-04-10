@@ -2,7 +2,6 @@
 
 Here is the training content for "Best practices for maintaining Chargeback accuracy" in Antora AsciiDoc format.
 
-```asciidoc
 == Best Practices for Maintaining Chargeback Accuracy
 
 Maintaining the accuracy of your Chargeback system is paramount for financial transparency, user trust, and effective resource governance. Inaccurate charges can lead to disputes, resource misallocation, and undermine the perceived value of your cloud infrastructure. This section outlines key best practices to ensure your RHOSO Chargeback system consistently delivers reliable and precise billing information.
@@ -157,4 +156,3 @@ Before deploying any significant changes to rating rules or Chargeback configura
 *   **Impact Analysis:** Analyze the projected financial impact of new rules or changes on various departments/projects before go-live.
 
 By consistently applying these best practices, organizations can build and maintain a robust, transparent, and highly accurate RHOSO Chargeback system, fostering trust and enabling informed decision-making regarding cloud resource consumption.
-```

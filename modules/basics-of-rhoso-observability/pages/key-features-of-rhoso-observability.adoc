@@ -2,7 +2,6 @@
 
 Here is the detailed educational content for "Key features of RHOSO Observability" in Antora AsciiDoc format:
 
-```asciidoc
 [[key-features-of-rhoso-observability]]
 = Key features of RHOSO Observability
 
@@ -164,4 +163,3 @@ RHOSO is designed to be an integral part of your larger IT ecosystem, offering s
 *   **Cloud-Native Tooling**: Leverages and integrates with popular cloud-native observability projects like Prometheus, Grafana, Loki, Jaeger, and OpenTelemetry, ensuring compatibility and leveraging community best practices.
 
 FIXME: To further enhance the learning experience, consider developing a short, guided video walkthrough that demonstrates navigating a pre-configured RHOSO dashboard, explaining each of these key features in action. This would provide visual context and make the abstract concepts more tangible.
-```

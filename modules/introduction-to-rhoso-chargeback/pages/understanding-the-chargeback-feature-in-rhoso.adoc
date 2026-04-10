@@ -2,7 +2,6 @@
 
 Here's the detailed educational content for "Understanding the Chargeback feature in RHOSO" in Antora AsciiDoc format, along with suggestions for improvement:
 
-```asciidoc
 [[understanding-chargeback-rhoso]]
 = Understanding the Chargeback feature in RHOSO
 
@@ -60,4 +59,3 @@ The power of RHOSO's Chargeback feature stems from its tight integration with it
 
 In essence, RHOSO's observability provides the "eyes and ears" into your infrastructure's resource consumption, while the Chargeback feature translates what those eyes and ears observe into a clear financial ledger. This synergy empowers organizations to not only understand *what* is happening in their cloud environment but also *how much it costs* and *who is responsible for that cost*.
 
-```

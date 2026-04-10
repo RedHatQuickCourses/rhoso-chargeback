@@ -2,7 +2,6 @@
 
 Here's the detailed educational content for "Applying the defined rating rule to resources" in Antora AsciiDoc format.
 
-```asciidoc
 [[applying-rating-rules]]
 = Applying the Defined Rating Rule to Resources
 
@@ -111,4 +110,3 @@ FIXME: Add an image here.
 
 FIXME: Add an image here.
 *   **Image Suggestion:** A sequence of screenshots or a short video demonstrating the provisioning of an instance in RHOSP Horizon, followed by navigating to the Chargeback report section and highlighting the newly generated charge for that instance. This would be invaluable for the hands-on activity.
-```

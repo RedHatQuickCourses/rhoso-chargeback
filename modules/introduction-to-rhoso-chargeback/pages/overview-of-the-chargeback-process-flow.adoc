@@ -2,7 +2,6 @@
 
 Here's the detailed educational content for the "Overview of the chargeback process flow" topic, presented in Antora AsciiDoc format:
 
-```asciidoc
 = Overview of the Chargeback Process Flow
 
 The RHOSO Chargeback feature is designed to provide transparency and accountability for resource consumption within a Red Hat OpenStack Platform (RHOSP) environment. It transforms raw resource usage data into meaningful cost allocations, enabling organizations to understand, manage, and potentially recoup the costs associated with their cloud infrastructure. Understanding the end-to-end process flow is crucial for effective implementation and management of chargeback.
@@ -126,4 +125,3 @@ To conceptually trace the data journey for a specific resource usage event throu
 ==== Looking Ahead
 
 This conceptual exercise prepares you for the "Hands-on Lab: Implementing Your First Chargeback Rating," where you will configure and observe these steps in a live environment. Understanding this flow conceptually now will make the practical implementation much clearer.
-```

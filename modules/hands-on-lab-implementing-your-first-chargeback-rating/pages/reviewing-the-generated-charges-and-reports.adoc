@@ -1,6 +1,5 @@
 #  Reviewing the generated charges and reports
 
-```asciidoc
 // This module is part of the 'Hands-on Lab: Implementing Your First Chargeback Rating' lesson.
 // It focuses on reviewing the outcomes of applied rating rules.
 = Reviewing Generated Charges and Reports
@@ -109,4 +108,3 @@ Follow these steps to access and review your chargeback reports:
 *   **Suggestion for Video:** Create a short video walkthrough demonstrating the entire process of logging into the dashboard, selecting reporting parameters, generating a report, and interpreting its key sections. This can significantly enhance the hands-on learning experience.
 
 This hands-on exercise demonstrates how to effectively review and validate the financial impact of your chargeback configurations. Understanding these reports is fundamental to maintaining accurate billing and making informed decisions about cloud resource management.
-```

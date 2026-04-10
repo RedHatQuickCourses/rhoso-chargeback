@@ -2,7 +2,6 @@
 
 As the Content Architect, I've developed the following detailed educational content for the topic "Creating and managing rating rules," adhering to Antora AsciiDoc format and incorporating hands-on activities and expert insights.
 
-```asciidoc
 [[creating-managing-rating-rules]]
 = Creating and Managing Rating Rules
 
@@ -295,4 +294,3 @@ Even with careful configuration, rating rules can sometimes behave unexpectedly.
     *   **Versioning:** If possible, leverage versioning for rules to track changes over time.
 
 FIXME: Suggest adding a callout box with a link to the official Red Hat documentation for RHOSO Chargeback rating rules for advanced troubleshooting and API details.
-```

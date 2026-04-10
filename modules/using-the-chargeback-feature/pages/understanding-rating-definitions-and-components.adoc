@@ -2,7 +2,6 @@
 
 Here is the detailed educational content for "Understanding rating definitions and components" in Antora AsciiDoc format.
 
-```asciidoc
 = Understanding Rating Definitions and Components
 
 Chargeback is a critical feature for managing cloud resource consumption and costs within an organization. At its core, the ability to accurately attribute and bill for resource usage relies on well-defined *rating definitions* and their underlying *components*. These definitions translate raw resource consumption data into tangible costs, providing transparency and accountability for cloud expenditures.
@@ -155,4 +154,3 @@ A short video demonstrating the UI elements for defining these components in RHO
 5.  **FIXME: Advanced Scenarios (Image/Diagram):**
     *   *Suggestion*: If possible, add a visual example (e.g., a small table or simple chart) illustrating how "Tiered Rates" work, as this can be a more complex concept.
     *   *Placement*: Within the "Rate (Price per Unit)" section, specifically where tiered rates are mentioned.
-```

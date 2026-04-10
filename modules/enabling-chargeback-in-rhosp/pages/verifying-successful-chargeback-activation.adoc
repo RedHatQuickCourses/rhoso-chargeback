@@ -1,6 +1,5 @@
 #  Verifying successful Chargeback activation
 
-```asciidoc
 = Verifying Successful Chargeback Activation
 :page-aliases: chargeback-activation-verification.adoc
 
@@ -138,4 +137,3 @@ If you encounter issues during the verification process:
     *   Review Gnocchi logs for errors related to metric storage.
 
 FIXME: Provide a link to a more detailed troubleshooting section xref:chargeback-troubleshooting.adoc[Basic Chargeback Troubleshooting] that includes specific commands for log analysis, common error messages, and resolution steps for activation-related problems.
-```
