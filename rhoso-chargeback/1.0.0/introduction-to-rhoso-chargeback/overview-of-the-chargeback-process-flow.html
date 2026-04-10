@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,134 +230,343 @@
 </aside>
 <article class="doc">
 <h1 class="page">Overview of the chargeback process flow</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here&#8217;s the detailed educational content for the "Overview of the chargeback process flow" topic, presented in Antora AsciiDoc format:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Overview of the Chargeback Process Flow
-
-The RHOSO Chargeback feature is designed to provide transparency and accountability for resource consumption within a Red Hat OpenStack Platform (RHOSP) environment. It transforms raw resource usage data into meaningful cost allocations, enabling organizations to understand, manage, and potentially recoup the costs associated with their cloud infrastructure. Understanding the end-to-end process flow is crucial for effective implementation and management of chargeback.
-
-== Technical Explanation of the Chargeback Process Flow
-
-The RHOSO Chargeback process flow can be broken down into several distinct, yet interconnected, stages. This flow begins with resource utilization and culminates in the generation of detailed chargeback reports.
-
-=== 1. Resource Consumption and Data Collection
-
-*   *Description:* This initial stage involves the actual usage of cloud resources by various tenants, projects, or users within the RHOSP environment. These resources include, but are not limited to, compute (CPU, RAM), storage (block, object), network traffic, and various services provided by OpenStack (e.g., volumes, instances, floating IPs).
-*   *RHOSO's Role:* RHOSO plays a critical role here by integrating with RHOSP's telemetry and monitoring services. It continuously collects raw usage metrics from these services. This data is often granular, capturing usage over specific time intervals (e.g., per hour, per minute). RHOSO's observability capabilities are foundational to chargeback, as they provide the underlying usage data necessary for cost calculations.
-*   *Data Points:* Examples of collected data include:
-    *   Virtual machine uptime (instance hours)
-    *   CPU utilization (core-hours)
-    *   Memory allocation (GB-hours)
-    *   Storage capacity (GB-hours, IOPS)
-    *   Network ingress/egress (GB transferred)
-    *   Number of assigned Floating IPs
-*   *Integration:* RHOSO typically integrates with OpenStack components like Ceilometer, Gnocchi, and potentially Prometheus or other custom metrics providers to ingest this raw telemetry data.
-
-=== 2. Data Processing and Normalization
-
-*   *Description:* Raw usage data, as collected, may not always be in a consistent or directly usable format for cost calculation. This stage involves processing, cleaning, and normalizing the collected data. This ensures data quality and prepares it for the subsequent rating engine.
-*   *Purpose:*
-    *   **Aggregation:** Grouping data points over defined periods (e.g., daily, hourly).
-    *   **Transformation:** Converting raw metrics into standard units required for rating rules. For example, converting bytes to gigabytes or milliseconds to hours.
-    *   **Enrichment:** Adding metadata from RHOSP (e.g., project ID, user ID, instance name, flavor details) to the usage records, which is crucial for accurate attribution and granular reporting.
-    *   **De-duplication and Validation:** Removing redundant data and ensuring the integrity of the usage records.
-*   *RHOSO's Role:* RHOSO's internal data processing pipelines handle these tasks, ensuring that the data presented to the rating engine is accurate, complete, and formatted correctly.
-
-=== 3. Rating and Cost Calculation
-
-*   *Description:* This is the core stage where monetary values are assigned to the processed resource usage data. It relies heavily on *rating definitions* and *rating rules* configured within RHOSO.
-*   *Rating Definitions:* These define the components of cost, such as unit price for a CPU core-hour, per-GB price for storage, or fixed fees for certain services.
-*   *Rating Rules:* These are logical constructs that apply specific rating definitions to particular resources, projects, or time periods. For example, a rule might state: "Charge $0.05 per GB-hour for block storage used by Project A" or "Charge $0.10 per instance-hour for 'm1.large' instances."
-*   *The Rating Engine:* RHOSO's rating engine processes the normalized usage data against the active rating rules. For each resource usage event, it determines the applicable rule and calculates the corresponding charge.
-*   *Output:* The output of this stage is a set of calculated charges, each associated with a specific resource, period, project, and user.
-
-=== 4. Charge Generation and Storage
-
-*   *Description:* Once costs are calculated, they are consolidated and stored as structured charge records. These records form the basis for all future reports and invoices.
-*   *Consolidation:* Charges for various resources used by the same project/tenant over a billing period are aggregated.
-*   *Data Structure:* Each charge record typically includes:
-    *   Project/Tenant ID
-    *   User ID
-    *   Resource Type (e.g., `compute.instance`, `volume.storage`)
-    *   Usage Quantity (e.g., 100 instance-hours, 500 GB-hours)
-    *   Unit Price
-    *   Calculated Amount
-    *   Billing Period
-    *   Timestamp of calculation
-*   *Storage:* These charge records are persistently stored within RHOSO's database, ensuring data retention and auditability.
-
-=== 5. Reporting and Invoicing
-
-*   *Description:* This final stage makes the calculated charges accessible and actionable to administrators, project owners, and end-users. It involves generating various types of reports and, optionally, formatted invoices.
-*   *RHOSO Dashboard:* Users and administrators can typically access pre-defined reports and create custom reports through the RHOSO user interface.
-*   *Report Types:*
-    *   **Summary Reports:** High-level overview of total charges per project or tenant for a given period.
-    *   **Detailed Usage Reports:** Breakdown of charges by resource type, showing quantity, unit price, and total cost.
-    *   **Trend Reports:** Analysis of consumption and cost patterns over time.
-    *   **Allocation Reports:** Showing how costs are distributed across different departments or business units.
-*   *Invoicing (Optional):* While RHOSO primarily focuses on chargeback reporting, the data can be exported or integrated with external billing systems to generate formal invoices.
-*   *Purpose:* Provides transparency into cloud spending, enables accountability, and supports financial planning and budgeting.
-
-=== 6. Analysis and Optimization (Continuous Feedback)
-
-*   *Description:* While not strictly a "stage" in the linear flow, analysis and optimization represent a crucial feedback loop. The reports generated are used to understand consumption patterns, identify cost centers, and make informed decisions.
-*   *Insights:*
-    *   Identifying underutilized resources.
-    *   Spotting abnormal usage spikes.
-    *   Validating the effectiveness of current rating rules.
-    *   Informing decisions on resource scaling and project budgeting.
-*   *Iterative Improvement:* This stage allows administrators to refine rating rules, adjust resource allocations, and optimize the overall cloud environment based on the financial insights provided by RHOSO Chargeback.
-
-[FIXME]
-==== Suggestion for Visual Content
-
-*   *Image:* A flow diagram visually representing the end-to-end chargeback process, with clear arrows indicating data flow between each stage (Consumption -&gt; Collection -&gt; Processing -&gt; Rating -&gt; Storage -&gt; Reporting -&gt; Analysis). Icons for RHOSP, RHOSO, and database components would be beneficial.
-*   *Video:* A short animated walkthrough explaining the journey of a single resource usage event from its creation in RHOSP to its appearance as a line item in a chargeback report within RHOSO.
-
-== Hands-on Activity: Tracing the Chargeback Data Journey
-
-While this topic focuses on the *overview* of the process flow, a conceptual activity can help solidify understanding before diving into actual configuration.
-
-=== Objective
-
-To conceptually trace the data journey for a specific resource usage event through the RHOSO Chargeback process flow.
-
-=== Activity Steps
-
-1.  *Scenario Definition:*
-    *   Imagine a new "Project X" is created in RHOSP.
-    *   Within Project X, a user launches an `m1.small` instance.
-    *   The `m1.small` instance runs for exactly 1 hour.
-    *   Assume your organization has a rating rule: `m1.small` instances cost `$0.01 per instance-hour`.
-
-2.  *Identify the Data Collection Point:*
-    *   What kind of usage metric would RHOSO collect for this instance? (e.g., `instance-hours`).
-    *   From which RHOSP component would this data likely originate? (e.g., Nova/Ceilometer/Gnocchi).
-
-3.  *Trace Data Processing:*
-    *   How might this raw data point be normalized or enriched? (e.g., associated with "Project X", timestamped, confirmed as 1 full hour).
-
-4.  *Apply Rating:*
-    *   Which *rating rule* would apply to this usage?
-    *   What would be the calculated charge for this 1 hour of `m1.small` usage?
-
-5.  *Formulate the Charge Record:*
-    *   If you were to see a single line item in a charge database for this event, what key information would it contain? (e.g., Project ID, Resource Type, Usage, Unit Price, Amount, Billing Period).
-
-6.  *Anticipate Reporting:*
-    *   Where would this charge eventually appear in a report?
-    *   What kind of report would be most relevant for "Project X" to see this charge?
-
-7.  *Discussion:*
-    *   Discuss with peers (or reflect independently) what would happen if the instance ran for only 30 minutes, or if the rating rule changed midway through the hour. How would the flow adapt?
-
-[NOTE]
-==== Looking Ahead
-
-This conceptual exercise prepares you for the "Hands-on Lab: Implementing Your First Chargeback Rating," where you will configure and observe these steps in a live environment. Understanding this flow conceptually now will make the practical implementation much clearer.</code></pre>
+</div>
+</div>
+<h1 id="_overview_of_the_chargeback_process_flow" class="sect0"><a class="anchor" href="#_overview_of_the_chargeback_process_flow"></a>Overview of the Chargeback Process Flow</h1>
+<div class="paragraph">
+<p>The RHOSO Chargeback feature is designed to provide transparency and accountability for resource consumption within a Red Hat OpenStack Platform (RHOSP) environment. It transforms raw resource usage data into meaningful cost allocations, enabling organizations to understand, manage, and potentially recoup the costs associated with their cloud infrastructure. Understanding the end-to-end process flow is crucial for effective implementation and management of chargeback.</p>
+</div>
+<div class="sect1">
+<h2 id="_technical_explanation_of_the_chargeback_process_flow"><a class="anchor" href="#_technical_explanation_of_the_chargeback_process_flow"></a>Technical Explanation of the Chargeback Process Flow</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The RHOSO Chargeback process flow can be broken down into several distinct, yet interconnected, stages. This flow begins with resource utilization and culminates in the generation of detailed chargeback reports.</p>
+</div>
+<div class="sect2">
+<h3 id="_1_resource_consumption_and_data_collection"><a class="anchor" href="#_1_resource_consumption_and_data_collection"></a>1. Resource Consumption and Data Collection</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> This initial stage involves the actual usage of cloud resources by various tenants, projects, or users within the RHOSP environment. These resources include, but are not limited to, compute (CPU, RAM), storage (block, object), network traffic, and various services provided by OpenStack (e.g., volumes, instances, floating IPs).</p>
+</li>
+<li>
+<p><strong>RHOSO&#8217;s Role:</strong> RHOSO plays a critical role here by integrating with RHOSP&#8217;s telemetry and monitoring services. It continuously collects raw usage metrics from these services. This data is often granular, capturing usage over specific time intervals (e.g., per hour, per minute). RHOSO&#8217;s observability capabilities are foundational to chargeback, as they provide the underlying usage data necessary for cost calculations.</p>
+</li>
+<li>
+<p><strong>Data Points:</strong> Examples of collected data include:</p>
+</li>
+<li>
+<p>Virtual machine uptime (instance hours)</p>
+</li>
+<li>
+<p>CPU utilization (core-hours)</p>
+</li>
+<li>
+<p>Memory allocation (GB-hours)</p>
+</li>
+<li>
+<p>Storage capacity (GB-hours, IOPS)</p>
+</li>
+<li>
+<p>Network ingress/egress (GB transferred)</p>
+</li>
+<li>
+<p>Number of assigned Floating IPs</p>
+</li>
+<li>
+<p><strong>Integration:</strong> RHOSO typically integrates with OpenStack components like Ceilometer, Gnocchi, and potentially Prometheus or other custom metrics providers to ingest this raw telemetry data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_data_processing_and_normalization"><a class="anchor" href="#_2_data_processing_and_normalization"></a>2. Data Processing and Normalization</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> Raw usage data, as collected, may not always be in a consistent or directly usable format for cost calculation. This stage involves processing, cleaning, and normalizing the collected data. This ensures data quality and prepares it for the subsequent rating engine.</p>
+</li>
+<li>
+<p><strong>Purpose:</strong></p>
+</li>
+<li>
+<p><strong>Aggregation:</strong> Grouping data points over defined periods (e.g., daily, hourly).</p>
+</li>
+<li>
+<p><strong>Transformation:</strong> Converting raw metrics into standard units required for rating rules. For example, converting bytes to gigabytes or milliseconds to hours.</p>
+</li>
+<li>
+<p><strong>Enrichment:</strong> Adding metadata from RHOSP (e.g., project ID, user ID, instance name, flavor details) to the usage records, which is crucial for accurate attribution and granular reporting.</p>
+</li>
+<li>
+<p><strong>De-duplication and Validation:</strong> Removing redundant data and ensuring the integrity of the usage records.</p>
+</li>
+<li>
+<p><strong>RHOSO&#8217;s Role:</strong> RHOSO&#8217;s internal data processing pipelines handle these tasks, ensuring that the data presented to the rating engine is accurate, complete, and formatted correctly.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_rating_and_cost_calculation"><a class="anchor" href="#_3_rating_and_cost_calculation"></a>3. Rating and Cost Calculation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> This is the core stage where monetary values are assigned to the processed resource usage data. It relies heavily on <strong>rating definitions</strong> and <strong>rating rules</strong> configured within RHOSO.</p>
+</li>
+<li>
+<p><strong>Rating Definitions:</strong> These define the components of cost, such as unit price for a CPU core-hour, per-GB price for storage, or fixed fees for certain services.</p>
+</li>
+<li>
+<p><strong>Rating Rules:</strong> These are logical constructs that apply specific rating definitions to particular resources, projects, or time periods. For example, a rule might state: "Charge $0.05 per GB-hour for block storage used by Project A" or "Charge $0.10 per instance-hour for 'm1.large' instances."</p>
+</li>
+<li>
+<p><strong>The Rating Engine:</strong> RHOSO&#8217;s rating engine processes the normalized usage data against the active rating rules. For each resource usage event, it determines the applicable rule and calculates the corresponding charge.</p>
+</li>
+<li>
+<p><strong>Output:</strong> The output of this stage is a set of calculated charges, each associated with a specific resource, period, project, and user.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_charge_generation_and_storage"><a class="anchor" href="#_4_charge_generation_and_storage"></a>4. Charge Generation and Storage</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> Once costs are calculated, they are consolidated and stored as structured charge records. These records form the basis for all future reports and invoices.</p>
+</li>
+<li>
+<p><strong>Consolidation:</strong> Charges for various resources used by the same project/tenant over a billing period are aggregated.</p>
+</li>
+<li>
+<p><strong>Data Structure:</strong> Each charge record typically includes:</p>
+</li>
+<li>
+<p>Project/Tenant ID</p>
+</li>
+<li>
+<p>User ID</p>
+</li>
+<li>
+<p>Resource Type (e.g., <code>compute.instance</code>, <code>volume.storage</code>)</p>
+</li>
+<li>
+<p>Usage Quantity (e.g., 100 instance-hours, 500 GB-hours)</p>
+</li>
+<li>
+<p>Unit Price</p>
+</li>
+<li>
+<p>Calculated Amount</p>
+</li>
+<li>
+<p>Billing Period</p>
+</li>
+<li>
+<p>Timestamp of calculation</p>
+</li>
+<li>
+<p><strong>Storage:</strong> These charge records are persistently stored within RHOSO&#8217;s database, ensuring data retention and auditability.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_reporting_and_invoicing"><a class="anchor" href="#_5_reporting_and_invoicing"></a>5. Reporting and Invoicing</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> This final stage makes the calculated charges accessible and actionable to administrators, project owners, and end-users. It involves generating various types of reports and, optionally, formatted invoices.</p>
+</li>
+<li>
+<p><strong>RHOSO Dashboard:</strong> Users and administrators can typically access pre-defined reports and create custom reports through the RHOSO user interface.</p>
+</li>
+<li>
+<p><strong>Report Types:</strong></p>
+</li>
+<li>
+<p><strong>Summary Reports:</strong> High-level overview of total charges per project or tenant for a given period.</p>
+</li>
+<li>
+<p><strong>Detailed Usage Reports:</strong> Breakdown of charges by resource type, showing quantity, unit price, and total cost.</p>
+</li>
+<li>
+<p><strong>Trend Reports:</strong> Analysis of consumption and cost patterns over time.</p>
+</li>
+<li>
+<p><strong>Allocation Reports:</strong> Showing how costs are distributed across different departments or business units.</p>
+</li>
+<li>
+<p><strong>Invoicing (Optional):</strong> While RHOSO primarily focuses on chargeback reporting, the data can be exported or integrated with external billing systems to generate formal invoices.</p>
+</li>
+<li>
+<p><strong>Purpose:</strong> Provides transparency into cloud spending, enables accountability, and supports financial planning and budgeting.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_analysis_and_optimization_continuous_feedback"><a class="anchor" href="#_6_analysis_and_optimization_continuous_feedback"></a>6. Analysis and Optimization (Continuous Feedback)</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Description:</strong> While not strictly a "stage" in the linear flow, analysis and optimization represent a crucial feedback loop. The reports generated are used to understand consumption patterns, identify cost centers, and make informed decisions.</p>
+</li>
+<li>
+<p><strong>Insights:</strong></p>
+</li>
+<li>
+<p>Identifying underutilized resources.</p>
+</li>
+<li>
+<p>Spotting abnormal usage spikes.</p>
+</li>
+<li>
+<p>Validating the effectiveness of current rating rules.</p>
+</li>
+<li>
+<p>Informing decisions on resource scaling and project budgeting.</p>
+</li>
+<li>
+<p><strong>Iterative Improvement:</strong> This stage allows administrators to refine rating rules, adjust resource allocations, and optimize the overall cloud environment based on the financial insights provided by RHOSO Chargeback.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_suggestion_for_visual_content"><a class="anchor" href="#_suggestion_for_visual_content"></a>Suggestion for Visual Content</h4>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Image:</strong> A flow diagram visually representing the end-to-end chargeback process, with clear arrows indicating data flow between each stage (Consumption &#8594; Collection &#8594; Processing &#8594; Rating &#8594; Storage &#8594; Reporting &#8594; Analysis). Icons for RHOSP, RHOSO, and database components would be beneficial.</p>
+</li>
+<li>
+<p><strong>Video:</strong> A short animated walkthrough explaining the journey of a single resource usage event from its creation in RHOSP to its appearance as a line item in a chargeback report within RHOSO.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_activity_tracing_the_chargeback_data_journey"><a class="anchor" href="#_hands_on_activity_tracing_the_chargeback_data_journey"></a>Hands-on Activity: Tracing the Chargeback Data Journey</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>While this topic focuses on the <strong>overview</strong> of the process flow, a conceptual activity can help solidify understanding before diving into actual configuration.</p>
+</div>
+<div class="sect2">
+<h3 id="_objective"><a class="anchor" href="#_objective"></a>Objective</h3>
+<div class="paragraph">
+<p>To conceptually trace the data journey for a specific resource usage event through the RHOSO Chargeback process flow.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_activity_steps"><a class="anchor" href="#_activity_steps"></a>Activity Steps</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Scenario Definition:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Imagine a new "Project X" is created in RHOSP.</p>
+</li>
+<li>
+<p>Within Project X, a user launches an <code>m1.small</code> instance.</p>
+</li>
+<li>
+<p>The <code>m1.small</code> instance runs for exactly 1 hour.</p>
+</li>
+<li>
+<p>Assume your organization has a rating rule: <code>m1.small</code> instances cost <code>$0.01 per instance-hour</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Identify the Data Collection Point:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>What kind of usage metric would RHOSO collect for this instance? (e.g., <code>instance-hours</code>).</p>
+</li>
+<li>
+<p>From which RHOSP component would this data likely originate? (e.g., Nova/Ceilometer/Gnocchi).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Trace Data Processing:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>How might this raw data point be normalized or enriched? (e.g., associated with "Project X", timestamped, confirmed as 1 full hour).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Apply Rating:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Which <strong>rating rule</strong> would apply to this usage?</p>
+</li>
+<li>
+<p>What would be the calculated charge for this 1 hour of <code>m1.small</code> usage?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Formulate the Charge Record:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>If you were to see a single line item in a charge database for this event, what key information would it contain? (e.g., Project ID, Resource Type, Usage, Unit Price, Amount, Billing Period).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Anticipate Reporting:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Where would this charge eventually appear in a report?</p>
+</li>
+<li>
+<p>What kind of report would be most relevant for "Project X" to see this charge?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Discussion:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Discuss with peers (or reflect independently) what would happen if the instance ran for only 30 minutes, or if the rating rule changed midway through the hour. How would the flow adapt?</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="sect3">
+<h4 id="_looking_ahead"><a class="anchor" href="#_looking_ahead"></a>Looking Ahead</h4>
+<div class="paragraph">
+<p>This conceptual exercise prepares you for the "Hands-on Lab: Implementing Your First Chargeback Rating," where you will configure and observe these steps in a live environment. Understanding this flow conceptually now will make the practical implementation much clearer.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

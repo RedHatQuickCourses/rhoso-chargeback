@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,51 +230,93 @@
 </aside>
 <article class="doc">
 <h1 class="page">Introduction to RHOSO and its purpose</h1>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Introduction to RHOSO and its Purpose
-
-[#introduction-to-rhoso]
-== What is RHOSO?
-
-Red Hat OpenStack Services Observability (RHOSO) is a sophisticated and integrated solution designed to provide comprehensive visibility, management, and cost accountability for resources and services deployed within a Red Hat OpenStack Platform (RHOSP) environment. It stands as a critical tool for organizations operating private clouds, addressing the complexities of monitoring performance, tracking resource consumption, and attributing costs effectively.
-
-Built to overcome the inherent challenges of managing large, dynamic cloud infrastructures, RHOSO aggregates operational data and financial metrics. This allows cloud administrators, operations teams, and business stakeholders to gain actionable insights into their OpenStack cloud's health, efficiency, and expenditure.
-
-[#purpose-of-rhoso]
-== The Purpose of RHOSO
-
-The primary purpose of RHOSO is multifaceted, aiming to bridge the gap between technical operations and business financial management within an OpenStack cloud. Its core objectives can be distilled into two interconnected pillars: **Enhanced Observability** and **Accurate Chargeback**.
-
-=== Enhanced Observability
-
-RHOSO's first critical purpose is to provide deep, actionable insights into the operational health, performance, and resource consumption patterns across the entire RHOSP stack. This pillar is about understanding "what is happening" within the cloud environment, ensuring reliability, performance, and efficient resource utilization.
-
-*   **Real-time Monitoring and Alerting:** RHOSO continuously collects and processes a vast array of metrics, logs, and traces from various OpenStack services (such as Nova for compute, Neutron for networking, Cinder for block storage, Glance for images) and the underlying infrastructure. This data is presented in centralized dashboards, enabling operators to monitor the system's pulse in real time. Proactive alerts notify teams of impending issues or deviations from normal behavior, facilitating rapid response and problem resolution.
-*   **Performance Analysis and Capacity Planning:** By providing historical data and trend analysis, RHOSO allows administrators to identify performance bottlenecks, understand long-term resource usage trends, and forecast future capacity requirements. This capability is essential for optimizing resource allocation, preventing service degradation, and making informed decisions about scaling the cloud infrastructure.
-*   **Operational Visibility and Troubleshooting:** It offers a unified view of the cloud's status, streamlining the process of diagnosing and troubleshooting issues. Through integrated logging and tracing, operators can quickly pinpoint the root cause of service disruptions, ensuring services meet their Service Level Agreements (SLAs).
-*   **Resource Utilization Tracking:** RHOSO meticulously tracks how resources like virtual CPUs, RAM, storage volumes, and network bandwidth are consumed by different tenants, projects, or individual users. This granular tracking is fundamental for identifying underutilized assets, optimizing resource provisioning, and ensuring fair resource allocation across the organization.
-
-[NOTE]
-.Observability: Beyond Basic Monitoring
-While traditional monitoring tools might tell you *if* a service is down or a server is overloaded, true observability, as offered by RHOSO, allows you to ask *arbitrary questions* about the internal state of your system based on rich, correlated data (metrics, logs, traces). This deep insight helps you understand *why* problems occur, even for issues you didn't anticipate.
-
-=== Accurate Chargeback and Cost Attribution
-
-The second, equally vital purpose of RHOSO is to translate technical resource consumption into clear, attributable financial reports. This enables organizations to implement a transparent and fair cost recovery model, crucial for internal private cloud users or departments.
-
-*   **Cost Transparency and Accountability:** RHOSO transforms raw resource consumption data into understandable financial reports, making the cost of cloud services transparent to business units, departments, or individual project teams. This fosters financial accountability and encourages responsible resource usage.
-*   **Fair Cost Attribution:** It ensures that the operational costs associated with running and consuming cloud resources are accurately allocated to the respective consumers. This eliminates the "free-for-all" perception of internal cloud resources and aligns IT costs with business value.
-*   **Budget Management and Forecasting:** By providing detailed consumption and cost reports, RHOSO empowers departments to track their cloud spending against allocated budgets. This supports better financial planning, enables chargeback models, and assists in forecasting future expenditures based on historical usage patterns.
-*   **Flexible Service Catalog Pricing:** RHOSO allows cloud administrators to define flexible pricing models for various OpenStack services. These models can range from per-hour virtual machine costs, per-GB storage charges, or network traffic fees. The system then automatically applies these predefined rules to actual resource consumption, generating precise chargeback data.
-
-By integrating these two powerful purposes, RHOSO empowers organizations to operate their OpenStack clouds with unprecedented efficiency, transparency, and financial control. It acts as a crucial link between the technical operational health of the cloud and its financial impact on the business.
-
-FIXME: Add an illustrative diagram showing the high-level architecture of RHOSO within an RHOSP environment. This diagram should highlight its integration points with core OpenStack services (like Nova, Neutron, Cinder, Keystone) and how data flows for both observability (metrics, logs, traces) and chargeback processing. This would significantly aid visual learners in grasping the system's scope and components.
-
-FIXME: Consider incorporating a short, engaging introductory video (e.g., 2-3 minutes) that visually explains RHOSO's core purpose and briefly showcases its key areas, such as a quick glimpse of a dashboard or a chargeback report. This can provide an effective and engaging initial overview for learners.
-
-FIXME: While this topic is introductory, a very basic hands-on activity could be beneficial in a subsequent section (e.g., 'Key features of RHOSO Observability'). This could involve a guided tour of the RHOSO user interface, focusing on navigating pre-configured dashboards and understanding where key observability metrics and chargeback reports are presented, without requiring any configuration changes.</code></pre>
+<h1 id="_introduction_to_rhoso_and_its_purpose" class="sect0"><a class="anchor" href="#_introduction_to_rhoso_and_its_purpose"></a>Introduction to RHOSO and its Purpose</h1>
+<div class="sect1">
+<h2 id="introduction-to-rhoso"><a class="anchor" href="#introduction-to-rhoso"></a>What is RHOSO?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Red Hat OpenStack Services Observability (RHOSO) is a sophisticated and integrated solution designed to provide comprehensive visibility, management, and cost accountability for resources and services deployed within a Red Hat OpenStack Platform (RHOSP) environment. It stands as a critical tool for organizations operating private clouds, addressing the complexities of monitoring performance, tracking resource consumption, and attributing costs effectively.</p>
+</div>
+<div class="paragraph">
+<p>Built to overcome the inherent challenges of managing large, dynamic cloud infrastructures, RHOSO aggregates operational data and financial metrics. This allows cloud administrators, operations teams, and business stakeholders to gain actionable insights into their OpenStack cloud&#8217;s health, efficiency, and expenditure.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="purpose-of-rhoso"><a class="anchor" href="#purpose-of-rhoso"></a>The Purpose of RHOSO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The primary purpose of RHOSO is multifaceted, aiming to bridge the gap between technical operations and business financial management within an OpenStack cloud. Its core objectives can be distilled into two interconnected pillars: <strong>Enhanced Observability</strong> and <strong>Accurate Chargeback</strong>.</p>
+</div>
+<div class="sect2">
+<h3 id="_enhanced_observability"><a class="anchor" href="#_enhanced_observability"></a>Enhanced Observability</h3>
+<div class="paragraph">
+<p>RHOSO&#8217;s first critical purpose is to provide deep, actionable insights into the operational health, performance, and resource consumption patterns across the entire RHOSP stack. This pillar is about understanding "what is happening" within the cloud environment, ensuring reliability, performance, and efficient resource utilization.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Real-time Monitoring and Alerting:</strong> RHOSO continuously collects and processes a vast array of metrics, logs, and traces from various OpenStack services (such as Nova for compute, Neutron for networking, Cinder for block storage, Glance for images) and the underlying infrastructure. This data is presented in centralized dashboards, enabling operators to monitor the system&#8217;s pulse in real time. Proactive alerts notify teams of impending issues or deviations from normal behavior, facilitating rapid response and problem resolution.</p>
+</li>
+<li>
+<p><strong>Performance Analysis and Capacity Planning:</strong> By providing historical data and trend analysis, RHOSO allows administrators to identify performance bottlenecks, understand long-term resource usage trends, and forecast future capacity requirements. This capability is essential for optimizing resource allocation, preventing service degradation, and making informed decisions about scaling the cloud infrastructure.</p>
+</li>
+<li>
+<p><strong>Operational Visibility and Troubleshooting:</strong> It offers a unified view of the cloud&#8217;s status, streamlining the process of diagnosing and troubleshooting issues. Through integrated logging and tracing, operators can quickly pinpoint the root cause of service disruptions, ensuring services meet their Service Level Agreements (SLAs).</p>
+</li>
+<li>
+<p><strong>Resource Utilization Tracking:</strong> RHOSO meticulously tracks how resources like virtual CPUs, RAM, storage volumes, and network bandwidth are consumed by different tenants, projects, or individual users. This granular tracking is fundamental for identifying underutilized assets, optimizing resource provisioning, and ensuring fair resource allocation across the organization.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">Observability: Beyond Basic Monitoring</div>
+While traditional monitoring tools might tell you <strong>if</strong> a service is down or a server is overloaded, true observability, as offered by RHOSO, allows you to ask <strong>arbitrary questions</strong> about the internal state of your system based on rich, correlated data (metrics, logs, traces). This deep insight helps you understand <strong>why</strong> problems occur, even for issues you didn&#8217;t anticipate.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_accurate_chargeback_and_cost_attribution"><a class="anchor" href="#_accurate_chargeback_and_cost_attribution"></a>Accurate Chargeback and Cost Attribution</h3>
+<div class="paragraph">
+<p>The second, equally vital purpose of RHOSO is to translate technical resource consumption into clear, attributable financial reports. This enables organizations to implement a transparent and fair cost recovery model, crucial for internal private cloud users or departments.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Cost Transparency and Accountability:</strong> RHOSO transforms raw resource consumption data into understandable financial reports, making the cost of cloud services transparent to business units, departments, or individual project teams. This fosters financial accountability and encourages responsible resource usage.</p>
+</li>
+<li>
+<p><strong>Fair Cost Attribution:</strong> It ensures that the operational costs associated with running and consuming cloud resources are accurately allocated to the respective consumers. This eliminates the "free-for-all" perception of internal cloud resources and aligns IT costs with business value.</p>
+</li>
+<li>
+<p><strong>Budget Management and Forecasting:</strong> By providing detailed consumption and cost reports, RHOSO empowers departments to track their cloud spending against allocated budgets. This supports better financial planning, enables chargeback models, and assists in forecasting future expenditures based on historical usage patterns.</p>
+</li>
+<li>
+<p><strong>Flexible Service Catalog Pricing:</strong> RHOSO allows cloud administrators to define flexible pricing models for various OpenStack services. These models can range from per-hour virtual machine costs, per-GB storage charges, or network traffic fees. The system then automatically applies these predefined rules to actual resource consumption, generating precise chargeback data.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By integrating these two powerful purposes, RHOSO empowers organizations to operate their OpenStack clouds with unprecedented efficiency, transparency, and financial control. It acts as a crucial link between the technical operational health of the cloud and its financial impact on the business.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Add an illustrative diagram showing the high-level architecture of RHOSO within an RHOSP environment. This diagram should highlight its integration points with core OpenStack services (like Nova, Neutron, Cinder, Keystone) and how data flows for both observability (metrics, logs, traces) and chargeback processing. This would significantly aid visual learners in grasping the system&#8217;s scope and components.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Consider incorporating a short, engaging introductory video (e.g., 2-3 minutes) that visually explains RHOSO&#8217;s core purpose and briefly showcases its key areas, such as a quick glimpse of a dashboard or a chargeback report. This can provide an effective and engaging initial overview for learners.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: While this topic is introductory, a very basic hands-on activity could be beneficial in a subsequent section (e.g., 'Key features of RHOSO Observability'). This could involve a guided tour of the RHOSO user interface, focusing on navigating pre-configured dashboards and understanding where key observability metrics and chargeback reports are presented, without requiring any configuration changes.</p>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

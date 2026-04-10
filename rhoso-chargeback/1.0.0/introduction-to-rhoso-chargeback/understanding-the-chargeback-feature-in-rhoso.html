@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,67 +230,146 @@
 </aside>
 <article class="doc">
 <h1 class="page">Understanding the Chargeback feature in RHOSO</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here&#8217;s the detailed educational content for "Understanding the Chargeback feature in RHOSO" in Antora AsciiDoc format, along with suggestions for improvement:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">[[understanding-chargeback-rhoso]]
-= Understanding the Chargeback feature in RHOSO
-
-This section introduces the Chargeback feature within Red Hat OpenShift Service Observability (RHOSO), explaining its purpose, core concepts, and how it enables transparent cost allocation for resources consumed in your cloud environment.
-
-== What is Chargeback?
-
-In dynamic cloud environments, such as those managed by Red Hat OpenStack Platform (RHOSP) or other platforms monitored by RHOSO, resources are consumed by various departments, projects, or tenants. *Chargeback* is a financial mechanism used to allocate the costs of shared IT services and resources back to the specific business units or users that consume them. Instead of IT being seen purely as a cost center, chargeback helps demonstrate the value provided by IT services by linking consumption directly to financial responsibility.
-
-RHOSO's Chargeback feature extends its core observability capabilities by transforming raw resource utilization data into actionable financial insights. It provides the tools to define pricing models, track resource consumption, and generate reports or invoices that reflect the actual cost of services used.
-
-FIXME: Consider adding an introductory diagram here that illustrates the flow from resource consumption to chargeback reporting, possibly showing different departments consuming shared resources.
-FIXME: A short video explaining "What is Chargeback in 60 seconds?" could be beneficial for visual learners.
-
-=== Why Chargeback is Essential in Cloud Environments
-
-The shared, on-demand, and elastic nature of cloud computing makes traditional IT cost allocation models difficult. Chargeback addresses these challenges by:
-
-*   **Promoting Accountability**: Users become aware of the financial implications of their resource usage, encouraging more efficient consumption.
-*   **Driving Cost Optimization**: By associating costs with specific services and projects, organizations can identify areas of wasteful spending and optimize resource provisioning.
-*   **Enhancing Transparency**: Provides clear visibility into how IT costs are incurred and distributed across the organization.
-*   **Facilitating Budgeting and Planning**: Accurate cost data allows business units to better forecast their IT expenditures and enables IT departments to plan resource capacity more effectively.
-*   **Supporting Showback/Chargeback Models**: Whether you fully charge internally (chargeback) or just show consumption costs (showback), the underlying mechanism is the same, fostering a more business-aligned IT.
-
-== Core Components and Process Flow of RHOSO Chargeback
-
-RHOSO Chargeback operates by integrating with the comprehensive observability data it collects from your infrastructure. The general process flow involves several key steps:
-
-1.  **Data Collection**: RHOSO continuously gathers detailed metrics on resource consumption (e.g., CPU hours, RAM usage, storage I/O, network traffic) from integrated platforms like RHOSP. This data forms the foundation for chargeback calculations.
-2.  **Rating Definition**: Administrators define *rating rules* that specify how each type of resource consumption is priced. These rules can be simple (e.g., $X per GB of storage per month) or complex, incorporating tiers, discounts, and different rates for different services or tenants.
-3.  **Cost Calculation**: Based on the collected consumption data and the defined rating rules, RHOSO calculates the total cost incurred by each tenant, project, or resource group over a specified billing period.
-4.  **Reporting and Invoicing**: The calculated costs are compiled into comprehensive reports and, optionally, formalized invoices. These documents provide a breakdown of charges, resource usage, and the applicable rating rules.
-5.  **Analysis and Optimization**: Users and administrators can analyze chargeback reports to understand spending patterns, identify trends, and make informed decisions about resource allocation and cost management.
-
-[cols="1,1",options="header"]
-|===
-|Component |Description
-|*Resource Metrics* |Raw data on CPU, RAM, storage, network usage, etc., collected by RHOSO's observability features.
-|*Rating Definitions* |Rules that assign a monetary value to specific units of resource consumption (e.g., per GB-hour, per vCPU-hour).
-|*Billing Periods* |Defined intervals (e.g., monthly, weekly) over which resource consumption is aggregated and costs are calculated.
-|*Chargeback Engine* |The RHOSO component responsible for applying rating rules to consumption data and calculating charges.
-|*Reports &amp; Invoices* |Output documents detailing resource usage and associated costs for specific tenants, projects, or users.
-|===
-
-FIXME: A flow diagram showing the interaction between data collection, rating definitions, chargeback engine, and report generation would greatly enhance understanding here.
-
-== Integration of Chargeback with RHOSO Observability
-
-The power of RHOSO's Chargeback feature stems from its tight integration with its broader observability capabilities. Observability, which provides insights into the health, performance, and usage of your systems, feeds directly into the chargeback process.
-
-*   **Unified Data Source**: RHOSO's ability to collect metrics, logs, and traces from diverse sources means that chargeback calculations leverage a single, consistent, and accurate data set. This avoids discrepancies that might arise from disparate data sources.
-*   **Real-time Insights**: As RHOSO provides near real-time observability, the consumption data used for chargeback is up-to-date, allowing for more granular and timely cost analysis.
-*   **Performance-based Pricing**: Advanced chargeback models can even incorporate performance metrics (e.g., charging more for resources that consistently meet high performance SLAs) by leveraging detailed performance data from observability.
-*   **Troubleshooting and Verification**: When discrepancies arise in chargeback reports, the underlying observability data (detailed resource usage graphs, logs, etc.) can be directly accessed within RHOSO to verify consumption and troubleshoot rating issues. This ensures the accuracy and trustworthiness of the chargeback system.
-
-In essence, RHOSO's observability provides the "eyes and ears" into your infrastructure's resource consumption, while the Chargeback feature translates what those eyes and ears observe into a clear financial ledger. This synergy empowers organizations to not only understand *what* is happening in their cloud environment but also *how much it costs* and *who is responsible for that cost*.</code></pre>
+</div>
+</div>
+<h1 id="understanding-chargeback-rhoso" class="sect0"><a class="anchor" href="#understanding-chargeback-rhoso"></a>Understanding the Chargeback feature in RHOSO</h1>
+<div class="paragraph">
+<p>This section introduces the Chargeback feature within Red Hat OpenShift Service Observability (RHOSO), explaining its purpose, core concepts, and how it enables transparent cost allocation for resources consumed in your cloud environment.</p>
+</div>
+<div class="sect1">
+<h2 id="_what_is_chargeback"><a class="anchor" href="#_what_is_chargeback"></a>What is Chargeback?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In dynamic cloud environments, such as those managed by Red Hat OpenStack Platform (RHOSP) or other platforms monitored by RHOSO, resources are consumed by various departments, projects, or tenants. <strong>Chargeback</strong> is a financial mechanism used to allocate the costs of shared IT services and resources back to the specific business units or users that consume them. Instead of IT being seen purely as a cost center, chargeback helps demonstrate the value provided by IT services by linking consumption directly to financial responsibility.</p>
+</div>
+<div class="paragraph">
+<p>RHOSO&#8217;s Chargeback feature extends its core observability capabilities by transforming raw resource utilization data into actionable financial insights. It provides the tools to define pricing models, track resource consumption, and generate reports or invoices that reflect the actual cost of services used.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Consider adding an introductory diagram here that illustrates the flow from resource consumption to chargeback reporting, possibly showing different departments consuming shared resources.
+FIXME: A short video explaining "What is Chargeback in 60 seconds?" could be beneficial for visual learners.</p>
+</div>
+<div class="sect2">
+<h3 id="_why_chargeback_is_essential_in_cloud_environments"><a class="anchor" href="#_why_chargeback_is_essential_in_cloud_environments"></a>Why Chargeback is Essential in Cloud Environments</h3>
+<div class="paragraph">
+<p>The shared, on-demand, and elastic nature of cloud computing makes traditional IT cost allocation models difficult. Chargeback addresses these challenges by:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Promoting Accountability</strong>: Users become aware of the financial implications of their resource usage, encouraging more efficient consumption.</p>
+</li>
+<li>
+<p><strong>Driving Cost Optimization</strong>: By associating costs with specific services and projects, organizations can identify areas of wasteful spending and optimize resource provisioning.</p>
+</li>
+<li>
+<p><strong>Enhancing Transparency</strong>: Provides clear visibility into how IT costs are incurred and distributed across the organization.</p>
+</li>
+<li>
+<p><strong>Facilitating Budgeting and Planning</strong>: Accurate cost data allows business units to better forecast their IT expenditures and enables IT departments to plan resource capacity more effectively.</p>
+</li>
+<li>
+<p><strong>Supporting Showback/Chargeback Models</strong>: Whether you fully charge internally (chargeback) or just show consumption costs (showback), the underlying mechanism is the same, fostering a more business-aligned IT.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_core_components_and_process_flow_of_rhoso_chargeback"><a class="anchor" href="#_core_components_and_process_flow_of_rhoso_chargeback"></a>Core Components and Process Flow of RHOSO Chargeback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO Chargeback operates by integrating with the comprehensive observability data it collects from your infrastructure. The general process flow involves several key steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Data Collection</strong>: RHOSO continuously gathers detailed metrics on resource consumption (e.g., CPU hours, RAM usage, storage I/O, network traffic) from integrated platforms like RHOSP. This data forms the foundation for chargeback calculations.</p>
+</li>
+<li>
+<p><strong>Rating Definition</strong>: Administrators define <strong>rating rules</strong> that specify how each type of resource consumption is priced. These rules can be simple (e.g., $X per GB of storage per month) or complex, incorporating tiers, discounts, and different rates for different services or tenants.</p>
+</li>
+<li>
+<p><strong>Cost Calculation</strong>: Based on the collected consumption data and the defined rating rules, RHOSO calculates the total cost incurred by each tenant, project, or resource group over a specified billing period.</p>
+</li>
+<li>
+<p><strong>Reporting and Invoicing</strong>: The calculated costs are compiled into comprehensive reports and, optionally, formalized invoices. These documents provide a breakdown of charges, resource usage, and the applicable rating rules.</p>
+</li>
+<li>
+<p><strong>Analysis and Optimization</strong>: Users and administrators can analyze chargeback reports to understand spending patterns, identify trends, and make informed decisions about resource allocation and cost management.</p>
+</li>
+</ol>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Component</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Resource Metrics</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Raw data on CPU, RAM, storage, network usage, etc., collected by RHOSO&#8217;s observability features.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Rating Definitions</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Rules that assign a monetary value to specific units of resource consumption (e.g., per GB-hour, per vCPU-hour).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Billing Periods</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defined intervals (e.g., monthly, weekly) over which resource consumption is aggregated and costs are calculated.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Chargeback Engine</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The RHOSO component responsible for applying rating rules to consumption data and calculating charges.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Reports &amp; Invoices</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Output documents detailing resource usage and associated costs for specific tenants, projects, or users.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>FIXME: A flow diagram showing the interaction between data collection, rating definitions, chargeback engine, and report generation would greatly enhance understanding here.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integration_of_chargeback_with_rhoso_observability"><a class="anchor" href="#_integration_of_chargeback_with_rhoso_observability"></a>Integration of Chargeback with RHOSO Observability</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The power of RHOSO&#8217;s Chargeback feature stems from its tight integration with its broader observability capabilities. Observability, which provides insights into the health, performance, and usage of your systems, feeds directly into the chargeback process.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Unified Data Source</strong>: RHOSO&#8217;s ability to collect metrics, logs, and traces from diverse sources means that chargeback calculations leverage a single, consistent, and accurate data set. This avoids discrepancies that might arise from disparate data sources.</p>
+</li>
+<li>
+<p><strong>Real-time Insights</strong>: As RHOSO provides near real-time observability, the consumption data used for chargeback is up-to-date, allowing for more granular and timely cost analysis.</p>
+</li>
+<li>
+<p><strong>Performance-based Pricing</strong>: Advanced chargeback models can even incorporate performance metrics (e.g., charging more for resources that consistently meet high performance SLAs) by leveraging detailed performance data from observability.</p>
+</li>
+<li>
+<p><strong>Troubleshooting and Verification</strong>: When discrepancies arise in chargeback reports, the underlying observability data (detailed resource usage graphs, logs, etc.) can be directly accessed within RHOSO to verify consumption and troubleshoot rating issues. This ensures the accuracy and trustworthiness of the chargeback system.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>In essence, RHOSO&#8217;s observability provides the "eyes and ears" into your infrastructure&#8217;s resource consumption, while the Chargeback feature translates what those eyes and ears observe into a clear financial ledger. This synergy empowers organizations to not only understand <strong>what</strong> is happening in their cloud environment but also <strong>how much it costs</strong> and <strong>who is responsible for that cost</strong>.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">

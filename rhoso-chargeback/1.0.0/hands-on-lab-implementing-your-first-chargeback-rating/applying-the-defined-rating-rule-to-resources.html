@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,119 +230,308 @@
 </aside>
 <article class="doc">
 <h1 class="page">Applying the defined rating rule to resources</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here&#8217;s the detailed educational content for "Applying the defined rating rule to resources" in Antora AsciiDoc format.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">[[applying-rating-rules]]
-= Applying the Defined Rating Rule to Resources
-
-Once you have meticulously crafted a rating definition and the associated rating rules, the next crucial step is to ensure these rules are effectively applied to the resources consuming your cloud services. This section delves into the mechanisms by which RHOSO Chargeback associates your defined rules with actual resource consumption, laying the groundwork for accurate cost attribution.
-
-== Technical Explanation: How Rating Rules are Applied
-
-In RHOSO Chargeback, the "application" of a rating rule isn't typically a manual, per-resource attachment process. Instead, it's an intelligent and automated mechanism driven by the scope and criteria defined within the rule itself, combined with the comprehensive observability data collected from RHOSP.
-
-The core principle is that a rating rule specifies *what* to charge for (e.g., vCPU-hours, GB-months, network egress) and *under what conditions* it applies. These conditions determine the rule's scope and how it's matched against observed resource usage.
-
-Here’s how RHOSO Chargeback applies rating rules:
-
-. **Scope Definition:** Each rating rule is defined with a specific scope. This scope can be broad or granular:
-** *Global:* Applies to all resources of a certain type across the entire RHOSP deployment.
-** *Project/Tenant Specific:* Applies only to resources within a designated OpenStack project or tenant. This is very common for attributing costs to specific departments or teams.
-** *Resource Type Specific:* Applies to particular types of resources (e.g., Nova instances, Cinder volumes, Neutron networks).
-** *Tag/Metadata-based:* Rules can be conditional on specific tags or metadata attached to resources in RHOSP. For example, a "production" tag might trigger a higher rate than a "development" tag.
-
-. **Data Collection and Matching:**
-** RHOSO's observability components continuously collect detailed usage metrics from various RHOSP services (Nova, Cinder, Neutron, etc.). This data includes not just raw consumption (e.g., CPU utilization, storage size) but also crucial metadata like project ID, instance name, and any custom tags.
-** The Chargeback engine then continuously evaluates these incoming usage records against all active rating rules.
-** A rule is "applied" to a resource's consumption when the resource's attributes (e.g., its project ID, resource type, tags) match the scope and criteria defined in that specific rule.
-
-. **Continuous Evaluation:**
-** Unlike a one-time assignment, Chargeback operates on a continuous evaluation model. As resource consumption changes, or as resources are created, modified, or deleted, RHOSO automatically re-evaluates which rating rules apply.
-** This ensures that charges are always accurate and reflect the current state and usage patterns of your cloud infrastructure.
-
-. **Hierarchy and Precedence:**
-** In scenarios where multiple rules might potentially apply to the same resource (e.g., a global rule for compute and a project-specific rule for compute), RHOSO Chargeback typically uses a precedence mechanism. More specific rules (e.g., project-specific or tag-based) often take precedence over broader, more general rules. This hierarchy ensures that the most appropriate and granular charge is always applied.
-
-Therefore, "applying" a rating rule primarily involves:
-*   **Defining its criteria accurately:** Ensuring the rule's scope correctly targets the resources and usage you intend to charge for.
-*   **Ensuring data availability:** Verifying that RHOSO is successfully collecting the necessary observability data from RHOSP for the rule to match against.
-
-=== The Role of Data Synchronization
-
-RHOSO Chargeback relies heavily on the synchronization of data from RHOSP. When you define a rule to apply to a specific project, for example, the Chargeback system expects to receive usage data *attributed to that project ID* from the RHOSP components. Any discrepancies or delays in this data flow can impact the accuracy of rule application.
-
-[TIP]
-For effective chargeback, it's crucial to adopt a consistent tagging strategy within your RHOSP environment. Tags can be powerful enablers for highly granular and flexible chargeback rules, allowing you to define different rates for resources based on environment, department, cost center, or application.
-
-== Hands-on Lab: Applying Your First Chargeback Rating
-
-This lab builds upon the previous step where you defined a basic rating rule. Here, we'll focus on demonstrating how that rule is automatically applied to a resource within RHOSP that matches its defined scope.
-
-**Goal:** To observe the automatic application of a previously defined rating rule to a newly provisioned OpenStack instance.
-
-=== Prerequisites
-
-*   You have successfully completed the previous lab section: "Defining a basic rating rule for a service." You should have at least one active rating rule defined (e.g., for vCPU usage of Nova instances).
-*   You have administrative access to both the RHOSO Chargeback UI and the RHOSP Horizon dashboard.
-*   You have a project in RHOSP where you can provision resources. This project should either be the target of your defined rating rule, or you'll need to configure your rule to target the project you intend to use.
-
-=== Steps
-
-. **Review Your Defined Rating Rule's Scope:**
-.. Log in to the RHOSO Chargeback UI.
-.. Navigate to the *Rating Definitions* or *Rating Rules* section.
-.. Identify the rule you created in the previous lab (e.g., "Basic Compute vCPU Rate").
-.. Carefully examine its scope. Note down which OpenStack project(s) or resource types it targets. If your rule is global for Nova instances, that's fine. If it's project-specific, ensure you know which project it applies to.
-
-. **Provision a Test Resource in RHOSP:**
-.. Log in to the RHOSP Horizon dashboard as a user with permissions to create instances in the project targeted by your rating rule.
-.. Navigate to *Project &gt; Compute &gt; Instances*.
-.. Click *Launch Instance*.
-.. Configure a simple instance:
-*** **Instance Name:** `chargeback-test-instance-01`
-*** **Flavor:** Select a small flavor (e.g., `m1.tiny` or `cirros.tiny`) that has at least 1 vCPU.
-*** **Source:** Select an appropriate image (e.g., CirrOS or a small Linux image).
-*** **Network:** Attach it to an available network.
-.. Ensure this instance is launched within the *project* that your rating rule is scoped to (or a project covered by a global rule).
-.. Click *Launch Instance*.
-
-. **Verify Resource Provisioning and Data Collection:**
-.. Wait a few moments for the instance to transition to an `Active` state in Horizon.
-.. (Optional) Log in to the RHOSO Observability dashboard. Navigate to the metrics related to Nova instances or compute usage. You should eventually see data points appearing for your newly created instance. This confirms that the underlying observability system is collecting data.
-+
-[NOTE]
-Data collection and processing take time. It might be several minutes (or even up to an hour depending on your RHOSO configuration) before the new instance's usage data is fully processed and available for chargeback calculations.
-
-. **Access Chargeback Reports to Observe Rule Application:**
-.. Return to the RHOSO Chargeback UI.
-.. Navigate to the *Reports* or *Invoices* section.
-.. Look for reports that cover the time period since you launched your instance. You might need to adjust the report filters (e.g., filter by project, time range).
-.. You are looking for line items that show charges attributed to your `chargeback-test-instance-01` or, more generally, to the project where it resides, under the category of "Compute" or "vCPU usage."
-.. Drill down into the report details. You should see:
-*** The resource ID of your `chargeback-test-instance-01`.
-*** The specific rating rule (e.g., "Basic Compute vCPU Rate") that has been applied.
-*** The consumption quantity (e.g., `0.0X` vCPU-hours, where `X` depends on how long the instance has been running).
-*** The calculated charge based on your rule's rate.
-
-. **Confirm Rule Application:**
-.. If you see charges accumulating for your test instance under the correct rule and project, it confirms that your defined rating rule has been successfully applied by the RHOSO Chargeback system to the resources matching its scope.
-.. Note how the application was automatic, based on the instance matching the rule's criteria (being a Nova instance, having vCPUs, and residing in the targeted project).
-
-[TIP]
-If you don't see immediate charges, double-check your report filters, the rule's scope, and allow more time for data synchronization and processing. The "Basic Chargeback Troubleshooting" section will cover common issues and diagnosis techniques.
-
-This concludes the hands-on demonstration of applying a rating rule. You've witnessed how RHOSO Chargeback automates the crucial step of linking your pricing logic to actual cloud resource consumption.
-
----
-
-FIXME: Add an image here.
-*   **Image Suggestion:** A screenshot of the RHOSO Chargeback UI showing a list of active rating rules with their scopes highlighted. This would visually reinforce the concept of rule scope.
-
-FIXME: Add an image here.
-*   **Image Suggestion:** A sequence of screenshots or a short video demonstrating the provisioning of an instance in RHOSP Horizon, followed by navigating to the Chargeback report section and highlighting the newly generated charge for that instance. This would be invaluable for the hands-on activity.</code></pre>
+</div>
+</div>
+<h1 id="applying-rating-rules" class="sect0"><a class="anchor" href="#applying-rating-rules"></a>Applying the Defined Rating Rule to Resources</h1>
+<div class="paragraph">
+<p>Once you have meticulously crafted a rating definition and the associated rating rules, the next crucial step is to ensure these rules are effectively applied to the resources consuming your cloud services. This section delves into the mechanisms by which RHOSO Chargeback associates your defined rules with actual resource consumption, laying the groundwork for accurate cost attribution.</p>
+</div>
+<div class="sect1">
+<h2 id="_technical_explanation_how_rating_rules_are_applied"><a class="anchor" href="#_technical_explanation_how_rating_rules_are_applied"></a>Technical Explanation: How Rating Rules are Applied</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In RHOSO Chargeback, the "application" of a rating rule isn&#8217;t typically a manual, per-resource attachment process. Instead, it&#8217;s an intelligent and automated mechanism driven by the scope and criteria defined within the rule itself, combined with the comprehensive observability data collected from RHOSP.</p>
+</div>
+<div class="paragraph">
+<p>The core principle is that a rating rule specifies <strong>what</strong> to charge for (e.g., vCPU-hours, GB-months, network egress) and <strong>under what conditions</strong> it applies. These conditions determine the rule&#8217;s scope and how it&#8217;s matched against observed resource usage.</p>
+</div>
+<div class="paragraph">
+<p>Here’s how RHOSO Chargeback applies rating rules:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Scope Definition:</strong> Each rating rule is defined with a specific scope. This scope can be broad or granular:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Global:</strong> Applies to all resources of a certain type across the entire RHOSP deployment.</p>
+</li>
+<li>
+<p><strong>Project/Tenant Specific:</strong> Applies only to resources within a designated OpenStack project or tenant. This is very common for attributing costs to specific departments or teams.</p>
+</li>
+<li>
+<p><strong>Resource Type Specific:</strong> Applies to particular types of resources (e.g., Nova instances, Cinder volumes, Neutron networks).</p>
+</li>
+<li>
+<p><strong>Tag/Metadata-based:</strong> Rules can be conditional on specific tags or metadata attached to resources in RHOSP. For example, a "production" tag might trigger a higher rate than a "development" tag.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Data Collection and Matching:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>RHOSO&#8217;s observability components continuously collect detailed usage metrics from various RHOSP services (Nova, Cinder, Neutron, etc.). This data includes not just raw consumption (e.g., CPU utilization, storage size) but also crucial metadata like project ID, instance name, and any custom tags.</p>
+</li>
+<li>
+<p>The Chargeback engine then continuously evaluates these incoming usage records against all active rating rules.</p>
+</li>
+<li>
+<p>A rule is "applied" to a resource&#8217;s consumption when the resource&#8217;s attributes (e.g., its project ID, resource type, tags) match the scope and criteria defined in that specific rule.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Continuous Evaluation:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Unlike a one-time assignment, Chargeback operates on a continuous evaluation model. As resource consumption changes, or as resources are created, modified, or deleted, RHOSO automatically re-evaluates which rating rules apply.</p>
+</li>
+<li>
+<p>This ensures that charges are always accurate and reflect the current state and usage patterns of your cloud infrastructure.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Hierarchy and Precedence:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>In scenarios where multiple rules might potentially apply to the same resource (e.g., a global rule for compute and a project-specific rule for compute), RHOSO Chargeback typically uses a precedence mechanism. More specific rules (e.g., project-specific or tag-based) often take precedence over broader, more general rules. This hierarchy ensures that the most appropriate and granular charge is always applied.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Therefore, "applying" a rating rule primarily involves:
+*   <strong>Defining its criteria accurately:</strong> Ensuring the rule&#8217;s scope correctly targets the resources and usage you intend to charge for.
+*   <strong>Ensuring data availability:</strong> Verifying that RHOSO is successfully collecting the necessary observability data from RHOSP for the rule to match against.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_role_of_data_synchronization"><a class="anchor" href="#_the_role_of_data_synchronization"></a>The Role of Data Synchronization</h3>
+<div class="paragraph">
+<p>RHOSO Chargeback relies heavily on the synchronization of data from RHOSP. When you define a rule to apply to a specific project, for example, the Chargeback system expects to receive usage data <strong>attributed to that project ID</strong> from the RHOSP components. Any discrepancies or delays in this data flow can impact the accuracy of rule application.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+For effective chargeback, it&#8217;s crucial to adopt a consistent tagging strategy within your RHOSP environment. Tags can be powerful enablers for highly granular and flexible chargeback rules, allowing you to define different rates for resources based on environment, department, cost center, or application.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_lab_applying_your_first_chargeback_rating"><a class="anchor" href="#_hands_on_lab_applying_your_first_chargeback_rating"></a>Hands-on Lab: Applying Your First Chargeback Rating</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab builds upon the previous step where you defined a basic rating rule. Here, we&#8217;ll focus on demonstrating how that rule is automatically applied to a resource within RHOSP that matches its defined scope.</p>
+</div>
+<div class="paragraph">
+<p><strong>Goal:</strong> To observe the automatic application of a previously defined rating rule to a newly provisioned OpenStack instance.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>You have successfully completed the previous lab section: "Defining a basic rating rule for a service." You should have at least one active rating rule defined (e.g., for vCPU usage of Nova instances).</p>
+</li>
+<li>
+<p>You have administrative access to both the RHOSO Chargeback UI and the RHOSP Horizon dashboard.</p>
+</li>
+<li>
+<p>You have a project in RHOSP where you can provision resources. This project should either be the target of your defined rating rule, or you&#8217;ll need to configure your rule to target the project you intend to use.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_steps"><a class="anchor" href="#_steps"></a>Steps</h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Review Your Defined Rating Rule&#8217;s Scope:</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Log in to the RHOSO Chargeback UI.</p>
+</li>
+<li>
+<p>Navigate to the <strong>Rating Definitions</strong> or <strong>Rating Rules</strong> section.</p>
+</li>
+<li>
+<p>Identify the rule you created in the previous lab (e.g., "Basic Compute vCPU Rate").</p>
+</li>
+<li>
+<p>Carefully examine its scope. Note down which OpenStack project(s) or resource types it targets. If your rule is global for Nova instances, that&#8217;s fine. If it&#8217;s project-specific, ensure you know which project it applies to.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Provision a Test Resource in RHOSP:</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Log in to the RHOSP Horizon dashboard as a user with permissions to create instances in the project targeted by your rating rule.</p>
+</li>
+<li>
+<p>Navigate to <strong>Project &gt; Compute &gt; Instances</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Launch Instance</strong>.</p>
+</li>
+<li>
+<p>Configure a simple instance:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Instance Name:</strong> <code>chargeback-test-instance-01</code></p>
+</li>
+<li>
+<p><strong>Flavor:</strong> Select a small flavor (e.g., <code>m1.tiny</code> or <code>cirros.tiny</code>) that has at least 1 vCPU.</p>
+</li>
+<li>
+<p><strong>Source:</strong> Select an appropriate image (e.g., CirrOS or a small Linux image).</p>
+</li>
+<li>
+<p><strong>Network:</strong> Attach it to an available network.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Ensure this instance is launched within the <strong>project</strong> that your rating rule is scoped to (or a project covered by a global rule).</p>
+</li>
+<li>
+<p>Click <strong>Launch Instance</strong>.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Verify Resource Provisioning and Data Collection:</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Wait a few moments for the instance to transition to an <code>Active</code> state in Horizon.</p>
+</li>
+<li>
+<p>(Optional) Log in to the RHOSO Observability dashboard. Navigate to the metrics related to Nova instances or compute usage. You should eventually see data points appearing for your newly created instance. This confirms that the underlying observability system is collecting data.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Data collection and processing take time. It might be several minutes (or even up to an hour depending on your RHOSO configuration) before the new instance&#8217;s usage data is fully processed and available for chargeback calculations.
+</td>
+</tr>
+</table>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Access Chargeback Reports to Observe Rule Application:</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Return to the RHOSO Chargeback UI.</p>
+</li>
+<li>
+<p>Navigate to the <strong>Reports</strong> or <strong>Invoices</strong> section.</p>
+</li>
+<li>
+<p>Look for reports that cover the time period since you launched your instance. You might need to adjust the report filters (e.g., filter by project, time range).</p>
+</li>
+<li>
+<p>You are looking for line items that show charges attributed to your <code>chargeback-test-instance-01</code> or, more generally, to the project where it resides, under the category of "Compute" or "vCPU usage."</p>
+</li>
+<li>
+<p>Drill down into the report details. You should see:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The resource ID of your <code>chargeback-test-instance-01</code>.</p>
+</li>
+<li>
+<p>The specific rating rule (e.g., "Basic Compute vCPU Rate") that has been applied.</p>
+</li>
+<li>
+<p>The consumption quantity (e.g., <code>0.0X</code> vCPU-hours, where <code>X</code> depends on how long the instance has been running).</p>
+</li>
+<li>
+<p>The calculated charge based on your rule&#8217;s rate.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p><strong>Confirm Rule Application:</strong></p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>If you see charges accumulating for your test instance under the correct rule and project, it confirms that your defined rating rule has been successfully applied by the RHOSO Chargeback system to the resources matching its scope.</p>
+</li>
+<li>
+<p>Note how the application was automatic, based on the instance matching the rule&#8217;s criteria (being a Nova instance, having vCPUs, and residing in the targeted project).</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+If you don&#8217;t see immediate charges, double-check your report filters, the rule&#8217;s scope, and allow more time for data synchronization and processing. The "Basic Chargeback Troubleshooting" section will cover common issues and diagnosis techniques.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This concludes the hands-on demonstration of applying a rating rule. You&#8217;ve witnessed how RHOSO Chargeback automates the crucial step of linking your pricing logic to actual cloud resource consumption.</p>
+</div>
+<hr>
+<div class="paragraph">
+<p>FIXME: Add an image here.
+*   <strong>Image Suggestion:</strong> A screenshot of the RHOSO Chargeback UI showing a list of active rating rules with their scopes highlighted. This would visually reinforce the concept of rule scope.</p>
+</div>
+<div class="paragraph">
+<p>FIXME: Add an image here.
+*   <strong>Image Suggestion:</strong> A sequence of screenshots or a short video demonstrating the provisioning of an instance in RHOSP Horizon, followed by navigating to the Chargeback report section and highlighting the newly generated charge for that instance. This would be invaluable for the hands-on activity.</p>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

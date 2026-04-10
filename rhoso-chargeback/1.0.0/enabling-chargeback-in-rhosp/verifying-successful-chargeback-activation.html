@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,145 +230,275 @@
 </aside>
 <article class="doc">
 <h1 class="page">Verifying successful Chargeback activation</h1>
-<div class="listingblock">
+<h1 id="_verifying_successful_chargeback_activation" class="sect0"><a class="anchor" href="#_verifying_successful_chargeback_activation"></a>Verifying Successful Chargeback Activation</h1>
+<div class="paragraph">
+<p>After successfully enabling the Chargeback feature in Red Hat OpenStack Platform (RHOSP) as part of RHOSO, it is crucial to verify that all components are active and functioning correctly. This verification step ensures that the system is ready to collect resource consumption data, process it according to rating definitions, and generate accurate chargeback reports. Without proper verification, you risk incomplete data collection or incorrect billing.</p>
+</div>
+<div class="sect1">
+<h2 id="_understanding_chargeback_activation_verification"><a class="anchor" href="#_understanding_chargeback_activation_verification"></a>Understanding Chargeback Activation Verification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Successful Chargeback activation means that the necessary backend services are running, integrated, and prepared to collect and process consumption metrics. In an RHOSP environment, RHOSO Chargeback leverages several core OpenStack services for metering and data storage, primarily:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Ceilometer</strong>: The metering service responsible for collecting various resource usage metrics (CPU, RAM, disk I/O, network I/O) from OpenStack components.</p>
+</li>
+<li>
+<p><strong>Gnocchi</strong>: A time-series database optimized for storing the vast amounts of metric data collected by Ceilometer.</p>
+</li>
+<li>
+<p><strong>Aodh</strong>: The alarming service, which, while not directly responsible for data collection, is part of the telemetry ecosystem and its health indicates overall system stability.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Additionally, any specific RHOSO Chargeback components (if they manifest as distinct services or modules within RHOSP) must also be operational. Verification typically involves:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Checking the operational status of these critical OpenStack services.</p>
+</li>
+<li>
+<p>Confirming the visibility and accessibility of Chargeback-related features within the RHOSP Horizon dashboard.</p>
+</li>
+<li>
+<p>Optionally, performing a preliminary check for active data collection to ensure the foundation for chargeback is solid.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hands_on_lab_verifying_chargeback_activation"><a class="anchor" href="#_hands_on_lab_verifying_chargeback_activation"></a>Hands-on Lab: Verifying Chargeback Activation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This lab guides you through the essential steps to confirm that RHOSO Chargeback has been successfully activated in your RHOSP environment.</p>
+</div>
+<div class="sect2">
+<h3 id="_prerequisites"><a class="anchor" href="#_prerequisites"></a>Prerequisites</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>You have administrative access to your RHOSP environment (e.g., SSH access to controller nodes).</p>
+</li>
+<li>
+<p>You have enabled Chargeback in RHOSP as per the previous section <a href="#enabling-chargeback.adoc" class="xref unresolved">Enabling Chargeback in RHOSP</a>.</p>
+</li>
+<li>
+<p>You have credentials for an administrative user in the RHOSP Horizon dashboard.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_procedure_verify_service_status"><a class="anchor" href="#_procedure_verify_service_status"></a>Procedure: Verify Service Status</h3>
+<div class="paragraph">
+<p>The first critical step is to ensure that the core OpenStack services required for RHOSO Chargeback are running and healthy.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Log in to an RHOSP Controller Node:</strong>
+Open a terminal and establish an SSH connection to one of your RHOSP controller nodes. This is typically done using the <code>heat-admin</code> user.</p>
+<div class="literalblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">= Verifying Successful Chargeback Activation
-:page-aliases: chargeback-activation-verification.adoc
-
-After successfully enabling the Chargeback feature in Red Hat OpenStack Platform (RHOSP) as part of RHOSO, it is crucial to verify that all components are active and functioning correctly. This verification step ensures that the system is ready to collect resource consumption data, process it according to rating definitions, and generate accurate chargeback reports. Without proper verification, you risk incomplete data collection or incorrect billing.
-
-== Understanding Chargeback Activation Verification
-
-Successful Chargeback activation means that the necessary backend services are running, integrated, and prepared to collect and process consumption metrics. In an RHOSP environment, RHOSO Chargeback leverages several core OpenStack services for metering and data storage, primarily:
-
-*   **Ceilometer**: The metering service responsible for collecting various resource usage metrics (CPU, RAM, disk I/O, network I/O) from OpenStack components.
-*   **Gnocchi**: A time-series database optimized for storing the vast amounts of metric data collected by Ceilometer.
-*   **Aodh**: The alarming service, which, while not directly responsible for data collection, is part of the telemetry ecosystem and its health indicates overall system stability.
-
-Additionally, any specific RHOSO Chargeback components (if they manifest as distinct services or modules within RHOSP) must also be operational. Verification typically involves:
-
-*   Checking the operational status of these critical OpenStack services.
-*   Confirming the visibility and accessibility of Chargeback-related features within the RHOSP Horizon dashboard.
-*   Optionally, performing a preliminary check for active data collection to ensure the foundation for chargeback is solid.
-
-== Hands-on Lab: Verifying Chargeback Activation
-
-This lab guides you through the essential steps to confirm that RHOSO Chargeback has been successfully activated in your RHOSP environment.
-
-=== Prerequisites
-
-*   You have administrative access to your RHOSP environment (e.g., SSH access to controller nodes).
-*   You have enabled Chargeback in RHOSP as per the previous section xref:enabling-chargeback.adoc[Enabling Chargeback in RHOSP].
-*   You have credentials for an administrative user in the RHOSP Horizon dashboard.
-
-=== Procedure: Verify Service Status
-
-The first critical step is to ensure that the core OpenStack services required for RHOSO Chargeback are running and healthy.
-
-.  **Log in to an RHOSP Controller Node:**
-   Open a terminal and establish an SSH connection to one of your RHOSP controller nodes. This is typically done using the `heat-admin` user.
-
-   ```bash
-   ssh heat-admin@&lt;controller-node-ip&gt;
-   ```
-   Replace `&lt;controller-node-ip&gt;` with the actual IP address of one of your controller nodes.
-
-.  **Source the `overcloudrc` file (if necessary):**
-   If you intend to use OpenStack client commands, ensure your environment is configured by sourcing the `overcloudrc` file.
-
-   ```bash
-   source ~/overcloudrc
-   ```
-
-.  **Check OpenStack Service Status using `openstack service list`:**
-   Use the `openstack service list` command to verify the status of key services that Chargeback depends on. Look for the core telemetry services.
-
-   ```bash
-   openstack service list | grep -E 'ceilometer|gnocchi|aodh'
-   ```
-
-   *Expected Output (example):*
-   ```text
-   | &lt;ID&gt; | ceilometer             | metering             | True  |
-   | &lt;ID&gt; | gnocchi                | metric               | True  |
-   | &lt;ID&gt; | aodh                   | alarming             | True  |
-   ```
-   Confirm that `ceilometer`, `gnocchi`, and `aodh` services are listed, and their `Enabled` column shows `True`.
-
-.  **Verify Container Statuses (for containerized deployments):**
-   In modern RHOSP deployments, services run within containers. Use `podman` (or `docker` in older versions) to check their health directly on the controller node.
-
-   ```bash
-   sudo podman ps -a | grep -E 'ceilometer|gnocchi|aodh|chargeback'
-   ```
-   *Expected Output (example - focus on `Up` status):*
-   ```text
-   &lt;CONTAINER_ID&gt;  &lt;IMAGE&gt;  &lt;COMMAND&gt;  &lt;CREATED&gt;  &lt;STATUS&gt;      &lt;PORTS&gt;  &lt;NAMES&gt;
-   ...             ...      ...        ...        Up ...        ...      ceilometer_api
-   ...             ...      ...        ...        Up ...        ...      gnocchi_api
-   ...             ...      ...        ...        Up ...        ...      aodh_listener
-   ...             ...      ...        ...        Up ...        ...      rhoso_chargeback_processor (if specific RHOSO service exists)
-   ```
-   Verify that containers related to `ceilometer`, `gnocchi`, `aodh`, and any specific `rhoso_chargeback` containers (if applicable to your RHOSO deployment) are in an `Up` state.
-
-=== Procedure: Verify RHOSP Dashboard Integration
-
-After confirming the backend service status, ensure that the RHOSO Chargeback features are accessible and visible within the RHOSP web interface (Horizon).
-
-.  **Log in to the RHOSP Horizon Dashboard:**
-   Open your web browser and navigate to the RHOSP dashboard URL (e.g., `https://&lt;horizon-ip&gt;/dashboard`). Log in with an administrative user account.
-
-.  **Navigate to the Chargeback Section:**
-   Within the Horizon dashboard, locate the navigation menu. Chargeback-related features are typically found under the `Admin` tab or a dedicated top-level menu item.
-
-   *   Look for a section titled `Chargeback`, `Billing`, `Metering &amp; Billing`, or similar. This might be a direct tab or a sub-menu item under `Admin` -&gt; `System` or `Project` -&gt; `Metering`.
-
-.  **Confirm Chargeback Menu Items:**
-   Verify that new menu items or dashboards related to "Rating Definitions", "Rating Rules", "Reports", or "Invoices" are present and accessible. Clicking on these items should load the respective pages without displaying errors, indicating that the UI components are correctly integrated.
-
-   FIXME: Add an actual screenshot of the RHOSP Horizon dashboard highlighting the "Chargeback" or "Metering &amp; Billing" menu item for an administrator. This visual would greatly aid user navigation.
-   FIXME: Consider adding a short video demonstrating how to log in and navigate to the Chargeback section in Horizon.
-
-=== Procedure: Verify Basic Data Collection (Optional but Recommended)
-
-While detailed data collection verification is typically covered when "Using the Chargeback Feature," a quick check here can provide early confidence that metering data is actively being sent and stored.
-
-.  **Access Metering/Telemetry Data in Horizon:**
-   Within the RHOSP Horizon dashboard, navigate to the `Project` tab, then select `Metering` (or `Telemetry`).
-
-.  **Review Resource Metrics:**
-   On the Metering page, you should see a list of resources and their associated metrics. Select a running instance or volume and review its metrics (e.g., CPU utilization, RAM usage, disk read/write bytes). The presence of recent and changing data points indicates that Ceilometer is collecting metrics and Gnocchi is storing them effectively, which is foundational for Chargeback calculations.
-
-   FIXME: Add a screenshot of the RHOSP Horizon dashboard's Metering section, showing active metrics for a sample instance or volume, to illustrate expected data presence.
-
-=== Summary of Verification
-
-By successfully completing these verification steps, you have confirmed that:
-
-*   The underlying OpenStack services required by RHOSO Chargeback (Ceilometer, Gnocchi, Aodh) are operational.
-*   Any specific RHOSO Chargeback components are running (if applicable).
-*   The Chargeback features are correctly integrated and accessible within the RHOSP Horizon dashboard.
-*   Basic metering data is actively being collected, establishing the necessary data stream for chargeback calculations.
-
-You are now ready to proceed with configuring rating definitions and rules as part of xref:using-chargeback.adoc[Using the Chargeback Feature].
-
-== Basic Chargeback Activation Troubleshooting
-
-If you encounter issues during the verification process:
-
-*   **Service Not Running:**
-    *   Re-check deployment logs for specific errors during service startup (`journalctl -u &lt;service-name&gt;` on controller nodes, or `sudo podman logs &lt;container-name&gt;`).
-    *   Ensure all prerequisites for Chargeback deployment were met.
-*   **UI Not Visible or Errors:**
-    *   Clear your web browser's cache and cookies, or try an incognito window/different browser.
-    *   Verify that your administrative user account has the necessary roles and permissions to view Chargeback features. Role-Based Access Control (RBAC) misconfigurations are a common cause.
-    *   Check Horizon logs (`/var/log/horizon/horizon.log` on the Horizon server) for UI-specific errors.
-*   **No Metering Data:**
-    *   Verify that Ceilometer agents are running on compute nodes (if applicable to your RHOSP version).
-    *   Check connectivity between Ceilometer components, the message bus (RabbitMQ), and Gnocchi.
-    *   Review Gnocchi logs for errors related to metric storage.
-
-FIXME: Provide a link to a more detailed troubleshooting section xref:chargeback-troubleshooting.adoc[Basic Chargeback Troubleshooting] that includes specific commands for log analysis, common error messages, and resolution steps for activation-related problems.</code></pre>
+<pre>```bash
+ssh heat-admin@&lt;controller-node-ip&gt;
+```
+Replace `&lt;controller-node-ip&gt;` with the actual IP address of one of your controller nodes.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Source the <code>overcloudrc</code> file (if necessary):</strong>
+If you intend to use OpenStack client commands, ensure your environment is configured by sourcing the <code>overcloudrc</code> file.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+source ~/overcloudrc
+```</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Check OpenStack Service Status using <code>openstack service list</code>:</strong>
+Use the <code>openstack service list</code> command to verify the status of key services that Chargeback depends on. Look for the core telemetry services.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+openstack service list | grep -E 'ceilometer|gnocchi|aodh'
+```</pre>
+</div>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>*Expected Output (example):*
+```text
+| &lt;ID&gt; | ceilometer             | metering             | True  |
+| &lt;ID&gt; | gnocchi                | metric               | True  |
+| &lt;ID&gt; | aodh                   | alarming             | True  |
+```
+Confirm that `ceilometer`, `gnocchi`, and `aodh` services are listed, and their `Enabled` column shows `True`.</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Verify Container Statuses (for containerized deployments):</strong>
+In modern RHOSP deployments, services run within containers. Use <code>podman</code> (or <code>docker</code> in older versions) to check their health directly on the controller node.</p>
+<div class="literalblock">
+<div class="content">
+<pre>```bash
+sudo podman ps -a | grep -E 'ceilometer|gnocchi|aodh|chargeback'
+```
+*Expected Output (example - focus on `Up` status):*
+```text
+&lt;CONTAINER_ID&gt;  &lt;IMAGE&gt;  &lt;COMMAND&gt;  &lt;CREATED&gt;  &lt;STATUS&gt;      &lt;PORTS&gt;  &lt;NAMES&gt;
+...             ...      ...        ...        Up ...        ...      ceilometer_api
+...             ...      ...        ...        Up ...        ...      gnocchi_api
+...             ...      ...        ...        Up ...        ...      aodh_listener
+...             ...      ...        ...        Up ...        ...      rhoso_chargeback_processor (if specific RHOSO service exists)
+```
+Verify that containers related to `ceilometer`, `gnocchi`, `aodh`, and any specific `rhoso_chargeback` containers (if applicable to your RHOSO deployment) are in an `Up` state.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_procedure_verify_rhosp_dashboard_integration"><a class="anchor" href="#_procedure_verify_rhosp_dashboard_integration"></a>Procedure: Verify RHOSP Dashboard Integration</h3>
+<div class="paragraph">
+<p>After confirming the backend service status, ensure that the RHOSO Chargeback features are accessible and visible within the RHOSP web interface (Horizon).</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Log in to the RHOSP Horizon Dashboard:</strong>
+Open your web browser and navigate to the RHOSP dashboard URL (e.g., <code><a href="https://&lt;horizon-ip&gt;/dashboard" class="bare">https://&lt;horizon-ip&gt;/dashboard</a></code>). Log in with an administrative user account.</p>
+</li>
+<li>
+<p><strong>Navigate to the Chargeback Section:</strong>
+Within the Horizon dashboard, locate the navigation menu. Chargeback-related features are typically found under the <code>Admin</code> tab or a dedicated top-level menu item.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Look for a section titled <code>Chargeback</code>, <code>Billing</code>, <code>Metering &amp; Billing</code>, or similar. This might be a direct tab or a sub-menu item under <code>Admin</code> &#8594; <code>System</code> or <code>Project</code> &#8594; <code>Metering</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Confirm Chargeback Menu Items:</strong>
+Verify that new menu items or dashboards related to "Rating Definitions", "Rating Rules", "Reports", or "Invoices" are present and accessible. Clicking on these items should load the respective pages without displaying errors, indicating that the UI components are correctly integrated.</p>
+<div class="literalblock">
+<div class="content">
+<pre>FIXME: Add an actual screenshot of the RHOSP Horizon dashboard highlighting the "Chargeback" or "Metering &amp; Billing" menu item for an administrator. This visual would greatly aid user navigation.
+FIXME: Consider adding a short video demonstrating how to log in and navigate to the Chargeback section in Horizon.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_procedure_verify_basic_data_collection_optional_but_recommended"><a class="anchor" href="#_procedure_verify_basic_data_collection_optional_but_recommended"></a>Procedure: Verify Basic Data Collection (Optional but Recommended)</h3>
+<div class="paragraph">
+<p>While detailed data collection verification is typically covered when "Using the Chargeback Feature," a quick check here can provide early confidence that metering data is actively being sent and stored.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Access Metering/Telemetry Data in Horizon:</strong>
+Within the RHOSP Horizon dashboard, navigate to the <code>Project</code> tab, then select <code>Metering</code> (or <code>Telemetry</code>).</p>
+</li>
+<li>
+<p><strong>Review Resource Metrics:</strong>
+On the Metering page, you should see a list of resources and their associated metrics. Select a running instance or volume and review its metrics (e.g., CPU utilization, RAM usage, disk read/write bytes). The presence of recent and changing data points indicates that Ceilometer is collecting metrics and Gnocchi is storing them effectively, which is foundational for Chargeback calculations.</p>
+<div class="literalblock">
+<div class="content">
+<pre>FIXME: Add a screenshot of the RHOSP Horizon dashboard's Metering section, showing active metrics for a sample instance or volume, to illustrate expected data presence.</pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_summary_of_verification"><a class="anchor" href="#_summary_of_verification"></a>Summary of Verification</h3>
+<div class="paragraph">
+<p>By successfully completing these verification steps, you have confirmed that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The underlying OpenStack services required by RHOSO Chargeback (Ceilometer, Gnocchi, Aodh) are operational.</p>
+</li>
+<li>
+<p>Any specific RHOSO Chargeback components are running (if applicable).</p>
+</li>
+<li>
+<p>The Chargeback features are correctly integrated and accessible within the RHOSP Horizon dashboard.</p>
+</li>
+<li>
+<p>Basic metering data is actively being collected, establishing the necessary data stream for chargeback calculations.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You are now ready to proceed with configuring rating definitions and rules as part of <a href="#using-chargeback.adoc" class="xref unresolved">Using the Chargeback Feature</a>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_basic_chargeback_activation_troubleshooting"><a class="anchor" href="#_basic_chargeback_activation_troubleshooting"></a>Basic Chargeback Activation Troubleshooting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you encounter issues during the verification process:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Service Not Running:</strong></p>
+</li>
+<li>
+<p>Re-check deployment logs for specific errors during service startup (<code>journalctl -u &lt;service-name&gt;</code> on controller nodes, or <code>sudo podman logs &lt;container-name&gt;</code>).</p>
+</li>
+<li>
+<p>Ensure all prerequisites for Chargeback deployment were met.</p>
+</li>
+<li>
+<p><strong>UI Not Visible or Errors:</strong></p>
+</li>
+<li>
+<p>Clear your web browser&#8217;s cache and cookies, or try an incognito window/different browser.</p>
+</li>
+<li>
+<p>Verify that your administrative user account has the necessary roles and permissions to view Chargeback features. Role-Based Access Control (RBAC) misconfigurations are a common cause.</p>
+</li>
+<li>
+<p>Check Horizon logs (<code>/var/log/horizon/horizon.log</code> on the Horizon server) for UI-specific errors.</p>
+</li>
+<li>
+<p><strong>No Metering Data:</strong></p>
+</li>
+<li>
+<p>Verify that Ceilometer agents are running on compute nodes (if applicable to your RHOSP version).</p>
+</li>
+<li>
+<p>Check connectivity between Ceilometer components, the message bus (RabbitMQ), and Gnocchi.</p>
+</li>
+<li>
+<p>Review Gnocchi logs for errors related to metric storage.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>FIXME: Provide a link to a more detailed troubleshooting section <a href="#chargeback-troubleshooting.adoc" class="xref unresolved">Basic Chargeback Troubleshooting</a> that includes specific commands for log analysis, common error messages, and resolution steps for activation-related problems.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">

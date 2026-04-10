@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,172 +230,476 @@
 </aside>
 <article class="doc">
 <h1 class="page">Key features of RHOSO Observability</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here is the detailed educational content for "Key features of RHOSO Observability" in Antora AsciiDoc format:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">[[key-features-of-rhoso-observability]]
-= Key features of RHOSO Observability
-
-As discussed in previous sections, Red Hat Observability for {product-name} (RHOSO) provides a unified and comprehensive suite of tools designed to monitor, analyze, and gain insights into the performance, health, and resource utilization of your cloud environments and applications. Understanding its key features is crucial for leveraging RHOSO effectively to maintain operational excellence, identify issues proactively, and optimize resource allocation.
-
-== Comprehensive Monitoring and Metrics Collection
-
-RHOSO offers robust capabilities for collecting a vast array of metrics from various layers of your infrastructure and applications. These metrics provide quantitative data about system performance, resource usage, and application behavior.
-
-=== Detailed Technical Explanation
-
-*   **Infrastructure Metrics**: RHOSO collects vital metrics from underlying infrastructure components, including compute instances (VMs, containers), network devices, storage volumes, and hypervisors. This includes CPU utilization, memory consumption, disk I/O, network throughput, and more. For containerized environments, it monitors pods, nodes, deployments, and services.
-*   **Application Metrics**: Beyond infrastructure, RHOSO can gather application-specific metrics. This often involves integrating with application performance monitoring (APM) tools or leveraging custom metrics exposed by applications (e.g., via Prometheus exporters). These metrics can include request rates, error rates, response times, database query performance, and custom business-level metrics.
-*   **Platform-Specific Metrics**: For platforms like Red Hat OpenStack Platform (RHOSP) or Red Hat OpenShift, RHOSO collects metrics specific to the platform's services and components. For RHOSP, this could include Nova compute status, Neutron network agent health, Cinder volume states, etc. For OpenShift, it involves monitoring control plane components, Operators, and workload specifics.
-*   **High-Resolution Data Collection**: Metrics are typically collected at frequent intervals, providing high-resolution data that allows for granular analysis of performance trends and quick identification of anomalies.
-*   **Scalable Storage and Querying**: RHOSO utilizes scalable backend storage for metrics, often based on time-series databases like Prometheus or Thanos, enabling efficient storage and rapid querying of large volumes of historical data.
-
-=== Hands-on Activity: Exploring Metrics Dashboard
-
-While setting up a full metrics collection system is part of deployment, we can explore how to *identify* and *interpret* key metrics within a hypothetical RHOSO Observability interface.
-
-*Assumed Environment*: You have access to a RHOSO Observability dashboard or a similar monitoring interface.
-
-.Objective: Identify and interpret key infrastructure and application metrics.
-.  **Access the Dashboard**:
-    *   Log in to the RHOSO Observability console using your provided credentials.
-    *   Navigate to the "Dashboards" section, or specifically look for "Infrastructure Overview" or "Application Performance" dashboards.
-.  **Identify Infrastructure Metrics**:
-    *   Locate panels displaying CPU utilization. Observe the average, peak, and current usage for your selected environment (e.g., a specific OpenStack project or OpenShift namespace).
-    *   Find memory consumption graphs. Note the total memory, used memory, and available memory.
-    *   Examine network traffic charts (inbound/outbound bytes per second) and disk I/O statistics (read/write operations per second).
-    *   *Self-reflection*: How do these metrics correlate? For instance, high CPU might coincide with increased network I/O.
-.  **Identify Application Metrics (if available)**:
-    *   If there's an "Application Performance" dashboard, look for metrics like "Request Rate" (requests per second), "Error Rate" (percentage of failed requests), and "Response Latency" (average time taken to respond).
-    *   Identify custom application metrics specific to your deployed services.
-.  **Adjust Time Range**:
-    *   Experiment with the time range selector (e.g., last 1 hour, last 6 hours, last 24 hours). Observe how the graphs change, revealing trends or spikes over different periods.
-.  **Interpret an Anomaly**:
-    *   If you see an unusual spike in CPU or a drop in available memory, consider what might cause it (e.g., a new deployment, a background job, increased user load). This is the first step in troubleshooting.
-
-FIXME: Suggest adding an image here showing a typical RHOSO Observability dashboard with various metric panels. The image should highlight CPU, Memory, Network I/O, and possibly application-specific metrics.
-
-== Centralized Log Management
-
-Logs are critical for understanding the sequence of events leading to a particular state or issue. RHOSO centralizes log collection, storage, and analysis, making troubleshooting much more efficient.
-
-=== Detailed Technical Explanation
-
-*   **Aggregated Log Collection**: RHOSO agents deployed across your infrastructure collect logs from operating systems, applications, containers, and platform services. These logs are then streamed to a central logging store.
-*   **Structured Logging**: While not always enforced at collection, RHOSO often encourages or supports structured logging formats (e.g., JSON) which makes parsing, searching, and analyzing log data significantly easier and more accurate.
-*   **Powerful Search and Filtering**: Users can perform complex queries across aggregated log data using various criteria (keywords, timestamps, log levels, source components, container IDs, etc.). This allows for rapid isolation of relevant log entries during incident investigation.
-*   **Log Retention Policies**: RHOSO allows administrators to configure log retention policies based on compliance requirements, storage capacity, and operational needs.
-*   **Integration with SIEM/Analytics Tools**: Collected logs can be forwarded to Security Information and Event Management (SIEM) systems or other analytics platforms for advanced security analysis or long-term archiving.
-
-=== Hands-on Activity: Searching and Filtering Logs
-
-*Assumed Environment*: You have access to a RHOSO Observability console with a log exploration interface.
-
-.Objective: Practice searching and filtering logs to diagnose a hypothetical issue.
-.  **Access the Log Explorer**:
-    *   From the RHOSO console, navigate to the "Logs" or "Log Explorer" section.
-.  **Initial Overview**:
-    *   Observe the stream of incoming logs. Notice different log levels (INFO, WARNING, ERROR) and source components.
-.  **Simulate an Issue**:
-    *   *Scenario*: Imagine a web application service is intermittently returning "Service Unavailable" errors. You suspect a database connection issue.
-.  **Perform a Keyword Search**:
-    *   In the search bar, type `ERROR` and press Enter. This filters logs to show only error messages.
-    *   Refine the search: Add a specific service name, e.g., `ERROR AND "mywebapp-service"`.
-    *   Further refine: Add a potential cause, e.g., `ERROR AND "mywebapp-service" AND "database"`.
-.  **Filter by Time Range**:
-    *   Adjust the time range to a specific period when the "Service Unavailable" errors were reported (e.g., "last 30 minutes").
-.  **Analyze Log Details**:
-    *   Click on individual log entries to expand them and view full details, including timestamps, hostnames, container IDs, and full stack traces if available.
-    *   *Self-reflection*: Can you identify a pattern or specific error message that points to the root cause (e.g., `ORA-00942: table or view does not exist`, `connection refused`)?
-
-FIXME: Suggest adding a video tutorial demonstrating a log search scenario, showing how to apply filters, keywords, and time ranges effectively to pinpoint an issue.
-
-== Distributed Tracing
-
-In modern microservices architectures, a single user request can traverse multiple services. Distributed tracing helps visualize the end-to-end flow of a request, making it invaluable for debugging latency and understanding inter-service dependencies.
-
-=== Detailed Technical Explanation
-
-*   **Trace Generation**: Applications instrumented with tracing libraries generate unique trace IDs for each request. As the request moves between services, span IDs are created for each operation, linking them back to the original trace.
-*   **Visualizing Request Flow**: RHOSO collects these traces and allows users to visualize the entire journey of a request, showing the sequence of calls, their duration, and any errors encountered within each service.
-*   **Latency Analysis**: Tracing helps pinpoint exactly which service or operation is causing performance bottlenecks by showing the time spent in each span.
-*   **Error Localization**: When an error occurs, the trace helps to identify the specific service and operation where the error originated, significantly reducing the mean time to resolution (MTTR).
-*   **Context Propagation**: Tracing systems ensure that contextual information (like trace IDs and span IDs) is propagated across service boundaries, even through asynchronous communication patterns.
-
-== Alerting and Notifications
-
-Proactive alerting is a cornerstone of effective observability, ensuring that operational teams are immediately aware of critical issues or deviations from normal behavior.
-
-=== Detailed Technical Explanation
-
-*   **Configurable Alert Rules**: RHOSO allows users to define custom alert rules based on metrics thresholds, log patterns, or trace anomalies. Examples include "CPU usage &gt; 90% for 5 minutes," "Number of ERROR logs &gt; 100 in 1 minute," or "Application response time &gt; 5 seconds."
-*   **Multiple Notification Channels**: Alerts can be routed to various notification channels, including email, Slack, PagerDuty, webhooks, or integration with existing incident management systems.
-*   **Severity Levels**: Alerts can be assigned different severity levels (e.g., critical, warning, info) to prioritize responses and ensure the right teams are notified.
-*   **Deduplication and Grouping**: To prevent alert fatigue, RHOSO often includes features for deduplicating repeated alerts and grouping related alerts into a single notification.
-*   **Silence and Maintenance Windows**: Operators can configure silence periods or maintenance windows to prevent alerts during planned downtime or non-critical periods.
-
-=== Hands-on Activity: Defining a Basic Alert Rule
-
-*Assumed Environment*: You have access to the RHOSO Observability console with administrative privileges to define alerts.
-
-.Objective: Define a basic alert rule for high CPU utilization.
-.  **Access Alerting Configuration**:
-    *   Navigate to the "Alerts" or "Alerting Rules" section in the RHOSO console.
-.  **Create a New Rule**:
-    *   Click "Create New Alert Rule" or a similar option.
-.  **Define the Metric and Threshold**:
-    *   *Metric*: Select `node_cpu_utilization_percent` (or similar for an OpenStack instance, e.g., `nova_instance_cpu_utilization`).
-    *   *Threshold*: Set the threshold to `&gt; 85`.
-    *   *Duration*: Configure the condition to be true "for at least 5 minutes" to avoid transient spikes.
-.  **Set Severity and Message**:
-    *   *Severity*: Choose "Warning" or "Critical".
-    *   *Alert Name*: "High CPU on Compute Node"
-    *   *Description/Message*: "CPU utilization on `{{ $labels.instance }}` has exceeded 85% for 5 minutes. Investigate potential workload issues." (Using template variables like `{{ $labels.instance }}` is common).
-.  **Configure Notification Channel**:
-    *   Select your preferred notification channel (e.g., email to your address, or a test Slack channel).
-.  **Save and Monitor**:
-    *   Save the alert rule. It will now be active and trigger notifications if the conditions are met.
-    *   *Self-reflection*: Consider how you would test this alert without actually overloading a server (e.g., using a test environment with simulated load).
-
-FIXME: Suggest adding a screenshot of the alert rule creation interface, highlighting where the metric, threshold, duration, and notification channels are configured.
-
-== Customizable Dashboards and Visualization
-
-RHOSO provides powerful visualization tools that allow users to create custom dashboards tailored to their specific needs, roles, and insights requirements.
-
-=== Detailed Technical Explanation
-
-*   **Interactive Graphs and Charts**: Data can be displayed using a variety of interactive visualizations, including line charts, bar charts, pie charts, heatmaps, and stat panels.
-*   **Drag-and-Drop Dashboard Builders**: Many observability platforms offer intuitive drag-and-drop interfaces for building dashboards, enabling users to quickly assemble and arrange panels.
-*   **Template Variables**: Dashboards can leverage template variables to make them dynamic. For example, a single dashboard can display metrics for different projects, namespaces, or hosts by simply selecting from a dropdown.
-*   **Role-Based Access Control**: Dashboards can be secured with role-based access control, ensuring that sensitive data is only accessible to authorized personnel.
-*   **Sharing and Collaboration**: Teams can easily share dashboards, promoting collaboration and consistent views of operational data.
-
-== Reporting and Analytics
-
-Beyond real-time monitoring, RHOSO provides capabilities for historical reporting and advanced analytics, supporting long-term planning, capacity management, and cost optimization.
-
-=== Detailed Technical Explanation
-
-*   **Historical Data Analysis**: The ability to query and analyze historical metrics and logs over extended periods allows for identifying trends, seasonal patterns, and long-term performance degradation.
-*   **Capacity Planning**: By analyzing resource utilization over time, RHOSO can help predict future resource needs and inform capacity planning decisions.
-*   **Performance Baselines**: Establishing performance baselines helps in identifying deviations that might indicate an issue or a change in application behavior.
-*   **Integration with Business Intelligence (BI) Tools**: RHOSO data can often be exported or integrated with external BI tools for more complex analytical queries and reporting tailored to business stakeholders.
-
-== Integration Capabilities
-
-RHOSO is designed to be an integral part of your larger IT ecosystem, offering seamless integration with other Red Hat products and third-party tools.
-
-=== Detailed Technical Explanation
-
-*   **Red Hat Ecosystem Integration**: Tightly integrates with Red Hat OpenShift, Red Hat OpenStack Platform, Red Hat Ansible Automation Platform, and other Red Hat management tools, providing a consistent experience and consolidated data.
-*   **API-First Approach**: RHOSO exposes robust APIs, allowing programmatic access to metrics, logs, alerts, and configuration, enabling automation and custom integrations.
-*   **Webhook and Plugin Support**: Supports webhooks for sending alert notifications to virtually any system, and often provides plugin architectures for extending functionality or ingesting data from specialized sources.
-*   **Cloud-Native Tooling**: Leverages and integrates with popular cloud-native observability projects like Prometheus, Grafana, Loki, Jaeger, and OpenTelemetry, ensuring compatibility and leveraging community best practices.
-
-FIXME: To further enhance the learning experience, consider developing a short, guided video walkthrough that demonstrates navigating a pre-configured RHOSO dashboard, explaining each of these key features in action. This would provide visual context and make the abstract concepts more tangible.</code></pre>
+</div>
+</div>
+<h1 id="key-features-of-rhoso-observability" class="sect0"><a class="anchor" href="#key-features-of-rhoso-observability"></a>Key features of RHOSO Observability</h1>
+<div class="paragraph">
+<p>As discussed in previous sections, Red Hat Observability for {product-name} (RHOSO) provides a unified and comprehensive suite of tools designed to monitor, analyze, and gain insights into the performance, health, and resource utilization of your cloud environments and applications. Understanding its key features is crucial for leveraging RHOSO effectively to maintain operational excellence, identify issues proactively, and optimize resource allocation.</p>
+</div>
+<div class="sect1">
+<h2 id="_comprehensive_monitoring_and_metrics_collection"><a class="anchor" href="#_comprehensive_monitoring_and_metrics_collection"></a>Comprehensive Monitoring and Metrics Collection</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO offers robust capabilities for collecting a vast array of metrics from various layers of your infrastructure and applications. These metrics provide quantitative data about system performance, resource usage, and application behavior.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation"><a class="anchor" href="#_detailed_technical_explanation"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Infrastructure Metrics</strong>: RHOSO collects vital metrics from underlying infrastructure components, including compute instances (VMs, containers), network devices, storage volumes, and hypervisors. This includes CPU utilization, memory consumption, disk I/O, network throughput, and more. For containerized environments, it monitors pods, nodes, deployments, and services.</p>
+</li>
+<li>
+<p><strong>Application Metrics</strong>: Beyond infrastructure, RHOSO can gather application-specific metrics. This often involves integrating with application performance monitoring (APM) tools or leveraging custom metrics exposed by applications (e.g., via Prometheus exporters). These metrics can include request rates, error rates, response times, database query performance, and custom business-level metrics.</p>
+</li>
+<li>
+<p><strong>Platform-Specific Metrics</strong>: For platforms like Red Hat OpenStack Platform (RHOSP) or Red Hat OpenShift, RHOSO collects metrics specific to the platform&#8217;s services and components. For RHOSP, this could include Nova compute status, Neutron network agent health, Cinder volume states, etc. For OpenShift, it involves monitoring control plane components, Operators, and workload specifics.</p>
+</li>
+<li>
+<p><strong>High-Resolution Data Collection</strong>: Metrics are typically collected at frequent intervals, providing high-resolution data that allows for granular analysis of performance trends and quick identification of anomalies.</p>
+</li>
+<li>
+<p><strong>Scalable Storage and Querying</strong>: RHOSO utilizes scalable backend storage for metrics, often based on time-series databases like Prometheus or Thanos, enabling efficient storage and rapid querying of large volumes of historical data.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_exploring_metrics_dashboard"><a class="anchor" href="#_hands_on_activity_exploring_metrics_dashboard"></a>Hands-on Activity: Exploring Metrics Dashboard</h3>
+<div class="paragraph">
+<p>While setting up a full metrics collection system is part of deployment, we can explore how to <strong>identify</strong> and <strong>interpret</strong> key metrics within a hypothetical RHOSO Observability interface.</p>
+</div>
+<div class="paragraph">
+<p><strong>Assumed Environment</strong>: You have access to a RHOSO Observability dashboard or a similar monitoring interface.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Objective: Identify and interpret key infrastructure and application metrics.</div>
+<ol class="arabic">
+<li>
+<p><strong>Access the Dashboard</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Log in to the RHOSO Observability console using your provided credentials.</p>
+</li>
+<li>
+<p>Navigate to the "Dashboards" section, or specifically look for "Infrastructure Overview" or "Application Performance" dashboards.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Identify Infrastructure Metrics</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Locate panels displaying CPU utilization. Observe the average, peak, and current usage for your selected environment (e.g., a specific OpenStack project or OpenShift namespace).</p>
+</li>
+<li>
+<p>Find memory consumption graphs. Note the total memory, used memory, and available memory.</p>
+</li>
+<li>
+<p>Examine network traffic charts (inbound/outbound bytes per second) and disk I/O statistics (read/write operations per second).</p>
+</li>
+<li>
+<p><strong>Self-reflection</strong>: How do these metrics correlate? For instance, high CPU might coincide with increased network I/O.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Identify Application Metrics (if available)</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If there&#8217;s an "Application Performance" dashboard, look for metrics like "Request Rate" (requests per second), "Error Rate" (percentage of failed requests), and "Response Latency" (average time taken to respond).</p>
+</li>
+<li>
+<p>Identify custom application metrics specific to your deployed services.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Adjust Time Range</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Experiment with the time range selector (e.g., last 1 hour, last 6 hours, last 24 hours). Observe how the graphs change, revealing trends or spikes over different periods.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Interpret an Anomaly</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>If you see an unusual spike in CPU or a drop in available memory, consider what might cause it (e.g., a new deployment, a background job, increased user load). This is the first step in troubleshooting.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest adding an image here showing a typical RHOSO Observability dashboard with various metric panels. The image should highlight CPU, Memory, Network I/O, and possibly application-specific metrics.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_centralized_log_management"><a class="anchor" href="#_centralized_log_management"></a>Centralized Log Management</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Logs are critical for understanding the sequence of events leading to a particular state or issue. RHOSO centralizes log collection, storage, and analysis, making troubleshooting much more efficient.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_2"><a class="anchor" href="#_detailed_technical_explanation_2"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Aggregated Log Collection</strong>: RHOSO agents deployed across your infrastructure collect logs from operating systems, applications, containers, and platform services. These logs are then streamed to a central logging store.</p>
+</li>
+<li>
+<p><strong>Structured Logging</strong>: While not always enforced at collection, RHOSO often encourages or supports structured logging formats (e.g., JSON) which makes parsing, searching, and analyzing log data significantly easier and more accurate.</p>
+</li>
+<li>
+<p><strong>Powerful Search and Filtering</strong>: Users can perform complex queries across aggregated log data using various criteria (keywords, timestamps, log levels, source components, container IDs, etc.). This allows for rapid isolation of relevant log entries during incident investigation.</p>
+</li>
+<li>
+<p><strong>Log Retention Policies</strong>: RHOSO allows administrators to configure log retention policies based on compliance requirements, storage capacity, and operational needs.</p>
+</li>
+<li>
+<p><strong>Integration with SIEM/Analytics Tools</strong>: Collected logs can be forwarded to Security Information and Event Management (SIEM) systems or other analytics platforms for advanced security analysis or long-term archiving.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_searching_and_filtering_logs"><a class="anchor" href="#_hands_on_activity_searching_and_filtering_logs"></a>Hands-on Activity: Searching and Filtering Logs</h3>
+<div class="paragraph">
+<p><strong>Assumed Environment</strong>: You have access to a RHOSO Observability console with a log exploration interface.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Objective: Practice searching and filtering logs to diagnose a hypothetical issue.</div>
+<ol class="arabic">
+<li>
+<p><strong>Access the Log Explorer</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>From the RHOSO console, navigate to the "Logs" or "Log Explorer" section.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Initial Overview</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Observe the stream of incoming logs. Notice different log levels (INFO, WARNING, ERROR) and source components.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Simulate an Issue</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Scenario</strong>: Imagine a web application service is intermittently returning "Service Unavailable" errors. You suspect a database connection issue.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Perform a Keyword Search</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In the search bar, type <code>ERROR</code> and press Enter. This filters logs to show only error messages.</p>
+</li>
+<li>
+<p>Refine the search: Add a specific service name, e.g., <code>ERROR AND "mywebapp-service"</code>.</p>
+</li>
+<li>
+<p>Further refine: Add a potential cause, e.g., <code>ERROR AND "mywebapp-service" AND "database"</code>.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Filter by Time Range</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Adjust the time range to a specific period when the "Service Unavailable" errors were reported (e.g., "last 30 minutes").</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Analyze Log Details</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click on individual log entries to expand them and view full details, including timestamps, hostnames, container IDs, and full stack traces if available.</p>
+</li>
+<li>
+<p><strong>Self-reflection</strong>: Can you identify a pattern or specific error message that points to the root cause (e.g., <code>ORA-00942: table or view does not exist</code>, <code>connection refused</code>)?</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest adding a video tutorial demonstrating a log search scenario, showing how to apply filters, keywords, and time ranges effectively to pinpoint an issue.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_distributed_tracing"><a class="anchor" href="#_distributed_tracing"></a>Distributed Tracing</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In modern microservices architectures, a single user request can traverse multiple services. Distributed tracing helps visualize the end-to-end flow of a request, making it invaluable for debugging latency and understanding inter-service dependencies.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_3"><a class="anchor" href="#_detailed_technical_explanation_3"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Trace Generation</strong>: Applications instrumented with tracing libraries generate unique trace IDs for each request. As the request moves between services, span IDs are created for each operation, linking them back to the original trace.</p>
+</li>
+<li>
+<p><strong>Visualizing Request Flow</strong>: RHOSO collects these traces and allows users to visualize the entire journey of a request, showing the sequence of calls, their duration, and any errors encountered within each service.</p>
+</li>
+<li>
+<p><strong>Latency Analysis</strong>: Tracing helps pinpoint exactly which service or operation is causing performance bottlenecks by showing the time spent in each span.</p>
+</li>
+<li>
+<p><strong>Error Localization</strong>: When an error occurs, the trace helps to identify the specific service and operation where the error originated, significantly reducing the mean time to resolution (MTTR).</p>
+</li>
+<li>
+<p><strong>Context Propagation</strong>: Tracing systems ensure that contextual information (like trace IDs and span IDs) is propagated across service boundaries, even through asynchronous communication patterns.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_alerting_and_notifications"><a class="anchor" href="#_alerting_and_notifications"></a>Alerting and Notifications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Proactive alerting is a cornerstone of effective observability, ensuring that operational teams are immediately aware of critical issues or deviations from normal behavior.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_4"><a class="anchor" href="#_detailed_technical_explanation_4"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Configurable Alert Rules</strong>: RHOSO allows users to define custom alert rules based on metrics thresholds, log patterns, or trace anomalies. Examples include "CPU usage &gt; 90% for 5 minutes," "Number of ERROR logs &gt; 100 in 1 minute," or "Application response time &gt; 5 seconds."</p>
+</li>
+<li>
+<p><strong>Multiple Notification Channels</strong>: Alerts can be routed to various notification channels, including email, Slack, PagerDuty, webhooks, or integration with existing incident management systems.</p>
+</li>
+<li>
+<p><strong>Severity Levels</strong>: Alerts can be assigned different severity levels (e.g., critical, warning, info) to prioritize responses and ensure the right teams are notified.</p>
+</li>
+<li>
+<p><strong>Deduplication and Grouping</strong>: To prevent alert fatigue, RHOSO often includes features for deduplicating repeated alerts and grouping related alerts into a single notification.</p>
+</li>
+<li>
+<p><strong>Silence and Maintenance Windows</strong>: Operators can configure silence periods or maintenance windows to prevent alerts during planned downtime or non-critical periods.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_hands_on_activity_defining_a_basic_alert_rule"><a class="anchor" href="#_hands_on_activity_defining_a_basic_alert_rule"></a>Hands-on Activity: Defining a Basic Alert Rule</h3>
+<div class="paragraph">
+<p><strong>Assumed Environment</strong>: You have access to the RHOSO Observability console with administrative privileges to define alerts.</p>
+</div>
+<div class="olist arabic">
+<div class="title">Objective: Define a basic alert rule for high CPU utilization.</div>
+<ol class="arabic">
+<li>
+<p><strong>Access Alerting Configuration</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Navigate to the "Alerts" or "Alerting Rules" section in the RHOSO console.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Create a New Rule</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Click "Create New Alert Rule" or a similar option.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Define the Metric and Threshold</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Metric</strong>: Select <code>node_cpu_utilization_percent</code> (or similar for an OpenStack instance, e.g., <code>nova_instance_cpu_utilization</code>).</p>
+</li>
+<li>
+<p><strong>Threshold</strong>: Set the threshold to <code>&gt; 85</code>.</p>
+</li>
+<li>
+<p><strong>Duration</strong>: Configure the condition to be true "for at least 5 minutes" to avoid transient spikes.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Set Severity and Message</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Severity</strong>: Choose "Warning" or "Critical".</p>
+</li>
+<li>
+<p><strong>Alert Name</strong>: "High CPU on Compute Node"</p>
+</li>
+<li>
+<p><strong>Description/Message</strong>: "CPU utilization on <code>{{ $labels.instance }}</code> has exceeded 85% for 5 minutes. Investigate potential workload issues." (Using template variables like <code>{{ $labels.instance }}</code> is common).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Configure Notification Channel</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Select your preferred notification channel (e.g., email to your address, or a test Slack channel).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Save and Monitor</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Save the alert rule. It will now be active and trigger notifications if the conditions are met.</p>
+</li>
+<li>
+<p><strong>Self-reflection</strong>: Consider how you would test this alert without actually overloading a server (e.g., using a test environment with simulated load).</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>FIXME: Suggest adding a screenshot of the alert rule creation interface, highlighting where the metric, threshold, duration, and notification channels are configured.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_customizable_dashboards_and_visualization"><a class="anchor" href="#_customizable_dashboards_and_visualization"></a>Customizable Dashboards and Visualization</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO provides powerful visualization tools that allow users to create custom dashboards tailored to their specific needs, roles, and insights requirements.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_5"><a class="anchor" href="#_detailed_technical_explanation_5"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Interactive Graphs and Charts</strong>: Data can be displayed using a variety of interactive visualizations, including line charts, bar charts, pie charts, heatmaps, and stat panels.</p>
+</li>
+<li>
+<p><strong>Drag-and-Drop Dashboard Builders</strong>: Many observability platforms offer intuitive drag-and-drop interfaces for building dashboards, enabling users to quickly assemble and arrange panels.</p>
+</li>
+<li>
+<p><strong>Template Variables</strong>: Dashboards can leverage template variables to make them dynamic. For example, a single dashboard can display metrics for different projects, namespaces, or hosts by simply selecting from a dropdown.</p>
+</li>
+<li>
+<p><strong>Role-Based Access Control</strong>: Dashboards can be secured with role-based access control, ensuring that sensitive data is only accessible to authorized personnel.</p>
+</li>
+<li>
+<p><strong>Sharing and Collaboration</strong>: Teams can easily share dashboards, promoting collaboration and consistent views of operational data.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_reporting_and_analytics"><a class="anchor" href="#_reporting_and_analytics"></a>Reporting and Analytics</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Beyond real-time monitoring, RHOSO provides capabilities for historical reporting and advanced analytics, supporting long-term planning, capacity management, and cost optimization.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_6"><a class="anchor" href="#_detailed_technical_explanation_6"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Historical Data Analysis</strong>: The ability to query and analyze historical metrics and logs over extended periods allows for identifying trends, seasonal patterns, and long-term performance degradation.</p>
+</li>
+<li>
+<p><strong>Capacity Planning</strong>: By analyzing resource utilization over time, RHOSO can help predict future resource needs and inform capacity planning decisions.</p>
+</li>
+<li>
+<p><strong>Performance Baselines</strong>: Establishing performance baselines helps in identifying deviations that might indicate an issue or a change in application behavior.</p>
+</li>
+<li>
+<p><strong>Integration with Business Intelligence (BI) Tools</strong>: RHOSO data can often be exported or integrated with external BI tools for more complex analytical queries and reporting tailored to business stakeholders.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_integration_capabilities"><a class="anchor" href="#_integration_capabilities"></a>Integration Capabilities</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHOSO is designed to be an integral part of your larger IT ecosystem, offering seamless integration with other Red Hat products and third-party tools.</p>
+</div>
+<div class="sect2">
+<h3 id="_detailed_technical_explanation_7"><a class="anchor" href="#_detailed_technical_explanation_7"></a>Detailed Technical Explanation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Red Hat Ecosystem Integration</strong>: Tightly integrates with Red Hat OpenShift, Red Hat OpenStack Platform, Red Hat Ansible Automation Platform, and other Red Hat management tools, providing a consistent experience and consolidated data.</p>
+</li>
+<li>
+<p><strong>API-First Approach</strong>: RHOSO exposes robust APIs, allowing programmatic access to metrics, logs, alerts, and configuration, enabling automation and custom integrations.</p>
+</li>
+<li>
+<p><strong>Webhook and Plugin Support</strong>: Supports webhooks for sending alert notifications to virtually any system, and often provides plugin architectures for extending functionality or ingesting data from specialized sources.</p>
+</li>
+<li>
+<p><strong>Cloud-Native Tooling</strong>: Leverages and integrates with popular cloud-native observability projects like Prometheus, Grafana, Loki, Jaeger, and OpenTelemetry, ensuring compatibility and leveraging community best practices.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>FIXME: To further enhance the learning experience, consider developing a short, guided video walkthrough that demonstrates navigating a pre-configured RHOSO dashboard, explaining each of these key features in action. This would provide visual context and make the abstract concepts more tangible.</p>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,165 +230,359 @@
 </aside>
 <article class="doc">
 <h1 class="page">Best practices for maintaining Chargeback accuracy</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here is the training content for "Best practices for maintaining Chargeback accuracy" in Antora AsciiDoc format.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_best_practices_for_maintaining_chargeback_accuracy"><a class="anchor" href="#_best_practices_for_maintaining_chargeback_accuracy"></a>Best Practices for Maintaining Chargeback Accuracy</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Maintaining the accuracy of your Chargeback system is paramount for financial transparency, user trust, and effective resource governance. Inaccurate charges can lead to disputes, resource misallocation, and undermine the perceived value of your cloud infrastructure. This section outlines key best practices to ensure your RHOSO Chargeback system consistently delivers reliable and precise billing information.</p>
+</div>
+<div class="sect2">
+<h3 id="_1_regular_review_and_validation_of_rating_rules"><a class="anchor" href="#_1_regular_review_and_validation_of_rating_rules"></a>1. Regular Review and Validation of Rating Rules</h3>
+<div class="paragraph">
+<p>Rating rules are the heart of your Chargeback system. Over time, service offerings, consumption patterns, and pricing strategies may evolve. Regular review ensures that your rules remain relevant and accurate.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Schedule Periodic Reviews:</strong> Establish a schedule (e.g., quarterly, semi-annually) to review all active rating rules.</p>
+</li>
+<li>
+<p><strong>Align with Business Changes:</strong> Any changes in service catalog, pricing models, or organizational structure should trigger a review of relevant rating rules.</p>
+</li>
+<li>
+<p><strong>Validate Test Cases:</strong> For each rule, maintain a set of predefined test cases with expected charge outcomes. During reviews, re-run these test cases against the current rules to ensure they still produce the correct charges. This can often be done by simulating resource consumption for a specific period and verifying the generated report.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_verifying_a_rating_rule_application"><a class="anchor" href="#_hands_on_activity_verifying_a_rating_rule_application"></a>Hands-on Activity: Verifying a Rating Rule Application</h4>
+<div class="paragraph">
+<p>This activity demonstrates how to quickly verify a rating rule by checking the resources it applies to and the generated charges for a recent period.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Objective:</strong> Confirm a specific rating rule is correctly applied and producing expected charges.</p>
+</li>
+<li>
+<p><strong>Tools:</strong> RHOSO UI (or RHOSP Horizon dashboard with Chargeback plugin), <code>oc</code> or <code>kubectl</code> for OpenShift if RHOSO is deployed there.</p>
+</li>
+<li>
+<p><strong>Steps:</strong></p>
+</li>
+<li>
+<p><strong>Identify the Rule:</strong> Navigate to the Chargeback section in the RHOSO UI (or Horizon). Locate the rating rule you wish to verify.</p>
+</li>
+<li>
+<p><strong>Review Rule Details:</strong> Check the rule&#8217;s criteria (e.g., resource type, project, usage metric, rate card).</p>
+</li>
+<li>
+<p><strong>Identify Affected Resources:</strong> Based on the rule&#8217;s criteria, identify a sample of resources that <strong>should</strong> be covered by this rule. Note their IDs or project names.</p>
+</li>
+<li>
+<p><strong>Generate a Report:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>In the RHOSO UI, go to the "Reports" section.</p>
+</li>
+<li>
+<p>Create a new report or use an existing one, specifying a short time frame (e.g., last 24 hours, last 7 days) and filtering by the project(s) or resource type(s) affected by your chosen rule.</p>
+</li>
+<li>
+<p>Generate the report.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Analyze Charges:</strong> Review the generated report for your sample resources.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Do the charges appear as expected based on the rule&#8217;s rate and the resource&#8217;s consumption during the period?</p>
+</li>
+<li>
+<p>Are there any unexpected charges or missing charges for resources that should be covered?</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Troubleshoot Discrepancies:</strong> If discrepancies are found, refer to the "Basic Chargeback Troubleshooting" section (FIXME: Add internal cross-reference to 'Basic Chargeback Troubleshooting' module here) to diagnose potential issues.</p>
+</li>
+</ol>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">== Best Practices for Maintaining Chargeback Accuracy
-
-Maintaining the accuracy of your Chargeback system is paramount for financial transparency, user trust, and effective resource governance. Inaccurate charges can lead to disputes, resource misallocation, and undermine the perceived value of your cloud infrastructure. This section outlines key best practices to ensure your RHOSO Chargeback system consistently delivers reliable and precise billing information.
-
-=== 1. Regular Review and Validation of Rating Rules
-
-Rating rules are the heart of your Chargeback system. Over time, service offerings, consumption patterns, and pricing strategies may evolve. Regular review ensures that your rules remain relevant and accurate.
-
-*   **Schedule Periodic Reviews:** Establish a schedule (e.g., quarterly, semi-annually) to review all active rating rules.
-*   **Align with Business Changes:** Any changes in service catalog, pricing models, or organizational structure should trigger a review of relevant rating rules.
-*   **Validate Test Cases:** For each rule, maintain a set of predefined test cases with expected charge outcomes. During reviews, re-run these test cases against the current rules to ensure they still produce the correct charges. This can often be done by simulating resource consumption for a specific period and verifying the generated report.
-
-==== Hands-on Activity: Verifying a Rating Rule Application
-
-This activity demonstrates how to quickly verify a rating rule by checking the resources it applies to and the generated charges for a recent period.
-
-. **Objective:** Confirm a specific rating rule is correctly applied and producing expected charges.
-. **Tools:** RHOSO UI (or RHOSP Horizon dashboard with Chargeback plugin), `oc` or `kubectl` for OpenShift if RHOSO is deployed there.
-. **Steps:**
-    . **Identify the Rule:** Navigate to the Chargeback section in the RHOSO UI (or Horizon). Locate the rating rule you wish to verify.
-    . **Review Rule Details:** Check the rule's criteria (e.g., resource type, project, usage metric, rate card).
-    . **Identify Affected Resources:** Based on the rule's criteria, identify a sample of resources that *should* be covered by this rule. Note their IDs or project names.
-    . **Generate a Report:**
-        *   In the RHOSO UI, go to the "Reports" section.
-        *   Create a new report or use an existing one, specifying a short time frame (e.g., last 24 hours, last 7 days) and filtering by the project(s) or resource type(s) affected by your chosen rule.
-        *   Generate the report.
-    . **Analyze Charges:** Review the generated report for your sample resources.
-        *   Do the charges appear as expected based on the rule's rate and the resource's consumption during the period?
-        *   Are there any unexpected charges or missing charges for resources that should be covered?
-    . **Troubleshoot Discrepancies:** If discrepancies are found, refer to the "Basic Chargeback Troubleshooting" section (FIXME: Add internal cross-reference to 'Basic Chargeback Troubleshooting' module here) to diagnose potential issues.
-
-----
-# Example of querying OpenStack usage data directly (for advanced verification)
+<pre># Example of querying OpenStack usage data directly (for advanced verification)
 # This assumes you have OpenStack CLI configured and access to the Aodh/Gnocchi data.
 # Note: Chargeback primarily uses Ceilometer/Gnocchi data.
 openstack metric resource list --type instance
 openstack metric measures show &lt;metric_name&gt; --resource &lt;resource_id&gt; --start &lt;start_time&gt; --end &lt;end_time&gt;
 # Example: Check CPU usage for an instance
-openstack metric measures show cpu_util --resource &lt;instance_uuid&gt; --start 2023-01-01T00:00:00Z --end 2023-01-02T00:00:00Z
+openstack metric measures show cpu_util --resource &lt;instance_uuid&gt; --start 2023-01-01T00:00:00Z --end 2023-01-02T00:00:00Z</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>FIXME: Consider adding a screenshot of the RHOSO Chargeback UI showing a rule&#8217;s details or a generated report.</em></p>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_2_data_source_integrity_and_validation"><a class="anchor" href="#_2_data_source_integrity_and_validation"></a>2. Data Source Integrity and Validation</h3>
+<div class="paragraph">
+<p>Chargeback accuracy relies heavily on the quality and integrity of the underlying consumption data. RHOSO Chargeback integrates with observability components like Ceilometer/Gnocchi to collect metrics.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Monitor Data Ingestion:</strong> Ensure that data collection agents (e.g., Ceilometer agents) are healthy and actively submitting metrics. Monitor for gaps in data or unexpected spikes/drops.</p>
+</li>
+<li>
+<p><strong>Validate Raw Data:</strong> Periodically sample raw consumption data directly from the metrics backend (e.g., Gnocchi) and compare it against the data presented in Chargeback reports. This helps identify issues upstream of the Chargeback engine.</p>
+</li>
+<li>
+<p><strong>Implement Data Reconciliation:</strong> For critical services, reconcile Chargeback reports with other sources of truth (e.g., hypervisor-level monitoring, application-specific logs) where possible, especially during initial deployment or after major changes.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_checking_metric_collector_status"><a class="anchor" href="#_hands_on_activity_checking_metric_collector_status"></a>Hands-on Activity: Checking Metric Collector Status</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Objective:</strong> Verify the health and status of Ceilometer/Gnocchi components responsible for data collection.</p>
+</li>
+<li>
+<p><strong>Tools:</strong> <code>openstack</code> CLI (for RHOSP), <code>oc</code> or <code>kubectl</code> (for RHOSO on OpenShift/Kubernetes).</p>
+</li>
+<li>
+<p><strong>Steps (RHOSP Example):</strong></p>
+</li>
+<li>
+<p><strong>Check Ceilometer Agent Status:</strong> Log in to your RHOSP controller node.</p>
+</li>
+<li>
+<p>Execute the command to check the status of Ceilometer agents.
 ----
-_FIXME: Consider adding a screenshot of the RHOSO Chargeback UI showing a rule's details or a generated report._
-
-=== 2. Data Source Integrity and Validation
-
-Chargeback accuracy relies heavily on the quality and integrity of the underlying consumption data. RHOSO Chargeback integrates with observability components like Ceilometer/Gnocchi to collect metrics.
-
-*   **Monitor Data Ingestion:** Ensure that data collection agents (e.g., Ceilometer agents) are healthy and actively submitting metrics. Monitor for gaps in data or unexpected spikes/drops.
-*   **Validate Raw Data:** Periodically sample raw consumption data directly from the metrics backend (e.g., Gnocchi) and compare it against the data presented in Chargeback reports. This helps identify issues upstream of the Chargeback engine.
-*   **Implement Data Reconciliation:** For critical services, reconcile Chargeback reports with other sources of truth (e.g., hypervisor-level monitoring, application-specific logs) where possible, especially during initial deployment or after major changes.
-
-==== Hands-on Activity: Checking Metric Collector Status
-
-. **Objective:** Verify the health and status of Ceilometer/Gnocchi components responsible for data collection.
-. **Tools:** `openstack` CLI (for RHOSP), `oc` or `kubectl` (for RHOSO on OpenShift/Kubernetes).
-. **Steps (RHOSP Example):**
-    . **Check Ceilometer Agent Status:** Log in to your RHOSP controller node.
-    . Execute the command to check the status of Ceilometer agents.
-    ----
-    openstack service list | grep ceilometer
-    # Look for 'aodh-listener', 'ceilometer-notification', 'ceilometer-polling' services.
-    # Ensure their status is 'up'.
-    sudo systemctl status openstack-ceilometer-polling
-    sudo systemctl status openstack-aodh-evaluator
-    # And other relevant Ceilometer/Aodh services.
-    ----
-    . **Verify Gnocchi Health:**
-    ----
-    openstack metric status
-    # This command provides an overview of Gnocchi's status, including storage backend health.
-    ----
-. **Steps (RHOSO on OpenShift/Kubernetes Example):**
-    . **Check Pod Status:** Log in to your OpenShift cluster.
-    ----
-    oc get pods -n &lt;rhoso-namespace&gt; | grep -E "ceilometer|gnocchi|aodh"
-    # Ensure all pods are running and healthy.
-    ----
-    . **Check Logs for Errors:**
+openstack service list | grep ceilometer
+# Look for 'aodh-listener', 'ceilometer-notification', 'ceilometer-polling' services.
+# Ensure their status is 'up'.
+sudo systemctl status openstack-ceilometer-polling
+sudo systemctl status openstack-aodh-evaluator
+# And other relevant Ceilometer/Aodh services.
+----</p>
+</li>
+<li>
+<p><strong>Verify Gnocchi Health:</strong>
+----
+openstack metric status
+# This command provides an overview of Gnocchi&#8217;s status, including storage backend health.
+----</p>
+</li>
+<li>
+<p><strong>Steps (RHOSO on OpenShift/Kubernetes Example):</strong></p>
+</li>
+<li>
+<p><strong>Check Pod Status:</strong> Log in to your OpenShift cluster.
+----
+oc get pods -n &lt;rhoso-namespace&gt; | grep -E "ceilometer|gnocchi|aodh"
+# Ensure all pods are running and healthy.
+----</p>
+</li>
+<li>
+<p><strong>Check Logs for Errors:</strong>
     ----
     oc logs -f &lt;ceilometer-agent-pod-name&gt; -n &lt;rhoso-namespace&gt;
     oc logs -f &lt;gnocchi-api-pod-name&gt; -n &lt;rhoso-namespace&gt;
     # Look for errors related to metric collection or storage.
     ----
-_FIXME: A diagram illustrating the data flow from resource to Gnocchi to Chargeback would significantly improve understanding._
-
-=== 3. Version Control and Documentation of Rules
-
-Treat your Chargeback rating rules like code. Version control and thorough documentation are essential for auditability, change management, and long-term maintainability.
-
-*   **Centralized Rule Repository:** Store your rating rule definitions (if exportable, or screenshots/text descriptions) in a version-controlled repository (e.g., Git).
-*   **Change Log:** Maintain a detailed change log for each rule, noting:
-    *   Date of change
-    *   Who made the change
-    *   Reason for the change
-    *   Impact of the change
-    *   Approval (if applicable)
-*   **Comprehensive Documentation:** Document the purpose of each rule, the metrics it uses, the calculation methodology, and any business context behind the pricing.
-*   **Naming Conventions:** Implement clear and consistent naming conventions for rules, rule components (e.g., rate cards), and reports.
-
-=== 4. Regular Auditing and Compliance Checks
-
-Periodic audits ensure that Chargeback calculations comply with internal financial policies and external regulatory requirements.
-
-*   **Independent Audits:** Consider conducting independent audits of the Chargeback system, especially if it impacts external billing or regulatory compliance.
-*   **Random Sample Checks:** Regularly perform random checks of specific charges on reports, tracing them back to the original resource consumption data and the applied rating rule to confirm accuracy.
-*   **Historical Data Retention:** Ensure that Chargeback data and reports are retained for the required period to meet audit and compliance mandates.
-
-==== Hands-on Activity: Auditing a Specific Charge
-
-. **Objective:** Trace a charge from a report back to its source and verify the calculation.
-. **Tools:** RHOSO UI (or Horizon), `openstack` CLI or `oc` CLI for raw data verification.
-. **Steps:**
-    . **Identify a Charge:** From a generated Chargeback report, pick a specific line item (e.g., CPU hours for a particular VM in a project). Note the resource ID, project, time period, and the charged amount.
-    . **Locate the Rule:** Using the resource ID and time period, identify which rating rule would have applied to this resource during that time.
-    . **Retrieve Raw Usage Data:**
-        *   Access the RHOSO Observability component's raw metrics for the identified resource and metric (e.g., `cpu_util`, `disk.usage`, `instance_hours`).
-        *   Use `openstack metric measures show &lt;metric_name&gt; --resource &lt;resource_uuid&gt; --start &lt;report_start_time&gt; --end &lt;report_end_time&gt;` or navigate the Observability dashboard for historical data.
-    . **Manual Calculation:** Manually calculate the charge based on the raw usage data and the identified rule's rate.
-    . **Compare and Verify:** Compare your manual calculation with the charge listed in the report. Any significant discrepancy warrants further investigation.
-
-=== 5. User Training and Communication
-
-Even the most accurate Chargeback system can face disputes if users don't understand how charges are calculated.
-
-*   **User Guides:** Provide clear and accessible documentation for end-users explaining how to interpret their Chargeback reports and understanding the underlying pricing model.
-*   **Training Sessions:** Conduct training sessions for new project administrators and resource owners on the Chargeback system.
-*   **Transparency:** Maintain transparency regarding pricing policies, rule changes, and any known issues that might temporarily affect accuracy.
-*   **Feedback Mechanism:** Establish a clear process for users to dispute charges or provide feedback on the Chargeback system.
-
-=== 6. System Monitoring and Alerts
-
-Proactive monitoring of the Chargeback components and their underlying data sources can prevent issues before they impact accuracy.
-
-*   **Monitor Core Services:** Set up alerts for the health and performance of critical RHOSO Chargeback services (e.g., API, collector, processor components).
-*   **Monitor Data Latency:** Track the time taken for raw usage data to be collected, processed, and reflected in Chargeback reports. High latency can indicate data bottlenecks.
-*   **Threshold-based Alerts:** Implement alerts for unusual consumption patterns or charge calculations that fall outside expected thresholds, which could indicate a misconfigured rule or data issue.
-
-----
-# Example: Monitoring Chargeback Pods in OpenShift using Prometheus/Grafana (requires integration)
+<em>FIXME: A diagram illustrating the data flow from resource to Gnocchi to Chargeback would significantly improve understanding.</em></p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_3_version_control_and_documentation_of_rules"><a class="anchor" href="#_3_version_control_and_documentation_of_rules"></a>3. Version Control and Documentation of Rules</h3>
+<div class="paragraph">
+<p>Treat your Chargeback rating rules like code. Version control and thorough documentation are essential for auditability, change management, and long-term maintainability.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Centralized Rule Repository:</strong> Store your rating rule definitions (if exportable, or screenshots/text descriptions) in a version-controlled repository (e.g., Git).</p>
+</li>
+<li>
+<p><strong>Change Log:</strong> Maintain a detailed change log for each rule, noting:</p>
+</li>
+<li>
+<p>Date of change</p>
+</li>
+<li>
+<p>Who made the change</p>
+</li>
+<li>
+<p>Reason for the change</p>
+</li>
+<li>
+<p>Impact of the change</p>
+</li>
+<li>
+<p>Approval (if applicable)</p>
+</li>
+<li>
+<p><strong>Comprehensive Documentation:</strong> Document the purpose of each rule, the metrics it uses, the calculation methodology, and any business context behind the pricing.</p>
+</li>
+<li>
+<p><strong>Naming Conventions:</strong> Implement clear and consistent naming conventions for rules, rule components (e.g., rate cards), and reports.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_4_regular_auditing_and_compliance_checks"><a class="anchor" href="#_4_regular_auditing_and_compliance_checks"></a>4. Regular Auditing and Compliance Checks</h3>
+<div class="paragraph">
+<p>Periodic audits ensure that Chargeback calculations comply with internal financial policies and external regulatory requirements.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Independent Audits:</strong> Consider conducting independent audits of the Chargeback system, especially if it impacts external billing or regulatory compliance.</p>
+</li>
+<li>
+<p><strong>Random Sample Checks:</strong> Regularly perform random checks of specific charges on reports, tracing them back to the original resource consumption data and the applied rating rule to confirm accuracy.</p>
+</li>
+<li>
+<p><strong>Historical Data Retention:</strong> Ensure that Chargeback data and reports are retained for the required period to meet audit and compliance mandates.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_hands_on_activity_auditing_a_specific_charge"><a class="anchor" href="#_hands_on_activity_auditing_a_specific_charge"></a>Hands-on Activity: Auditing a Specific Charge</h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Objective:</strong> Trace a charge from a report back to its source and verify the calculation.</p>
+</li>
+<li>
+<p><strong>Tools:</strong> RHOSO UI (or Horizon), <code>openstack</code> CLI or <code>oc</code> CLI for raw data verification.</p>
+</li>
+<li>
+<p><strong>Steps:</strong></p>
+</li>
+<li>
+<p><strong>Identify a Charge:</strong> From a generated Chargeback report, pick a specific line item (e.g., CPU hours for a particular VM in a project). Note the resource ID, project, time period, and the charged amount.</p>
+</li>
+<li>
+<p><strong>Locate the Rule:</strong> Using the resource ID and time period, identify which rating rule would have applied to this resource during that time.</p>
+</li>
+<li>
+<p><strong>Retrieve Raw Usage Data:</strong></p>
+<div class="ulist">
+<ul>
+<li>
+<p>Access the RHOSO Observability component&#8217;s raw metrics for the identified resource and metric (e.g., <code>cpu_util</code>, <code>disk.usage</code>, <code>instance_hours</code>).</p>
+</li>
+<li>
+<p>Use <code>openstack metric measures show &lt;metric_name&gt; --resource &lt;resource_uuid&gt; --start &lt;report_start_time&gt; --end &lt;report_end_time&gt;</code> or navigate the Observability dashboard for historical data.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Manual Calculation:</strong> Manually calculate the charge based on the raw usage data and the identified rule&#8217;s rate.</p>
+</li>
+<li>
+<p><strong>Compare and Verify:</strong> Compare your manual calculation with the charge listed in the report. Any significant discrepancy warrants further investigation.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_user_training_and_communication"><a class="anchor" href="#_5_user_training_and_communication"></a>5. User Training and Communication</h3>
+<div class="paragraph">
+<p>Even the most accurate Chargeback system can face disputes if users don&#8217;t understand how charges are calculated.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>User Guides:</strong> Provide clear and accessible documentation for end-users explaining how to interpret their Chargeback reports and understanding the underlying pricing model.</p>
+</li>
+<li>
+<p><strong>Training Sessions:</strong> Conduct training sessions for new project administrators and resource owners on the Chargeback system.</p>
+</li>
+<li>
+<p><strong>Transparency:</strong> Maintain transparency regarding pricing policies, rule changes, and any known issues that might temporarily affect accuracy.</p>
+</li>
+<li>
+<p><strong>Feedback Mechanism:</strong> Establish a clear process for users to dispute charges or provide feedback on the Chargeback system.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_6_system_monitoring_and_alerts"><a class="anchor" href="#_6_system_monitoring_and_alerts"></a>6. System Monitoring and Alerts</h3>
+<div class="paragraph">
+<p>Proactive monitoring of the Chargeback components and their underlying data sources can prevent issues before they impact accuracy.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Monitor Core Services:</strong> Set up alerts for the health and performance of critical RHOSO Chargeback services (e.g., API, collector, processor components).</p>
+</li>
+<li>
+<p><strong>Monitor Data Latency:</strong> Track the time taken for raw usage data to be collected, processed, and reflected in Chargeback reports. High latency can indicate data bottlenecks.</p>
+</li>
+<li>
+<p><strong>Threshold-based Alerts:</strong> Implement alerts for unusual consumption patterns or charge calculations that fall outside expected thresholds, which could indicate a misconfigured rule or data issue.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre># Example: Monitoring Chargeback Pods in OpenShift using Prometheus/Grafana (requires integration)
 # A Prometheus query to check if any Chargeback related pods are down:
 kube_pod_status_phase{phase="Running", namespace="&lt;rhoso-namespace&gt;", pod=~"chargeback.*|ceilometer.*|gnocchi.*"} == 0
 # Example: Monitor Ceilometer Agent CPU usage (to detect performance issues)
-sum(rate(container_cpu_usage_seconds_total{pod=~"ceilometer-polling.*", namespace="&lt;rhoso-namespace&gt;"}[5m])) by (pod)
-----
-_FIXME: Suggest integrating RHOSO Chargeback metrics into a central monitoring solution like Grafana, and provide examples of dashboards or alerts._
-
-=== 7. Staging Environment for Changes
-
-Before deploying any significant changes to rating rules or Chargeback configurations in production, test them thoroughly in a staging environment.
-
-*   **Dedicated Staging Environment:** Maintain a replica of your production environment where Chargeback rules and configurations can be tested without affecting live billing.
-*   **Realistic Data Simulation:** Use anonymized production data or realistic simulated data in the staging environment to ensure tests accurately reflect real-world scenarios.
-*   **Impact Analysis:** Analyze the projected financial impact of new rules or changes on various departments/projects before go-live.
-
-By consistently applying these best practices, organizations can build and maintain a robust, transparent, and highly accurate RHOSO Chargeback system, fostering trust and enabling informed decision-making regarding cloud resource consumption.</code></pre>
+sum(rate(container_cpu_usage_seconds_total{pod=~"ceilometer-polling.*", namespace="&lt;rhoso-namespace&gt;"}[5m])) by (pod)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p><em>FIXME: Suggest integrating RHOSO Chargeback metrics into a central monitoring solution like Grafana, and provide examples of dashboards or alerts.</em></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_7_staging_environment_for_changes"><a class="anchor" href="#_7_staging_environment_for_changes"></a>7. Staging Environment for Changes</h3>
+<div class="paragraph">
+<p>Before deploying any significant changes to rating rules or Chargeback configurations in production, test them thoroughly in a staging environment.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Dedicated Staging Environment:</strong> Maintain a replica of your production environment where Chargeback rules and configurations can be tested without affecting live billing.</p>
+</li>
+<li>
+<p><strong>Realistic Data Simulation:</strong> Use anonymized production data or realistic simulated data in the staging environment to ensure tests accurately reflect real-world scenarios.</p>
+</li>
+<li>
+<p><strong>Impact Analysis:</strong> Analyze the projected financial impact of new rules or changes on various departments/projects before go-live.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>By consistently applying these best practices, organizations can build and maintain a robust, transparent, and highly accurate RHOSO Chargeback system, fostering trust and enabling informed decision-making regarding cloud resource consumption.</p>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">

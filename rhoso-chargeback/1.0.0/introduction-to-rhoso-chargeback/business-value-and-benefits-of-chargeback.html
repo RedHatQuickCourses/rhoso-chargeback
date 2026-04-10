@@ -24,7 +24,7 @@
     </div>
     <div id="topbar-nav" class="navbar-menu">
       <div class="navbar-end">
-        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/REPLACEREPONAME/issues" target="_blank">Report Issues</a>
+        <a class="navbar-item" href="https://github.com/RedHatQuickCourses/rhoso-chargeback/issues" target="_blank">Report Issues</a>
       </div>
     </div>
   </nav>
@@ -230,57 +230,84 @@
 </aside>
 <article class="doc">
 <h1 class="page">Business value and benefits of Chargeback</h1>
+<div id="preamble">
+<div class="sectionbody">
 <div class="paragraph">
 <p>Here is the Antora AsciiDoc content covering the business value and benefits of RHOSO Chargeback:</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-asciidoc hljs" data-lang="asciidoc">[role="doc"]
-= Introduction to RHOSO Chargeback
-
-== Business Value and Benefits of Chargeback
-
-The introduction of cloud computing and shared IT infrastructure has brought unprecedented agility and scalability to organizations. However, managing and understanding the true cost of these dynamic environments can be challenging. Red Hat OpenShift Service on OpenStack (RHOSO) Chargeback addresses this by providing a robust mechanism to measure, allocate, and report on resource consumption and associated costs. This section delves into the profound business value and tangible benefits that organizations can realize by implementing RHOSO Chargeback.
-
-Chargeback is more than just an accounting tool; it's a strategic enabler that transforms how IT services are perceived, consumed, and managed within an enterprise. By turning IT from a cost center into a transparent service provider, Chargeback fosters accountability, optimizes resource utilization, and empowers data-driven decision-making.
-
-Let's explore the key business values and benefits:
-
-*   **Enhanced Cost Transparency:**
-    **Detailed Explanation:** RHOSO Chargeback provides granular visibility into the actual consumption of resources (e.g., CPU, memory, storage, network traffic) by specific projects, teams, or departments. This eliminates the "black box" perception of IT costs, making it clear what each consumer is using and how much it costs them. This transparency extends not just to financial stakeholders but also directly to the resource consumers, allowing them to understand the financial implications of their usage patterns.
-    *Example:* A development team can see the exact cost incurred by their OpenShift projects running on RHOSO, rather than a generic shared infrastructure bill.
-
-*   **Improved Resource Accountability and Governance:**
-    **Detailed Explanation:** When costs are directly associated with consumption, users and departments become more accountable for the resources they provision and utilize. This discourages "resource hoarding" or the provisioning of resources that are not truly needed, leading to more responsible and efficient use of the shared infrastructure. Chargeback acts as a powerful incentive for teams to optimize their applications and infrastructure footprint.
-    *Example:* A project manager might decide to decommission an idle testing environment quickly once they see its ongoing chargeback costs.
-
-*   **Optimized Resource Utilization:**
-    **Detailed Explanation:** With clear visibility into consumption and costs, organizations can identify underutilized or over-provisioned resources. This data enables IT operations teams to right-size environments, reclaim unused resources, and better plan for capacity. It directly contributes to reducing operational expenditure by ensuring that capital is not tied up in idle infrastructure.
-    *Example:* Analyzing chargeback reports might reveal that a specific development environment consistently uses less than 20% of its allocated CPU, prompting a downsizing to save costs.
-
-*   **Accurate Budgeting and Financial Forecasting:**
-    **Detailed Explanation:** Chargeback provides historical data on resource consumption and associated costs, which is invaluable for future financial planning. Finance departments can use this data to create more accurate budgets for IT services, forecast future spending based on anticipated growth, and make informed investment decisions regarding infrastructure expansion or new service offerings.
-    *Example:* A finance team can project next year's cloud spending by analyzing the growth rate and consumption patterns derived from current chargeback data.
-
-*   **Fair Cost Allocation and Internal Billing:**
-    **Detailed Explanation:** Instead of allocating IT costs arbitrarily or based on broad assumptions, Chargeback enables a fair and equitable distribution of expenses across different business units. Each department pays only for what it consumes, fostering a sense of fairness and reducing internal disputes over IT billing. This is particularly beneficial in large enterprises with multiple departments or in service provider models where different tenants utilize shared resources.
-    *Example:* In a large corporation, the marketing department is charged only for the OpenShift projects and OpenStack VMs they actively use, not a flat percentage of the total IT budget.
-
-*   **Empowered Business Decision-Making:**
-    **Detailed Explanation:** By linking IT costs directly to business outcomes, Chargeback provides critical data for strategic decision-making. Business leaders can evaluate the cost-effectiveness of different applications or services, identify areas for process improvement, and make informed choices about where to invest or divest resources. This data moves IT from a perceived overhead to a strategic business partner.
-    *Example:* A product owner can compare the cost of running a legacy application against a new cloud-native application on RHOSO, making a data-backed decision on migration strategies.
-
-*   **Support for Regulatory Compliance and Audits:**
-    **Detailed Explanation:** Chargeback systems generate detailed records of resource usage and associated costs, providing an audit trail that can be crucial for regulatory compliance and internal audits. This ensures that IT spending is transparent, justifiable, and adheres to organizational policies and external regulations.
-    *Example:* During an audit, an organization can easily demonstrate how IT costs are allocated and consumed by different departments, providing evidence of financial governance.
-
-While this topic focuses on the strategic overview, the subsequent sections will guide you through the practical steps of enabling and utilizing RHOSO Chargeback to unlock these benefits within your own environment.
-
-[NOTE]
+</div>
+</div>
+<h1 id="_introduction_to_rhoso_chargeback" class="sect0 doc"><a class="anchor" href="#_introduction_to_rhoso_chargeback"></a>Introduction to RHOSO Chargeback</h1>
+<div class="sect1">
+<h2 id="_business_value_and_benefits_of_chargeback"><a class="anchor" href="#_business_value_and_benefits_of_chargeback"></a>Business Value and Benefits of Chargeback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The introduction of cloud computing and shared IT infrastructure has brought unprecedented agility and scalability to organizations. However, managing and understanding the true cost of these dynamic environments can be challenging. Red Hat OpenShift Service on OpenStack (RHOSO) Chargeback addresses this by providing a robust mechanism to measure, allocate, and report on resource consumption and associated costs. This section delves into the profound business value and tangible benefits that organizations can realize by implementing RHOSO Chargeback.</p>
+</div>
+<div class="paragraph">
+<p>Chargeback is more than just an accounting tool; it&#8217;s a strategic enabler that transforms how IT services are perceived, consumed, and managed within an enterprise. By turning IT from a cost center into a transparent service provider, Chargeback fosters accountability, optimizes resource utilization, and empowers data-driven decision-making.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s explore the key business values and benefits:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Enhanced Cost Transparency:</strong>
+<strong>Detailed Explanation:</strong> RHOSO Chargeback provides granular visibility into the actual consumption of resources (e.g., CPU, memory, storage, network traffic) by specific projects, teams, or departments. This eliminates the "black box" perception of IT costs, making it clear what each consumer is using and how much it costs them. This transparency extends not just to financial stakeholders but also directly to the resource consumers, allowing them to understand the financial implications of their usage patterns.
+<strong>Example:</strong> A development team can see the exact cost incurred by their OpenShift projects running on RHOSO, rather than a generic shared infrastructure bill.</p>
+</li>
+<li>
+<p><strong>Improved Resource Accountability and Governance:</strong>
+<strong>Detailed Explanation:</strong> When costs are directly associated with consumption, users and departments become more accountable for the resources they provision and utilize. This discourages "resource hoarding" or the provisioning of resources that are not truly needed, leading to more responsible and efficient use of the shared infrastructure. Chargeback acts as a powerful incentive for teams to optimize their applications and infrastructure footprint.
+<strong>Example:</strong> A project manager might decide to decommission an idle testing environment quickly once they see its ongoing chargeback costs.</p>
+</li>
+<li>
+<p><strong>Optimized Resource Utilization:</strong>
+<strong>Detailed Explanation:</strong> With clear visibility into consumption and costs, organizations can identify underutilized or over-provisioned resources. This data enables IT operations teams to right-size environments, reclaim unused resources, and better plan for capacity. It directly contributes to reducing operational expenditure by ensuring that capital is not tied up in idle infrastructure.
+<strong>Example:</strong> Analyzing chargeback reports might reveal that a specific development environment consistently uses less than 20% of its allocated CPU, prompting a downsizing to save costs.</p>
+</li>
+<li>
+<p><strong>Accurate Budgeting and Financial Forecasting:</strong>
+<strong>Detailed Explanation:</strong> Chargeback provides historical data on resource consumption and associated costs, which is invaluable for future financial planning. Finance departments can use this data to create more accurate budgets for IT services, forecast future spending based on anticipated growth, and make informed investment decisions regarding infrastructure expansion or new service offerings.
+<strong>Example:</strong> A finance team can project next year&#8217;s cloud spending by analyzing the growth rate and consumption patterns derived from current chargeback data.</p>
+</li>
+<li>
+<p><strong>Fair Cost Allocation and Internal Billing:</strong>
+<strong>Detailed Explanation:</strong> Instead of allocating IT costs arbitrarily or based on broad assumptions, Chargeback enables a fair and equitable distribution of expenses across different business units. Each department pays only for what it consumes, fostering a sense of fairness and reducing internal disputes over IT billing. This is particularly beneficial in large enterprises with multiple departments or in service provider models where different tenants utilize shared resources.
+<strong>Example:</strong> In a large corporation, the marketing department is charged only for the OpenShift projects and OpenStack VMs they actively use, not a flat percentage of the total IT budget.</p>
+</li>
+<li>
+<p><strong>Empowered Business Decision-Making:</strong>
+<strong>Detailed Explanation:</strong> By linking IT costs directly to business outcomes, Chargeback provides critical data for strategic decision-making. Business leaders can evaluate the cost-effectiveness of different applications or services, identify areas for process improvement, and make informed choices about where to invest or divest resources. This data moves IT from a perceived overhead to a strategic business partner.
+<strong>Example:</strong> A product owner can compare the cost of running a legacy application against a new cloud-native application on RHOSO, making a data-backed decision on migration strategies.</p>
+</li>
+<li>
+<p><strong>Support for Regulatory Compliance and Audits:</strong>
+<strong>Detailed Explanation:</strong> Chargeback systems generate detailed records of resource usage and associated costs, providing an audit trail that can be crucial for regulatory compliance and internal audits. This ensures that IT spending is transparent, justifiable, and adheres to organizational policies and external regulations.
+<strong>Example:</strong> During an audit, an organization can easily demonstrate how IT costs are allocated and consumed by different departments, providing evidence of financial governance.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>While this topic focuses on the strategic overview, the subsequent sections will guide you through the practical steps of enabling and utilizing RHOSO Chargeback to unlock these benefits within your own environment.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
 This section primarily focuses on the conceptual business value and benefits. Hands-on activities are not applicable here, but will be a core part of subsequent topics.
-
-FIXME: Add an infographic or diagram illustrating the flow of costs from RHOSO resources through Chargeback to various business units, visually representing the transparency and accountability benefits.
-FIXME: Consider adding a short video explaining "What is IT Chargeback and Why Does it Matter?" from a business perspective, suitable for management-level understanding.</code></pre>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>FIXME: Add an infographic or diagram illustrating the flow of costs from RHOSO resources through Chargeback to various business units, visually representing the transparency and accountability benefits.
+FIXME: Consider adding a short video explaining "What is IT Chargeback and Why Does it Matter?" from a business perspective, suitable for management-level understanding.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
